@@ -1,0 +1,136 @@
+// Element Plus 样式覆盖
+:root {
+  --el-color-primary: #{$primary-color};
+  --el-color-success: #{$success-color};
+  --el-color-warning: #{$warning-color};
+  --el-color-danger: #{$danger-color};
+  --el-color-info: #{$info-color};
+}
+
+// 按钮样式
+.el-button {
+  border-radius: $border-radius-base;
+}
+
+.el-button--primary {
+  --el-button-bg-color: #{$primary-color};
+  --el-button-border-color: #{$primary-color};
+  --el-button-hover-bg-color: lighten($primary-color, 10%);
+  --el-button-hover-border-color: lighten($primary-color, 10%);
+}
+
+// 卡片样式
+.el-card {
+  border-radius: $border-radius-large;
+  box-shadow: $box-shadow-light;
+  
+  .el-card__header {
+    border-bottom: 1px solid $border-lighter;
+    padding: $spacing-large;
+  }
+  
+  .el-card__body {
+    padding: $spacing-large;
+  }
+}
+
+// 表单样式
+.el-form-item__label {
+  font-weight: 500;
+}
+
+.el-input__wrapper {
+  border-radius: $border-radius-base;
+}
+
+// 表格样式
+.el-table {
+  --el-table-border-color: #{$border-lighter};
+  --el-table-header-bg-color: #{$bg-page};
+  
+  th.el-table__cell {
+    background-color: $bg-page;
+    color: $text-primary;
+    font-weight: 600;
+  }
+}
+
+// 分页样式
+.el-pagination {
+  padding: $spacing-large 0;
+}
+
+// 对话框样式
+.el-dialog {
+  border-radius: $border-radius-large;
+  
+  .el-dialog__header {
+    padding: $spacing-large $spacing-extra-large;
+    border-bottom: 1px solid $border-lighter;
+  }
+  
+  .el-dialog__body {
+    padding: $spacing-extra-large;
+  }
+  
+  .el-dialog__footer {
+    padding: $spacing-large $spacing-extra-large;
+    border-top: 1px solid $border-lighter;
+  }
+}
+
+// 消息提示样式
+.el-message {
+  border-radius: $border-radius-base;
+}
+
+// 导航菜单样式
+.el-menu {
+  border-right: none;
+}
+
+.el-menu-item {
+  border-radius: $border-radius-base;
+  margin: $spacing-small $spacing-base;
+  
+  &:hover {
+    background-color: rgba($primary-color, 0.1);
+  }
+  
+  &.is-active {
+    background-color: $primary-color;
+    color: #ffffff;
+  }
+}
+
+// 标签页样式
+.el-tabs__item {
+  font-size: $font-size-medium;
+  font-weight: 500;
+}
+
+.el-tabs__item.is-active {
+  font-weight: 600;
+}
+
+// 徽章样式
+.el-badge__content.is-fixed {
+  border-radius: $border-radius-round;
+}
+
+// 下拉菜单样式
+.el-dropdown-menu__item {
+  &:hover {
+    background-color: $bg-page;
+  }
+}
+
+// 加载样式
+.el-loading-mask {
+  border-radius: $border-radius-large;
+}
+
+// 空状态样式
+.el-empty {
+  padding: $spacing-extra-large 0;
+}

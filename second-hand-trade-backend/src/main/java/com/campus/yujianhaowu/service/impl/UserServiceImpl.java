@@ -1,0 +1,278 @@
+package com.campus.yujianhaowu.service.impl;
+
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.campus.yujianhaowu.common.ResultCode;
+import com.campus.yujianhaowu.exception.BusinessException;
+import com.campus.yujianhaowu.mapper.UserMapper;
+import com.campus.yujianhaowu.model.dto.LoginRequest;
+import com.campus.yujianhaowu.model.dto.RegisterRequest;
+import com.campus.yujianhaowu.model.entity.User;
+import com.campus.yujianhaowu.model.vo.UserVO;
+import com.campus.yujianhaowu.service.UserService;
+import com.campus.yujianhaowu.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * 用户服务实现类
+ *
+ * @author yujianhaowu
+ * @since 2026-03-09
+ */
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService {
+
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+    private final RedisTemplate<String, String> redisTemplate;
+
+    private static final String REDIS_TOKEN_PREFIX = "token:";
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, Object> login(LoginRequest request) {
+        // 查询用户
+        User user = getByUsername(request.getUsername());
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+
+        // 验证密码
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new BusinessException(ResultCode.USER_PASSWORD_ERROR);
+        }
+
+        // 检查用户状态
+        if (user.getStatus() == 0) {
+            throw new BusinessException(ResultCode.USER_DISABLED);
+        }
+
+        // 生成 Token
+        String token = jwtUtil.generateToken(user.getId());
+        String refreshToken = jwtUtil.generateRefreshToken(user.getId());
+
+        // 存储 Token 到 Redis
+        String redisKey = REDIS_TOKEN_PREFIX + user.getId();
+        redisTemplate.opsForValue().set(redisKey, token, 30, TimeUnit.MINUTES);
+
+        // 更新最后登录信息
+        user.setLastLoginAt(java.time.LocalDateTime.now());
+        userMapper.updateById(user);
+
+        // 返回结果
+        Map<String, Object> result = new HashMap<>();
+        result.put("token", token);
+        result.put("refreshToken", refreshToken);
+        result.put("userInfo", convertToVO(user));
+
+        return result;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Long register(RegisterRequest request) {
+        // 检查用户名是否已存在
+        User existUser = getByUsername(request.getUsername());
+        if (existUser != null) {
+            throw new BusinessException(ResultCode.USER_ALREADY_EXISTS);
+        }
+
+        // 创建用户
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setNickname(
+                StrUtil.isNotBlank(request.getNickname()) ? request.getNickname() : "用户" + System.currentTimeMillis());
+        user.setRole("buyer");
+        user.setPhone(request.getPhone());
+        user.setEmail(request.getEmail());
+        user.setStatus(1);
+
+        userMapper.insert(user);
+        log.info("用户注册成功，userId: {}", user.getId());
+
+        return user.getId();
+    }
+
+    @Override
+    public void logout(Long userId) {
+        String redisKey = REDIS_TOKEN_PREFIX + userId;
+        redisTemplate.delete(redisKey);
+        log.info("用户登出成功，userId: {}", userId);
+    }
+
+    @Override
+    public String refreshToken(String refreshToken) {
+        try {
+            Long userId = jwtUtil.validateToken(refreshToken);
+            if (userId == null) {
+                throw new BusinessException(ResultCode.UNAUTHORIZED);
+            }
+            return jwtUtil.generateToken(userId);
+        } catch (Exception e) {
+            throw new BusinessException(ResultCode.UNAUTHORIZED);
+        }
+    }
+
+    @Override
+    public UserVO getCurrentUser(Long userId) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+        return convertToVO(user);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateProfile(Long userId, User user) {
+        User existUser = userMapper.selectById(userId);
+        if (existUser == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+
+        // 更新允许修改的字段
+        if (StrUtil.isNotBlank(user.getNickname())) {
+            existUser.setNickname(user.getNickname());
+        }
+        if (StrUtil.isNotBlank(user.getPhone())) {
+            existUser.setPhone(user.getPhone());
+        }
+        if (StrUtil.isNotBlank(user.getEmail())) {
+            existUser.setEmail(user.getEmail());
+        }
+        if (user.getGender() != null) {
+            existUser.setGender(user.getGender());
+        }
+
+        userMapper.updateById(existUser);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void changePassword(Long userId, String oldPassword, String newPassword) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+
+        // 验证旧密码
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new BusinessException("旧密码错误");
+        }
+
+        // 更新密码
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userMapper.updateById(user);
+    }
+
+    @Override
+    public void uploadAvatar(Long userId, String avatarUrl) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+
+        user.setAvatar(avatarUrl);
+        userMapper.updateById(user);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void applySeller(Long userId, Map<String, Object> sellerInfo) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+
+        user.setSellerStatus("pending");
+        user.setSellerInfo(JSONUtil.toJsonStr(sellerInfo));
+        userMapper.updateById(user);
+    }
+
+    @Override
+    public Map<String, String> getSellerStatus(Long userId) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+
+        Map<String, String> result = new HashMap<>();
+        result.put("status", user.getSellerStatus());
+        return result;
+    }
+
+    @Override
+    public User getById(Long userId) {
+        return userMapper.selectById(userId);
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUsername, username)
+                .or()
+                .eq(User::getPhone, username)
+                .or()
+                .eq(User::getEmail, username);
+        return userMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public Page<UserVO> listUsers(Long current, Long size, String keyword) {
+        Page<User> page = new Page<>(current, size);
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        if (StrUtil.isNotBlank(keyword)) {
+            wrapper.like(User::getUsername, keyword)
+                    .or()
+                    .like(User::getNickname, keyword)
+                    .or()
+                    .like(User::getPhone, keyword);
+        }
+        wrapper.orderByDesc(User::getCreatedAt);
+
+        Page<User> userPage = userMapper.selectPage(page, wrapper);
+        Page<UserVO> voPage = new Page<>(current, size, userPage.getTotal());
+        voPage.setRecords(userPage.getRecords().stream()
+                .map(this::convertToVO)
+                .toList());
+        return voPage;
+    }
+
+    /**
+     * 转换为 VO
+     */
+    private UserVO convertToVO(User user) {
+        UserVO vo = new UserVO();
+        vo.setId(user.getId());
+        vo.setUsername(user.getUsername());
+        vo.setNickname(user.getNickname());
+        vo.setAvatar(user.getAvatar());
+        vo.setPhone(user.getPhone());
+        vo.setEmail(user.getEmail());
+        vo.setGender(user.getGender());
+        vo.setRole(user.getRole());
+        vo.setSellerStatus(user.getSellerStatus());
+        vo.setShopName(user.getShopName());
+        vo.setShopLogo(user.getShopLogo());
+        vo.setFansCount(user.getFansCount());
+        vo.setFollowCount(user.getFollowCount());
+        vo.setCreatedAt(user.getCreatedAt());
+        vo.setLastLoginAt(user.getLastLoginAt());
+        return vo;
+    }
+}

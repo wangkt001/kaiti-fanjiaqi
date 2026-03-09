@@ -1,0 +1,67 @@
+// 主题色
+$primary-color: #409eff;
+$success-color: #67c23a;
+$warning-color: #e6a23c;
+$danger-color: #f56c6c;
+$info-color: #909399;
+
+// 文字颜色
+$text-primary: #303133;
+$text-regular: #606266;
+$text-secondary: #909399;
+$text-placeholder: #c0c4cc;
+
+// 背景色
+$bg-page: #f5f7fa;
+$bg-white: #ffffff;
+$bg-dark: #1d1e1f;
+
+// 边框颜色
+$border-color: #dcdfe6;
+$border-light: #e4e7ed;
+$border-lighter: #ebeef5;
+
+// 字体大小
+$font-size-extra-large: 20px;
+$font-size-large: 18px;
+$font-size-medium: 16px;
+$font-size-base: 14px;
+$font-size-small: 13px;
+$font-size-extra-small: 12px;
+
+// 间距
+$spacing-base: 8px;
+$spacing-small: 4px;
+$spacing-large: 16px;
+$spacing-extra-large: 24px;
+
+// 圆角
+$border-radius-base: 4px;
+$border-radius-small: 2px;
+$border-radius-large: 8px;
+$border-radius-round: 50%;
+
+// 阴影
+$box-shadow-base: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+$box-shadow-dark: 0 2px 12px 0 rgba(0, 0, 0, 0.2);
+$box-shadow-light: 0 1px 4px rgba(0, 0, 0, 0.05);
+
+// 页面宽度
+$page-width: 1200px;
+$page-width-large: 1400px;
+
+// 头部高度
+$header-height: 60px;
+$header-height-mobile: 50px;
+
+// 过渡
+$transition-base: all 0.3s ease-in-out;
+$transition-fast: all 0.2s ease-in-out;
+$transition-slow: all 0.5s ease-in-out;
+
+// Z-index
+$z-index-normal: 1;
+$z-index-top: 1000;
+$z-index-popper: 2000;
+$z-index-overlay: 3000;
+$z-index-modal: 4000;
