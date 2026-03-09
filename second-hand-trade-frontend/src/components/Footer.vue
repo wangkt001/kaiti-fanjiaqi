@@ -9,7 +9,6 @@
             豫见好物是专注于河南文创产品的销售平台，致力于推广河南传统文化，让文创产品走进千家万户。
           </p>
           <div class="social-links">
-            <el-icon><Wechat /></el-icon>
             <el-icon><ChatDotRound /></el-icon>
             <el-icon><Share /></el-icon>
           </div>
@@ -84,7 +83,6 @@
 
 <script setup lang="ts">
 import {
-  Wechat,
   ChatDotRound,
   Share,
   Phone,

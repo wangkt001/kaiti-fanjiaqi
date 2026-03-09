@@ -30,6 +30,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     resolve: {
       alias: {
         '@': resolve(__dirname, 'src'),
+        '@styles': resolve(__dirname, 'src/styles'),
         '@components': resolve(__dirname, 'src/components'),
         '@views': resolve(__dirname, 'src/views'),
         '@api': resolve(__dirname, 'src/api'),

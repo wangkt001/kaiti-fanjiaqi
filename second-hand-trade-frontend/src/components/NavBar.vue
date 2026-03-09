@@ -3,7 +3,6 @@
     <div class="navbar-container">
       <!-- Logo -->
       <div class="navbar-logo" @click="$router.push('/')">
-        <img src="@/assets/logo.png" alt="豫见好物" class="logo-image" />
         <span class="logo-text">豫见好物</span>
       </div>
 
