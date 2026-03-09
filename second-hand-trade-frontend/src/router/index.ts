@@ -44,6 +44,24 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '我的订单', requiresAuth: true },
   },
   {
+    path: '/order/confirm',
+    name: 'OrderConfirm',
+    component: () => import('@/views/OrderConfirmView.vue'),
+    meta: { title: '订单确认', requiresAuth: true },
+  },
+  {
+    path: '/order/detail/:id',
+    name: 'OrderDetail',
+    component: () => import('@/views/OrderDetailView.vue'),
+    meta: { title: '订单详情', requiresAuth: true },
+  },
+  {
+    path: '/order/pay',
+    name: 'OrderPay',
+    component: () => import('@/views/OrderPayView.vue'),
+    meta: { title: '订单支付', requiresAuth: true },
+  },
+  {
     path: '/user',
     name: 'UserCenter',
     component: () => import('@/views/UserCenterView.vue'),
@@ -52,7 +70,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/favorites',
     name: 'Favorites',
-    component: () => import('@/views/FavoritesView.vue'),
+    component: () => import('@/views/FavoriteView.vue'),
     meta: { title: '我的收藏', requiresAuth: true },
   },
   {

@@ -1,31 +1,29 @@
 package com.campus.yujianhaowu.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
+/**
+ * 收藏表实体类
+ */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @TableName("favorites")
-public class Favorite extends BaseEntity {
+public class Favorite {
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
-    @TableField("user_id")
     private Long userId;
 
-    @TableField("target_type")
     private String targetType;
 
-    @TableField("target_id")
     private Long targetId;
 
-    @TableField("created_at")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
+
+    @TableLogic
+    private Integer deleted;
 }

@@ -3,6 +3,7 @@ package com.campus.yujianhaowu.interceptor;
 import com.campus.yujianhaowu.common.ResultCode;
 import com.campus.yujianhaowu.exception.BusinessException;
 import com.campus.yujianhaowu.util.JwtUtil;
+import com.campus.yujianhaowu.util.UserContextUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,12 +65,22 @@ public class AuthInterceptor implements HandlerInterceptor {
             // 将用户 ID 存入请求属性
             request.setAttribute("userId", userId);
 
+            // 设置到用户上下文
+            UserContextUtil.setCurrentUserId(userId);
+
             return true;
         } catch (BusinessException e) {
             throw e;
         } catch (Exception e) {
             throw new BusinessException(ResultCode.UNAUTHORIZED);
         }
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+            throws Exception {
+        // 清除用户上下文
+        UserContextUtil.clear();
     }
 
     /**

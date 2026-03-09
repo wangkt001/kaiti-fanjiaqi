@@ -1,54 +1,56 @@
 package com.campus.yujianhaowu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.campus.yujianhaowu.exception.BusinessException;
 import com.campus.yujianhaowu.mapper.FavoriteMapper;
 import com.campus.yujianhaowu.mapper.ProductMapper;
+import com.campus.yujianhaowu.model.dto.favorite.FavoriteRequest;
 import com.campus.yujianhaowu.model.entity.Favorite;
 import com.campus.yujianhaowu.model.entity.Product;
-import com.campus.yujianhaowu.model.vo.ProductVO;
+import com.campus.yujianhaowu.model.vo.FavoriteProductVO;
 import com.campus.yujianhaowu.service.FavoriteService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
+import jakarta.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
+/**
+ * 收藏服务实现
+ */
 @Service
-@RequiredArgsConstructor
-public class FavoriteServiceImpl implements FavoriteService {
+public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> implements FavoriteService {
 
-    private final FavoriteMapper favoriteMapper;
-    private final ProductMapper productMapper;
+    @Resource
+    private ProductMapper productMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void favorite(String targetType, Long targetId, Long userId) {
+    public void addFavorite(Long userId, FavoriteRequest request) {
+        // 检查是否已收藏
         LambdaQueryWrapper<Favorite> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Favorite::getUserId, userId)
-                .eq(Favorite::getTargetType, targetType)
-                .eq(Favorite::getTargetId, targetId);
+                .eq(Favorite::getTargetType, request.getTargetType())
+                .eq(Favorite::getTargetId, request.getTargetId());
 
-        Favorite existingFavorite = favoriteMapper.selectOne(wrapper);
-        if (existingFavorite != null) {
+        Favorite existing = this.getOne(wrapper);
+        if (existing != null) {
             throw new BusinessException("已经收藏过了");
         }
 
+        // 创建收藏记录
         Favorite favorite = new Favorite();
         favorite.setUserId(userId);
-        favorite.setTargetType(targetType);
-        favorite.setTargetId(targetId);
-        favorite.setCreatedAt(LocalDateTime.now());
+        favorite.setTargetType(request.getTargetType());
+        favorite.setTargetId(request.getTargetId());
+        this.save(favorite);
 
-        favoriteMapper.insert(favorite);
-
-        if ("product".equals(targetType)) {
-            Product product = productMapper.selectById(targetId);
+        // 更新商品收藏数量
+        if ("product".equals(request.getTargetType())) {
+            Product product = productMapper.selectById(request.getTargetId());
             if (product != null) {
                 product.setFavoriteCount(product.getFavoriteCount() + 1);
                 productMapper.updateById(product);
@@ -58,17 +60,17 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void unfavorite(String targetType, Long targetId, Long userId) {
+    public void removeFavorite(Long userId, Long targetId) {
         LambdaQueryWrapper<Favorite> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Favorite::getUserId, userId)
-                .eq(Favorite::getTargetType, targetType)
                 .eq(Favorite::getTargetId, targetId);
 
-        Favorite favorite = favoriteMapper.selectOne(wrapper);
+        Favorite favorite = this.getOne(wrapper);
         if (favorite != null) {
-            favoriteMapper.delete(wrapper);
+            this.remove(wrapper);
 
-            if ("product".equals(targetId)) {
+            // 更新商品收藏数量
+            if ("product".equals(favorite.getTargetType())) {
                 Product product = productMapper.selectById(targetId);
                 if (product != null && product.getFavoriteCount() > 0) {
                     product.setFavoriteCount(product.getFavoriteCount() - 1);
@@ -79,82 +81,34 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public boolean isFavorite(String targetType, Long targetId, Long userId) {
-        LambdaQueryWrapper<Favorite> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Favorite::getUserId, userId)
-                .eq(Favorite::getTargetType, targetType)
-                .eq(Favorite::getTargetId, targetId);
+    public List<FavoriteProductVO> getUserProductFavorites(Long userId) {
+        List<Favorite> favorites = baseMapper.selectUserProductFavorites(userId);
+        List<FavoriteProductVO> result = new ArrayList<>();
 
-        Favorite favorite = favoriteMapper.selectOne(wrapper);
-        return favorite != null;
-    }
+        for (Favorite favorite : favorites) {
+            Product product = productMapper.selectById(favorite.getTargetId());
+            if (product != null) {
+                FavoriteProductVO vo = new FavoriteProductVO();
+                vo.setFavoriteId(favorite.getId());
+                vo.setProductId(product.getId());
+                vo.setProductName(product.getName());
+                vo.setProductImage(null); // 简化：暂不处理商品图片
+                vo.setPrice(product.getPrice().doubleValue());
+                vo.setSalesCount(product.getSalesCount());
+                vo.setStatus(product.getStatus());
+                vo.setFavoriteTime(favorite.getCreatedAt());
+                result.add(vo);
+            }
+        }
 
-    @Override
-    public Long getFavoriteCount(String targetType, Long targetId) {
-        LambdaQueryWrapper<Favorite> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Favorite::getTargetType, targetType)
-                .eq(Favorite::getTargetId, targetId);
-
-        return favoriteMapper.selectCount(wrapper);
-    }
-
-    @Override
-    public Map<String, Object> getFavoriteStatus(String targetType, Long targetId, Long userId) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("count", getFavoriteCount(targetType, targetId));
-        result.put("favorited", userId != null && isFavorite(targetType, targetId, userId));
         return result;
     }
 
     @Override
-    public Page<ProductVO> getUserFavorites(Long userId, Integer current, Integer size) {
+    public boolean isFavorite(Long userId, Long targetId) {
         LambdaQueryWrapper<Favorite> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Favorite::getUserId, userId)
-                .eq(Favorite::getTargetType, "product")
-                .orderByDesc(Favorite::getCreatedAt);
-
-        Page<Favorite> favoritePage = favoriteMapper.selectPage(new Page<>(current, size), wrapper);
-
-        List<Long> productIds = favoritePage.getRecords().stream()
-                .map(Favorite::getTargetId)
-                .collect(Collectors.toList());
-
-        Page<ProductVO> voPage = new Page<>(current, size, favoritePage.getTotal());
-
-        if (productIds.isEmpty()) {
-            voPage.setRecords(List.of());
-            return voPage;
-        }
-
-        LambdaQueryWrapper<Product> productWrapper = new LambdaQueryWrapper<>();
-        productWrapper.in(Product::getId, productIds)
-                .eq(Product::getStatus, "on_sale");
-
-        List<Product> products = productMapper.selectList(productWrapper);
-        List<ProductVO> voList = products.stream()
-                .map(this::convertToVO)
-                .collect(Collectors.toList());
-
-        voPage.setRecords(voList);
-        return voPage;
-    }
-
-    private ProductVO convertToVO(Product product) {
-        ProductVO vo = new ProductVO();
-        vo.setId(product.getId());
-        vo.setName(product.getName());
-        vo.setDescription(product.getDescription());
-        vo.setPrice(product.getPrice());
-        vo.setOriginalPrice(product.getOriginalPrice());
-        vo.setStock(product.getStock());
-        vo.setCategoryId(product.getCategoryId());
-        vo.setSellerId(product.getSellerId());
-        vo.setStatus(product.getStatus());
-        vo.setSalesCount(product.getSalesCount());
-        vo.setViewCount(product.getViewCount());
-        vo.setFavoriteCount(product.getFavoriteCount());
-        vo.setCreatedAt(product.getCreatedAt());
-        vo.setPublishedAt(product.getPublishedAt());
-        return vo;
+                .eq(Favorite::getTargetId, targetId);
+        return this.count(wrapper) > 0;
     }
 }

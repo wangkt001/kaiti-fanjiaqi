@@ -1,83 +1,80 @@
 package com.campus.yujianhaowu.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.campus.yujianhaowu.common.PageResult;
 import com.campus.yujianhaowu.common.Result;
-import com.campus.yujianhaowu.interceptor.AuthInterceptor;
-import com.campus.yujianhaowu.model.vo.ProductVO;
+import com.campus.yujianhaowu.model.dto.favorite.FavoriteRequest;
+import com.campus.yujianhaowu.model.vo.FavoriteProductVO;
+import com.campus.yujianhaowu.model.vo.FavoriteStatusVO;
 import com.campus.yujianhaowu.service.FavoriteService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import com.campus.yujianhaowu.util.UserContextUtil;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletRequest;
-import java.util.Map;
+import java.util.List;
 
+/**
+ * 收藏控制器
+ */
 @RestController
-@RequestMapping("/api/favorites")
-@RequiredArgsConstructor
-@Tag(name = "收藏管理", description = "收藏相关接口")
+@RequestMapping("/api/favorite")
 public class FavoriteController {
 
-    private final FavoriteService favoriteService;
+    @Resource
+    private FavoriteService favoriteService;
 
-    @PostMapping("/{targetType}/{targetId}")
-    @Operation(summary = "收藏")
-    public Result<Void> favorite(
-            @Parameter(description = "目标类型（product/content）") @PathVariable String targetType,
-            @Parameter(description = "目标 ID") @PathVariable Long targetId,
-            HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
-        favoriteService.favorite(targetType, targetId, userId);
-        return Result.success(null);
+    /**
+     * 添加收藏
+     */
+    @PostMapping
+    public Result<Void> addFavorite(@RequestBody FavoriteRequest request) {
+        Long userId = UserContextUtil.getCurrentUserId();
+        favoriteService.addFavorite(userId, request);
+        return Result.success();
     }
 
-    @DeleteMapping("/{targetType}/{targetId}")
-    @Operation(summary = "取消收藏")
-    public Result<Void> unfavorite(
-            @Parameter(description = "目标类型") @PathVariable String targetType,
-            @Parameter(description = "目标 ID") @PathVariable Long targetId,
-            HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
-        favoriteService.unfavorite(targetType, targetId, userId);
-        return Result.success(null);
+    /**
+     * 取消收藏
+     */
+    @DeleteMapping("/{targetId}")
+    public Result<Void> removeFavorite(@PathVariable Long targetId) {
+        Long userId = UserContextUtil.getCurrentUserId();
+        favoriteService.removeFavorite(userId, targetId);
+        return Result.success();
     }
 
-    @GetMapping("/{targetType}/{targetId}/status")
-    @Operation(summary = "获取收藏状态")
-    public Result<Map<String, Object>> getFavoriteStatus(
-            @Parameter(description = "目标类型") @PathVariable String targetType,
-            @Parameter(description = "目标 ID") @PathVariable Long targetId,
-            HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
-        Map<String, Object> status = favoriteService.getFavoriteStatus(targetType, targetId, userId);
-        return Result.success(status);
+    /**
+     * 获取收藏列表
+     */
+    @GetMapping("/list")
+    public Result<List<FavoriteProductVO>> getFavoriteList() {
+        Long userId = UserContextUtil.getCurrentUserId();
+        List<FavoriteProductVO> list = favoriteService.getUserProductFavorites(userId);
+        return Result.success(list);
     }
 
-    @GetMapping("/{targetType}/{targetId}/count")
-    @Operation(summary = "获取收藏数量")
-    public Result<Long> getFavoriteCount(
-            @Parameter(description = "目标类型") @PathVariable String targetType,
-            @Parameter(description = "目标 ID") @PathVariable Long targetId) {
-        Long count = favoriteService.getFavoriteCount(targetType, targetId);
-        return Result.success(count);
+    /**
+     * 获取收藏状态
+     */
+    @GetMapping("/status")
+    public Result<FavoriteStatusVO> getFavoriteStatus(
+            @RequestParam String targetType,
+            @RequestParam Long targetId) {
+        Long userId = UserContextUtil.getCurrentUserId();
+        boolean isFavorite = favoriteService.isFavorite(userId, targetId);
+
+        FavoriteStatusVO vo = new FavoriteStatusVO();
+        vo.setFavorited(isFavorite);
+        vo.setCount(0); // 简化：暂不返回具体数量
+
+        return Result.success(vo);
     }
 
-    @GetMapping("/products")
-    @Operation(summary = "获取用户收藏的商品列表")
-    public Result<PageResult<ProductVO>> getUserFavoriteProducts(
-            @Parameter(description = "页码") @RequestParam(defaultValue = "1") Integer current,
-            @Parameter(description = "每页数量") @RequestParam(defaultValue = "10") Integer size,
-            HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
-        Page<ProductVO> page = favoriteService.getUserFavorites(userId, current, size);
-        PageResult<ProductVO> result = new PageResult<>(
-                page.getRecords(),
-                page.getTotal(),
-                page.getCurrent(),
-                page.getSize());
-        return Result.success(result);
+    /**
+     * 检查是否已收藏
+     */
+    @GetMapping("/check/{targetId}")
+    public Result<Boolean> checkFavorite(@PathVariable Long targetId) {
+        Long userId = UserContextUtil.getCurrentUserId();
+        boolean isFavorite = favoriteService.isFavorite(userId, targetId);
+        return Result.success(isFavorite);
     }
 }

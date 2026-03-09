@@ -97,11 +97,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { Search, ShoppingCart, Bell } from "@element-plus/icons-vue";
+import { getCartCount } from "@/api/modules/cart";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -109,6 +110,23 @@ const userStore = useUserStore();
 const searchKeyword = ref("");
 const cartCount = ref(0);
 const messageCount = ref(0);
+
+// 加载购物车数量
+const loadCartCount = async () => {
+  if (!userStore.isLoggedIn) {
+    cartCount.value = 0;
+    return;
+  }
+
+  try {
+    const res = await getCartCount();
+    if (res.data.code === 200 && res.data.data) {
+      cartCount.value = res.data.data;
+    }
+  } catch (error) {
+    console.error("加载购物车数量失败:", error);
+  }
+};
 
 // 搜索处理
 const handleSearch = () => {
@@ -138,6 +156,10 @@ const handleLogout = async () => {
     // 取消退出
   }
 };
+
+onMounted(() => {
+  loadCartCount();
+});
 </script>
 
 <style lang="scss" scoped>

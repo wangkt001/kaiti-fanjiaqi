@@ -1,22 +1,22 @@
 package com.campus.yujianhaowu.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.campus.yujianhaowu.model.entity.Product;
-import com.campus.yujianhaowu.model.vo.ProductVO;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.campus.yujianhaowu.model.dto.favorite.FavoriteRequest;
+import com.campus.yujianhaowu.model.entity.Favorite;
+import com.campus.yujianhaowu.model.vo.FavoriteProductVO;
 
-import java.util.Map;
+import java.util.List;
 
-public interface FavoriteService {
+/**
+ * 收藏服务
+ */
+public interface FavoriteService extends IService<Favorite> {
 
-    void favorite(String targetType, Long targetId, Long userId);
+    void addFavorite(Long userId, FavoriteRequest request);
 
-    void unfavorite(String targetType, Long targetId, Long userId);
+    void removeFavorite(Long userId, Long targetId);
 
-    boolean isFavorite(String targetType, Long targetId, Long userId);
+    List<FavoriteProductVO> getUserProductFavorites(Long userId);
 
-    Long getFavoriteCount(String targetType, Long targetId);
-
-    Map<String, Object> getFavoriteStatus(String targetType, Long targetId, Long userId);
-
-    Page<ProductVO> getUserFavorites(Long userId, Integer current, Integer size);
+    boolean isFavorite(Long userId, Long targetId);
 }

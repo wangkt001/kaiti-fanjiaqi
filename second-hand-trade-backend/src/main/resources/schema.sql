@@ -443,3 +443,40 @@ CREATE TABLE `order_logs` (
   PRIMARY KEY (`id`),
   KEY `idx_order_id` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单操作日志表';
+
+-- 收货地址表
+DROP TABLE IF EXISTS `user_addresses`;
+CREATE TABLE `user_addresses` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '地址 ID',
+  `user_id` BIGINT NOT NULL COMMENT '用户 ID',
+  `receiver_name` VARCHAR(100) NOT NULL COMMENT '收货人姓名',
+  `receiver_phone` VARCHAR(20) NOT NULL COMMENT '收货人电话',
+  `province` VARCHAR(50) DEFAULT NULL COMMENT '省',
+  `city` VARCHAR(50) DEFAULT NULL COMMENT '市',
+  `district` VARCHAR(50) DEFAULT NULL COMMENT '区/县',
+  `detail_address` VARCHAR(255) NOT NULL COMMENT '详细地址',
+  `is_default` BOOLEAN DEFAULT FALSE COMMENT '是否默认地址',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted` TINYINT DEFAULT 0 COMMENT '逻辑删除标识',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='收货地址表';
+
+-- 商品评价表（简化版）
+DROP TABLE IF EXISTS `product_reviews`;
+CREATE TABLE `product_reviews` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '评价 ID',
+  `order_id` BIGINT NOT NULL COMMENT '订单 ID',
+  `product_id` BIGINT NOT NULL COMMENT '商品 ID',
+  `user_id` BIGINT NOT NULL COMMENT '评价用户 ID',
+  `rating` TINYINT NOT NULL COMMENT '评分（1-5 星）',
+  `content` TEXT DEFAULT NULL COMMENT '评价内容',
+  `images` JSON DEFAULT NULL COMMENT '评价图片',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `deleted` TINYINT DEFAULT 0 COMMENT '逻辑删除标识',
+  PRIMARY KEY (`id`),
+  KEY `idx_order_id` (`order_id`),
+  KEY `idx_product_id` (`product_id`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品评价表';

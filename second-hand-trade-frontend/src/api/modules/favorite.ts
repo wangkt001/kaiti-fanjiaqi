@@ -1,64 +1,79 @@
-import request from '@/api'
-import type { ApiResponse, PageResult } from '@/types'
-import type { Product } from '@/types'
+import request from '@/utils/request';
+
+/**
+ * 收藏 API
+ */
+
+export interface FavoriteProduct {
+  favoriteId: number
+  productId: number
+  productName: string
+  productImage: string | null
+  price: number
+  salesCount: number
+  status: string
+  favoriteTime: string
+}
 
 export interface FavoriteStatus {
-  count: number
   favorited: boolean
+  count: number
 }
 
 /**
- * 收藏
- * @param targetType 目标类型（product/content）
- * @param targetId 目标 ID
+ * 添加收藏
  */
-export function favorite(targetType: string, targetId: number) {
-  return request<ApiResponse<void>>({
-    url: `/api/favorites/${targetType}/${targetId}`,
+export function addFavorite(targetType: string, targetId: number) {
+  return request({
+    url: '/api/favorite',
     method: 'post',
-  })
+    data: {
+      targetType,
+      targetId,
+    },
+  });
 }
 
 /**
  * 取消收藏
  */
 export function unfavorite(targetType: string, targetId: number) {
-  return request<ApiResponse<void>>({
-    url: `/api/favorites/${targetType}/${targetId}`,
+  return request({
+    url: `/api/favorite/${targetId}`,
     method: 'delete',
-  })
+  });
+}
+
+/**
+ * 获取收藏列表
+ */
+export function getFavoriteList() {
+  return request<FavoriteProduct[]>({
+    url: '/api/favorite/list',
+    method: 'get',
+  });
 }
 
 /**
  * 获取收藏状态
  */
 export function getFavoriteStatus(targetType: string, targetId: number) {
-  return request<ApiResponse<FavoriteStatus>>({
-    url: `/api/favorites/${targetType}/${targetId}/status`,
+  return request<FavoriteStatus>({
+    url: `/api/favorite/status`,
     method: 'get',
-  })
+    params: {
+      targetType,
+      targetId,
+    },
+  });
 }
 
 /**
- * 获取收藏数量
+ * 检查是否已收藏（简化版）
  */
-export function getFavoriteCount(targetType: string, targetId: number) {
-  return request<ApiResponse<number>>({
-    url: `/api/favorites/${targetType}/${targetId}/count`,
+export function checkFavorite(targetId: number) {
+  return request<boolean>({
+    url: `/api/favorite/check/${targetId}`,
     method: 'get',
-  })
-}
-
-/**
- * 获取用户收藏的商品列表
- */
-export function getUserFavoriteProducts(params: {
-  current: number
-  size: number
-}) {
-  return request<ApiResponse<PageResult<Product>>>({
-    url: '/api/favorites/products',
-    method: 'get',
-    params,
-  })
+  });
 }

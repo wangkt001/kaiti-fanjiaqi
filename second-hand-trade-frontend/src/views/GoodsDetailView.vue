@@ -246,6 +246,7 @@ import ReviewList from "@/components/ReviewList.vue";
 import ReviewForm from "@/components/ReviewForm.vue";
 import FavoriteButton from "@/components/FavoriteButton.vue";
 import { getGoodsDetail, getRecommendGoods } from "@/api/modules/goods";
+import { addToCart } from "@/api/modules/cart";
 import { useUserStore } from "@/store/user";
 import type { Goods, ProductImage } from "@/types";
 
@@ -308,9 +309,20 @@ const selectSku = (sku: any) => {
 };
 
 // 加入购物车
-const handleAddCart = () => {
-  // TODO: 调用购物车 API
-  ElMessage.success("已添加到购物车");
+const handleAddCart = async () => {
+  if (!userStore.isLoggedIn) {
+    ElMessage.warning("请先登录");
+    router.push("/login");
+    return;
+  }
+
+  try {
+    await addToCart(goods.value.id, quantity.value);
+    ElMessage.success("已添加到购物车");
+  } catch (error) {
+    console.error("添加购物车失败:", error);
+    ElMessage.error("添加购物车失败");
+  }
 };
 
 // 立即购买
