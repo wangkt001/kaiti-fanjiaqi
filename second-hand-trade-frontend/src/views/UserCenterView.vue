@@ -30,6 +30,14 @@
             <el-icon><ShoppingBag /></el-icon>
             <span>我的订单</span>
           </el-menu-item>
+          <el-menu-item index="seller-apply" v-if="!isSeller">
+            <el-icon><Shop /></el-icon>
+            <span>申请入驻</span>
+          </el-menu-item>
+          <el-menu-item index="seller" v-if="isSeller">
+            <el-icon><Shop /></el-icon>
+            <span>卖家中心</span>
+          </el-menu-item>
         </el-menu>
       </aside>
 
@@ -168,7 +176,14 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from "vue";
-import { User, Star, ChatDotRound, ShoppingBag } from "@element-plus/icons-vue";
+import { useRouter } from "vue-router";
+import {
+  User,
+  Star,
+  ChatDotRound,
+  ShoppingBag,
+  Shop,
+} from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import GoodsCard from "@/components/GoodsCard.vue";
 import { useUserStore } from "@/store/user";
@@ -177,6 +192,9 @@ import type { Product } from "@/types";
 
 const userStore = useUserStore();
 const router = useRouter();
+
+// 计算属性：是否为卖家
+const isSeller = computed(() => userStore.userInfo?.role === "seller");
 
 const activeTab = ref("profile");
 const loading = ref(false);
@@ -270,6 +288,15 @@ const handleDeleteReview = async (reviewId: number) => {
 
 // 菜单选择
 const handleMenuSelect = (index: string) => {
+  if (index === "seller-apply") {
+    router.push("/seller/apply");
+    return;
+  }
+  if (index === "seller") {
+    router.push("/seller");
+    return;
+  }
+
   activeTab.value = index;
   if (index === "favorites") {
     loadFavorites();

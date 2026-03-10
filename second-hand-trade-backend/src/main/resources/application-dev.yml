@@ -1,15 +1,9 @@
 # 开发环境配置
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/yujianhaowu?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/employment_fanjiaqi?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: 123456
-
-  data:
-    redis:
-      host: localhost
-      port: 6379
-      password:
 
 logging:
   level:

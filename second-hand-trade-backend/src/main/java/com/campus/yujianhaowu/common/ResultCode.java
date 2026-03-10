@@ -59,8 +59,9 @@ public enum ResultCode {
     USER_DISABLED(4003, "用户已被禁用"),
     USER_ALREADY_EXISTS(4004, "用户已存在"),
     USER_NOT_SELLER(4005, "当前用户不是卖家"),
-    USER_SELLER_AUDIT_PENDING(4006, "卖家资质审核中"),
-    USER_SELLER_AUDIT_REJECTED(4007, "卖家资质审核未通过"),
+    USER_ALREADY_SELLER(4006, "已经是卖家，无需重复申请"),
+    USER_SELLER_AUDIT_PENDING(4007, "卖家资质审核中"),
+    USER_SELLER_AUDIT_REJECTED(4008, "卖家资质审核未通过"),
 
     /**
      * 商品相关

@@ -44,14 +44,7 @@ public class AuthController {
     @PostMapping("/logout")
     @Operation(summary = "用户登出")
     public Result<Void> logout(HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
-        userService.logout(userId);
+        // 简化认证，无需特殊处理
         return Result.success();
-    }
-
-    @PostMapping("/refresh")
-    @Operation(summary = "刷新 Token")
-    public Result<String> refreshToken(@RequestParam String refreshToken) {
-        return Result.success(userService.refreshToken(refreshToken));
     }
 }

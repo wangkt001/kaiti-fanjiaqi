@@ -1,7 +1,7 @@
 -- 创建数据库
-CREATE DATABASE IF NOT EXISTS `yujianhaowu` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS `employment_fanjiaqi` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE `yujianhaowu`;
+USE `employment_fanjiaqi`;
 
 -- 用户表
 DROP TABLE IF EXISTS `users`;
@@ -36,6 +36,10 @@ CREATE TABLE `users` (
   KEY `idx_seller_status` (`seller_status`),
   KEY `idx_created_at` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户表';
+
+-- 初始化管理员账号（密码：123456）
+INSERT INTO `users` (`username`, `password`, `role`, `nickname`, `status`) 
+VALUES ('admin', '$2a$10$nTJ3W6UNPStBDsarsI9ZbeQKKZvc8YKQwMKt3k65ndrCYL.qcV4d2', 'admin', '系统管理员', 1);
 
 -- 商品分类表
 DROP TABLE IF EXISTS `categories`;

@@ -5,7 +5,7 @@ import type { ApiResponse } from '@/types'
 
 // 创建 axios 实例
 const service: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080',
+  baseURL: import.meta.env.VITE_API_BASE_URL + '/api' || 'http://localhost:8080/api',
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
@@ -15,10 +15,17 @@ const service: AxiosInstance = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {
-    // 添加 Token
-    const userStore = useUserStore()
-    if (userStore.token) {
-      config.headers.Authorization = `Bearer ${userStore.token}`
+    // 添加 userId 到请求头
+    const userInfo = localStorage.getItem('userInfo')
+    if (userInfo) {
+      try {
+        const parsed = JSON.parse(userInfo)
+        if (parsed && parsed.id) {
+          config.headers['X-User-Id'] = String(parsed.id)
+        }
+      } catch (e) {
+        console.error('解析用户信息失败', e)
+      }
     }
     
     // 添加请求时间戳（防止缓存）

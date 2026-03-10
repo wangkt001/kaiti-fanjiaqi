@@ -1,0 +1,822 @@
+2026-03-10 18:58:07.260 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Starting YujianhaowuBackendApplication using Java 21.0.10 with PID 4440 (D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes started by 15565 in D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi)
+2026-03-10 18:58:07.262 [restartedMain] DEBUG c.campus.yujianhaowu.YujianhaowuBackendApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-10 18:58:07.264 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - The following 1 profile is active: "dev"
+2026-03-10 18:58:07.408 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-10 18:58:07.408 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-10 18:58:09.480 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-10 18:58:09.486 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-03-10 18:58:09.586 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 58 ms. Found 0 Redis repository interfaces.
+2026-03-10 18:58:09.938 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CartItemMapper.class]
+2026-03-10 18:58:09.938 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CategoryMapper.class]
+2026-03-10 18:58:09.939 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ContentCommentMapper.class]
+2026-03-10 18:58:09.939 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalContentMapper.class]
+2026-03-10 18:58:09.939 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalTagMapper.class]
+2026-03-10 18:58:09.939 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\FavoriteMapper.class]
+2026-03-10 18:58:09.939 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\LikeMapper.class]
+2026-03-10 18:58:09.942 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderItemMapper.class]
+2026-03-10 18:58:09.942 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderMapper.class]
+2026-03-10 18:58:09.942 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ProductMapper.class]
+2026-03-10 18:58:09.943 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewMapper.class]
+2026-03-10 18:58:09.943 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewReplyMapper.class]
+2026-03-10 18:58:09.944 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\UserMapper.class]
+2026-03-10 18:58:09.946 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'cartItemMapper' and 'com.campus.yujianhaowu.mapper.CartItemMapper' mapperInterface
+2026-03-10 18:58:09.952 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'cartItemMapper'.
+2026-03-10 18:58:09.954 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'categoryMapper' and 'com.campus.yujianhaowu.mapper.CategoryMapper' mapperInterface
+2026-03-10 18:58:09.956 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'categoryMapper'.
+2026-03-10 18:58:09.956 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'contentCommentMapper' and 'com.campus.yujianhaowu.mapper.ContentCommentMapper' mapperInterface
+2026-03-10 18:58:09.956 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'contentCommentMapper'.
+2026-03-10 18:58:09.958 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalContentMapper' and 'com.campus.yujianhaowu.mapper.CulturalContentMapper' mapperInterface
+2026-03-10 18:58:09.960 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalContentMapper'.
+2026-03-10 18:58:09.960 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalTagMapper' and 'com.campus.yujianhaowu.mapper.CulturalTagMapper' mapperInterface
+2026-03-10 18:58:09.961 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalTagMapper'.
+2026-03-10 18:58:09.962 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'favoriteMapper' and 'com.campus.yujianhaowu.mapper.FavoriteMapper' mapperInterface
+2026-03-10 18:58:09.964 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'favoriteMapper'.
+2026-03-10 18:58:09.964 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'likeMapper' and 'com.campus.yujianhaowu.mapper.LikeMapper' mapperInterface
+2026-03-10 18:58:09.967 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'likeMapper'.
+2026-03-10 18:58:09.967 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderItemMapper' and 'com.campus.yujianhaowu.mapper.OrderItemMapper' mapperInterface
+2026-03-10 18:58:09.968 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderItemMapper'.
+2026-03-10 18:58:09.970 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderMapper' and 'com.campus.yujianhaowu.mapper.OrderMapper' mapperInterface
+2026-03-10 18:58:09.970 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderMapper'.
+2026-03-10 18:58:09.970 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'productMapper' and 'com.campus.yujianhaowu.mapper.ProductMapper' mapperInterface
+2026-03-10 18:58:09.971 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'productMapper'.
+2026-03-10 18:58:09.971 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewMapper' and 'com.campus.yujianhaowu.mapper.ReviewMapper' mapperInterface
+2026-03-10 18:58:09.971 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewMapper'.
+2026-03-10 18:58:09.973 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewReplyMapper' and 'com.campus.yujianhaowu.mapper.ReviewReplyMapper' mapperInterface
+2026-03-10 18:58:09.974 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewReplyMapper'.
+2026-03-10 18:58:09.975 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.campus.yujianhaowu.mapper.UserMapper' mapperInterface
+2026-03-10 18:58:09.975 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2026-03-10 18:58:11.498 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-10 18:58:11.538 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-10 18:58:11.540 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-10 18:58:11.675 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-03-10 18:58:11.676 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4266 ms
+2026-03-10 18:58:13.311 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Starting...
+2026-03-10 18:58:14.714 [restartedMain] ERROR com.zaxxer.hikari.pool.HikariPool - YujianHaoWuHikariCP - Exception during pool initialization.
+java.sql.SQLSyntaxErrorException: Unknown database 'yujianhaowu'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:438)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:241)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:189)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.springframework.jdbc.datasource.DataSourceUtils.fetchConnection(DataSourceUtils.java:160)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doGetConnection(DataSourceUtils.java:118)
+	at org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:81)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:342)
+	at org.springframework.boot.jdbc.EmbeddedDatabaseConnection.isEmbedded(EmbeddedDatabaseConnection.java:168)
+	at org.springframework.boot.jdbc.init.DataSourceScriptDatabaseInitializer.isEmbeddedDatabase(DataSourceScriptDatabaseInitializer.java:67)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.isEnabled(AbstractScriptDatabaseInitializer.java:84)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.applyScripts(AbstractScriptDatabaseInitializer.java:107)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.applySchemaScripts(AbstractScriptDatabaseInitializer.java:98)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.initializeDatabase(AbstractScriptDatabaseInitializer.java:76)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.afterPropertiesSet(AbstractScriptDatabaseInitializer.java:66)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:312)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireByType(AbstractAutowireCapableBeanFactory.java:1501)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1410)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:907)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:785)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:907)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:785)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:959)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.campus.yujianhaowu.YujianhaowuBackendApplication.main(YujianhaowuBackendApplication.java:22)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+2026-03-10 18:58:16.641 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 88 mappings in 'requestMappingHandlerMapping'
+2026-03-10 18:58:16.887 [restartedMain] DEBUG o.s.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2026-03-10 18:58:17.015 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-10 18:58:17.128 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-10 18:58:17.691 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 6f6f25fc-6461-4b95-8b41-2915d8ce0c4b
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-10 18:58:17.852 [restartedMain] INFO  o.s.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7e43f6ad, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2acb6274, org.springframework.security.web.context.SecurityContextHolderFilter@28074c06, org.springframework.security.web.header.HeaderWriterFilter@b8748cd, org.springframework.web.filter.CorsFilter@7ec3bab3, org.springframework.security.web.csrf.CsrfFilter@c970e92, org.springframework.security.web.authentication.logout.LogoutFilter@5b8a69cc, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@53b4613c, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@75726665, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@3c95f3f7, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@4362e7c6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@645a3b2b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4c7d1c99, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5d828c56, org.springframework.security.web.access.ExceptionTranslationFilter@74aa5647, org.springframework.security.web.access.intercept.AuthorizationFilter@797d155]
+2026-03-10 18:58:17.958 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-03-10 18:58:18.021 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-03-10 18:58:18.039 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Started YujianhaowuBackendApplication in 11.611 seconds (process running for 12.463)
+2026-03-10 18:58:48.160 [http-nio-8080-exec-3] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-10 18:58:48.162 [http-nio-8080-exec-3] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-03-10 18:58:48.162 [http-nio-8080-exec-3] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+2026-03-10 18:58:48.162 [http-nio-8080-exec-3] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2026-03-10 18:58:48.163 [http-nio-8080-exec-3] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected FixedThemeResolver
+2026-03-10 18:58:48.165 [http-nio-8080-exec-3] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@212cbea3
+2026-03-10 18:58:48.166 [http-nio-8080-exec-3] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@641314ab
+2026-03-10 18:58:48.167 [http-nio-8080-exec-3] DEBUG org.springframework.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2026-03-10 18:58:48.168 [http-nio-8080-exec-3] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+2026-03-10 18:59:42.569 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-03-10 18:59:42.812 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Starting YujianhaowuBackendApplication using Java 21.0.10 with PID 4440 (D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes started by 15565 in D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi)
+2026-03-10 18:59:42.813 [restartedMain] DEBUG c.campus.yujianhaowu.YujianhaowuBackendApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-10 18:59:42.813 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - The following 1 profile is active: "dev"
+2026-03-10 18:59:43.196 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-10 18:59:43.197 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-03-10 18:59:43.214 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 Redis repository interfaces.
+2026-03-10 18:59:43.265 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CartItemMapper.class]
+2026-03-10 18:59:43.266 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CategoryMapper.class]
+2026-03-10 18:59:43.266 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ContentCommentMapper.class]
+2026-03-10 18:59:43.266 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalContentMapper.class]
+2026-03-10 18:59:43.268 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalTagMapper.class]
+2026-03-10 18:59:43.268 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\FavoriteMapper.class]
+2026-03-10 18:59:43.268 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\LikeMapper.class]
+2026-03-10 18:59:43.269 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderItemMapper.class]
+2026-03-10 18:59:43.269 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderMapper.class]
+2026-03-10 18:59:43.269 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ProductMapper.class]
+2026-03-10 18:59:43.269 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewMapper.class]
+2026-03-10 18:59:43.269 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewReplyMapper.class]
+2026-03-10 18:59:43.271 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\UserMapper.class]
+2026-03-10 18:59:43.271 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'cartItemMapper' and 'com.campus.yujianhaowu.mapper.CartItemMapper' mapperInterface
+2026-03-10 18:59:43.273 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'cartItemMapper'.
+2026-03-10 18:59:43.274 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'categoryMapper' and 'com.campus.yujianhaowu.mapper.CategoryMapper' mapperInterface
+2026-03-10 18:59:43.275 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'categoryMapper'.
+2026-03-10 18:59:43.275 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'contentCommentMapper' and 'com.campus.yujianhaowu.mapper.ContentCommentMapper' mapperInterface
+2026-03-10 18:59:43.277 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'contentCommentMapper'.
+2026-03-10 18:59:43.277 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalContentMapper' and 'com.campus.yujianhaowu.mapper.CulturalContentMapper' mapperInterface
+2026-03-10 18:59:43.278 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalContentMapper'.
+2026-03-10 18:59:43.280 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalTagMapper' and 'com.campus.yujianhaowu.mapper.CulturalTagMapper' mapperInterface
+2026-03-10 18:59:43.281 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalTagMapper'.
+2026-03-10 18:59:43.281 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'favoriteMapper' and 'com.campus.yujianhaowu.mapper.FavoriteMapper' mapperInterface
+2026-03-10 18:59:43.283 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'favoriteMapper'.
+2026-03-10 18:59:43.283 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'likeMapper' and 'com.campus.yujianhaowu.mapper.LikeMapper' mapperInterface
+2026-03-10 18:59:43.284 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'likeMapper'.
+2026-03-10 18:59:43.284 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderItemMapper' and 'com.campus.yujianhaowu.mapper.OrderItemMapper' mapperInterface
+2026-03-10 18:59:43.284 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderItemMapper'.
+2026-03-10 18:59:43.284 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderMapper' and 'com.campus.yujianhaowu.mapper.OrderMapper' mapperInterface
+2026-03-10 18:59:43.286 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderMapper'.
+2026-03-10 18:59:43.286 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'productMapper' and 'com.campus.yujianhaowu.mapper.ProductMapper' mapperInterface
+2026-03-10 18:59:43.286 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'productMapper'.
+2026-03-10 18:59:43.286 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewMapper' and 'com.campus.yujianhaowu.mapper.ReviewMapper' mapperInterface
+2026-03-10 18:59:43.287 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewMapper'.
+2026-03-10 18:59:43.287 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewReplyMapper' and 'com.campus.yujianhaowu.mapper.ReviewReplyMapper' mapperInterface
+2026-03-10 18:59:43.289 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewReplyMapper'.
+2026-03-10 18:59:43.289 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.campus.yujianhaowu.mapper.UserMapper' mapperInterface
+2026-03-10 18:59:43.291 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2026-03-10 18:59:43.384 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-10 18:59:43.387 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-10 18:59:43.388 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-10 18:59:43.447 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-03-10 18:59:43.448 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 627 ms
+2026-03-10 18:59:43.521 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Starting...
+2026-03-10 18:59:43.572 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - YujianHaoWuHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@14be03c8
+2026-03-10 18:59:43.575 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Start completed.
+2026-03-10 18:59:44.300 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 88 mappings in 'requestMappingHandlerMapping'
+2026-03-10 18:59:44.353 [restartedMain] DEBUG o.s.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2026-03-10 18:59:44.361 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-10 18:59:44.367 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-10 18:59:44.436 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 34e8732c-4b58-4f29-b102-9fc5ba80cb86
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-10 18:59:44.455 [restartedMain] INFO  o.s.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4c25a549, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6e2123a9, org.springframework.security.web.context.SecurityContextHolderFilter@63cef21a, org.springframework.security.web.header.HeaderWriterFilter@531b1383, org.springframework.web.filter.CorsFilter@1363ef63, org.springframework.security.web.csrf.CsrfFilter@48e4ad75, org.springframework.security.web.authentication.logout.LogoutFilter@b567d98, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3ec87ef0, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@72fde3d6, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@468cc91d, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@6ca7e0c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@eac7413, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@79717070, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@27e23368, org.springframework.security.web.access.ExceptionTranslationFilter@6012f709, org.springframework.security.web.access.intercept.AuthorizationFilter@6428c1cd]
+2026-03-10 18:59:44.478 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-03-10 18:59:44.494 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-03-10 18:59:44.504 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Started YujianhaowuBackendApplication in 1.785 seconds (process running for 98.928)
+2026-03-10 18:59:44.508 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-03-10 18:59:52.453 [http-nio-8080-exec-4] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-10 18:59:52.454 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-03-10 18:59:52.455 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+2026-03-10 18:59:52.455 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2026-03-10 18:59:52.456 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected FixedThemeResolver
+2026-03-10 18:59:52.459 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@30709ba2
+2026-03-10 18:59:52.460 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@8d4abd8
+2026-03-10 18:59:52.462 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2026-03-10 18:59:52.462 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 7 ms
+2026-03-10 18:59:57.808 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown initiated...
+2026-03-10 18:59:57.811 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown completed.
+2026-03-10 19:00:25.061 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Starting YujianhaowuBackendApplication using Java 21.0.10 with PID 13232 (D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes started by 15565 in D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi)
+2026-03-10 19:00:25.062 [restartedMain] DEBUG c.campus.yujianhaowu.YujianhaowuBackendApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-10 19:00:25.064 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - The following 1 profile is active: "dev"
+2026-03-10 19:00:25.175 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-10 19:00:25.176 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-10 19:00:26.962 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-10 19:00:26.968 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-03-10 19:00:27.037 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 37 ms. Found 0 Redis repository interfaces.
+2026-03-10 19:00:27.256 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CartItemMapper.class]
+2026-03-10 19:00:27.258 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CategoryMapper.class]
+2026-03-10 19:00:27.258 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ContentCommentMapper.class]
+2026-03-10 19:00:27.258 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalContentMapper.class]
+2026-03-10 19:00:27.258 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalTagMapper.class]
+2026-03-10 19:00:27.258 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\FavoriteMapper.class]
+2026-03-10 19:00:27.258 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\LikeMapper.class]
+2026-03-10 19:00:27.260 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderItemMapper.class]
+2026-03-10 19:00:27.260 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderMapper.class]
+2026-03-10 19:00:27.260 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ProductMapper.class]
+2026-03-10 19:00:27.261 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewMapper.class]
+2026-03-10 19:00:27.262 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewReplyMapper.class]
+2026-03-10 19:00:27.263 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\UserMapper.class]
+2026-03-10 19:00:27.266 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'cartItemMapper' and 'com.campus.yujianhaowu.mapper.CartItemMapper' mapperInterface
+2026-03-10 19:00:27.274 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'cartItemMapper'.
+2026-03-10 19:00:27.276 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'categoryMapper' and 'com.campus.yujianhaowu.mapper.CategoryMapper' mapperInterface
+2026-03-10 19:00:27.277 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'categoryMapper'.
+2026-03-10 19:00:27.278 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'contentCommentMapper' and 'com.campus.yujianhaowu.mapper.ContentCommentMapper' mapperInterface
+2026-03-10 19:00:27.279 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'contentCommentMapper'.
+2026-03-10 19:00:27.280 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalContentMapper' and 'com.campus.yujianhaowu.mapper.CulturalContentMapper' mapperInterface
+2026-03-10 19:00:27.280 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalContentMapper'.
+2026-03-10 19:00:27.280 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalTagMapper' and 'com.campus.yujianhaowu.mapper.CulturalTagMapper' mapperInterface
+2026-03-10 19:00:27.281 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalTagMapper'.
+2026-03-10 19:00:27.282 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'favoriteMapper' and 'com.campus.yujianhaowu.mapper.FavoriteMapper' mapperInterface
+2026-03-10 19:00:27.284 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'favoriteMapper'.
+2026-03-10 19:00:27.284 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'likeMapper' and 'com.campus.yujianhaowu.mapper.LikeMapper' mapperInterface
+2026-03-10 19:00:27.284 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'likeMapper'.
+2026-03-10 19:00:27.284 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderItemMapper' and 'com.campus.yujianhaowu.mapper.OrderItemMapper' mapperInterface
+2026-03-10 19:00:27.285 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderItemMapper'.
+2026-03-10 19:00:27.285 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderMapper' and 'com.campus.yujianhaowu.mapper.OrderMapper' mapperInterface
+2026-03-10 19:00:27.286 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderMapper'.
+2026-03-10 19:00:27.286 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'productMapper' and 'com.campus.yujianhaowu.mapper.ProductMapper' mapperInterface
+2026-03-10 19:00:27.287 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'productMapper'.
+2026-03-10 19:00:27.287 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewMapper' and 'com.campus.yujianhaowu.mapper.ReviewMapper' mapperInterface
+2026-03-10 19:00:27.287 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewMapper'.
+2026-03-10 19:00:27.287 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewReplyMapper' and 'com.campus.yujianhaowu.mapper.ReviewReplyMapper' mapperInterface
+2026-03-10 19:00:27.288 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewReplyMapper'.
+2026-03-10 19:00:27.289 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.campus.yujianhaowu.mapper.UserMapper' mapperInterface
+2026-03-10 19:00:27.289 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2026-03-10 19:00:28.832 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-10 19:00:28.877 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-10 19:00:28.879 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-10 19:00:29.033 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-03-10 19:00:29.034 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3858 ms
+2026-03-10 19:00:30.194 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Starting...
+2026-03-10 19:00:30.526 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - YujianHaoWuHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@44b5bcd3
+2026-03-10 19:00:30.529 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Start completed.
+2026-03-10 19:00:32.372 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 88 mappings in 'requestMappingHandlerMapping'
+2026-03-10 19:00:32.553 [restartedMain] DEBUG o.s.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2026-03-10 19:00:32.625 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-10 19:00:32.702 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-10 19:00:33.170 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: d43a98a7-31e4-46ab-b354-459b63eb053f
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-10 19:00:33.316 [restartedMain] INFO  o.s.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@14d4dcf, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5d127f23, org.springframework.security.web.context.SecurityContextHolderFilter@f8d51d6, org.springframework.security.web.header.HeaderWriterFilter@26b4e0, org.springframework.web.filter.CorsFilter@74139c4d, org.springframework.security.web.csrf.CsrfFilter@6e10bbf2, org.springframework.security.web.authentication.logout.LogoutFilter@34a3c881, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@158b773c, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@7bb3c5dc, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@178fd5ff, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@1c081174, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@34f7f022, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@36588de0, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7cc7d1f4, org.springframework.security.web.access.ExceptionTranslationFilter@7384931f, org.springframework.security.web.access.intercept.AuthorizationFilter@344f1f23]
+2026-03-10 19:00:33.457 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-03-10 19:00:33.514 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-03-10 19:00:33.530 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Started YujianhaowuBackendApplication in 9.118 seconds (process running for 9.751)
+2026-03-10 19:00:47.566 [http-nio-8080-exec-4] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-10 19:00:47.572 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-03-10 19:00:47.578 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+2026-03-10 19:00:47.588 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2026-03-10 19:00:47.605 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected FixedThemeResolver
+2026-03-10 19:00:47.653 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@677f6cdc
+2026-03-10 19:00:47.669 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@3511cca9
+2026-03-10 19:00:47.683 [http-nio-8080-exec-4] DEBUG org.springframework.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2026-03-10 19:00:47.687 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 110 ms
+2026-03-10 19:00:48.196 [http-nio-8080-exec-5] WARN  org.apache.catalina.util.SessionIdGeneratorBase - Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [235] milliseconds.
+2026-03-10 19:03:28.966 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-03-10 19:03:29.015 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown initiated...
+2026-03-10 19:03:29.035 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown completed.
+2026-03-10 19:03:29.234 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Starting YujianhaowuBackendApplication using Java 21.0.10 with PID 13232 (D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes started by 15565 in D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi)
+2026-03-10 19:03:29.235 [restartedMain] DEBUG c.campus.yujianhaowu.YujianhaowuBackendApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-10 19:03:29.236 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - The following 1 profile is active: "dev"
+2026-03-10 19:03:29.718 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-10 19:03:29.718 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-03-10 19:03:29.733 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 Redis repository interfaces.
+2026-03-10 19:03:29.787 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CartItemMapper.class]
+2026-03-10 19:03:29.789 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CategoryMapper.class]
+2026-03-10 19:03:29.790 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ContentCommentMapper.class]
+2026-03-10 19:03:29.790 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalContentMapper.class]
+2026-03-10 19:03:29.790 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalTagMapper.class]
+2026-03-10 19:03:29.792 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\FavoriteMapper.class]
+2026-03-10 19:03:29.792 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\LikeMapper.class]
+2026-03-10 19:03:29.792 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderItemMapper.class]
+2026-03-10 19:03:29.792 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderMapper.class]
+2026-03-10 19:03:29.794 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ProductMapper.class]
+2026-03-10 19:03:29.794 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewMapper.class]
+2026-03-10 19:03:29.794 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewReplyMapper.class]
+2026-03-10 19:03:29.794 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\UserMapper.class]
+2026-03-10 19:03:29.796 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'cartItemMapper' and 'com.campus.yujianhaowu.mapper.CartItemMapper' mapperInterface
+2026-03-10 19:03:29.799 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'cartItemMapper'.
+2026-03-10 19:03:29.799 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'categoryMapper' and 'com.campus.yujianhaowu.mapper.CategoryMapper' mapperInterface
+2026-03-10 19:03:29.802 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'categoryMapper'.
+2026-03-10 19:03:29.802 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'contentCommentMapper' and 'com.campus.yujianhaowu.mapper.ContentCommentMapper' mapperInterface
+2026-03-10 19:03:29.804 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'contentCommentMapper'.
+2026-03-10 19:03:29.804 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalContentMapper' and 'com.campus.yujianhaowu.mapper.CulturalContentMapper' mapperInterface
+2026-03-10 19:03:29.806 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalContentMapper'.
+2026-03-10 19:03:29.806 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalTagMapper' and 'com.campus.yujianhaowu.mapper.CulturalTagMapper' mapperInterface
+2026-03-10 19:03:29.807 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalTagMapper'.
+2026-03-10 19:03:29.809 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'favoriteMapper' and 'com.campus.yujianhaowu.mapper.FavoriteMapper' mapperInterface
+2026-03-10 19:03:29.811 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'favoriteMapper'.
+2026-03-10 19:03:29.812 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'likeMapper' and 'com.campus.yujianhaowu.mapper.LikeMapper' mapperInterface
+2026-03-10 19:03:29.814 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'likeMapper'.
+2026-03-10 19:03:29.815 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderItemMapper' and 'com.campus.yujianhaowu.mapper.OrderItemMapper' mapperInterface
+2026-03-10 19:03:29.817 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderItemMapper'.
+2026-03-10 19:03:29.817 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderMapper' and 'com.campus.yujianhaowu.mapper.OrderMapper' mapperInterface
+2026-03-10 19:03:29.820 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderMapper'.
+2026-03-10 19:03:29.820 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'productMapper' and 'com.campus.yujianhaowu.mapper.ProductMapper' mapperInterface
+2026-03-10 19:03:29.823 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'productMapper'.
+2026-03-10 19:03:29.823 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewMapper' and 'com.campus.yujianhaowu.mapper.ReviewMapper' mapperInterface
+2026-03-10 19:03:29.824 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewMapper'.
+2026-03-10 19:03:29.824 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewReplyMapper' and 'com.campus.yujianhaowu.mapper.ReviewReplyMapper' mapperInterface
+2026-03-10 19:03:29.827 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewReplyMapper'.
+2026-03-10 19:03:29.829 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.campus.yujianhaowu.mapper.UserMapper' mapperInterface
+2026-03-10 19:03:29.831 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2026-03-10 19:03:30.004 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-10 19:03:30.008 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-10 19:03:30.011 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-10 19:03:30.082 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-03-10 19:03:30.082 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 843 ms
+2026-03-10 19:03:30.434 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Starting...
+2026-03-10 19:03:30.447 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - YujianHaoWuHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@356e1076
+2026-03-10 19:03:30.447 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Start completed.
+2026-03-10 19:03:31.347 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 88 mappings in 'requestMappingHandlerMapping'
+2026-03-10 19:03:31.388 [restartedMain] DEBUG o.s.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2026-03-10 19:03:31.398 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-10 19:03:31.402 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-10 19:03:31.478 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 06ad9bcd-30a6-44d5-9e83-6c3050c1e596
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-10 19:03:31.493 [restartedMain] INFO  o.s.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@595ff39c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@33d67dcd, org.springframework.security.web.context.SecurityContextHolderFilter@6ace56ba, org.springframework.security.web.header.HeaderWriterFilter@25415eb2, org.springframework.web.filter.CorsFilter@8653cad, org.springframework.security.web.csrf.CsrfFilter@3e48ad04, org.springframework.security.web.authentication.logout.LogoutFilter@6604bb4, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@c36f7c5, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@209b3548, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@791b726d, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@80f301c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1195f66a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@f005ed4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5ffeadc1, org.springframework.security.web.access.ExceptionTranslationFilter@842c92d, org.springframework.security.web.access.intercept.AuthorizationFilter@7253160c]
+2026-03-10 19:03:31.515 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-03-10 19:03:31.538 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-03-10 19:03:31.552 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Started YujianhaowuBackendApplication in 2.381 seconds (process running for 187.772)
+2026-03-10 19:03:31.559 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-03-10 19:03:39.224 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-03-10 19:03:39.242 [Thread-7] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown initiated...
+2026-03-10 19:03:39.246 [Thread-7] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown completed.
+2026-03-10 19:03:39.347 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Starting YujianhaowuBackendApplication using Java 21.0.10 with PID 13232 (D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes started by 15565 in D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi)
+2026-03-10 19:03:39.349 [restartedMain] DEBUG c.campus.yujianhaowu.YujianhaowuBackendApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-10 19:03:39.349 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - The following 1 profile is active: "dev"
+2026-03-10 19:03:39.865 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-10 19:03:39.866 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-03-10 19:03:39.883 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 Redis repository interfaces.
+2026-03-10 19:03:39.936 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CartItemMapper.class]
+2026-03-10 19:03:39.938 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CategoryMapper.class]
+2026-03-10 19:03:39.938 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ContentCommentMapper.class]
+2026-03-10 19:03:39.939 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalContentMapper.class]
+2026-03-10 19:03:39.939 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalTagMapper.class]
+2026-03-10 19:03:39.939 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\FavoriteMapper.class]
+2026-03-10 19:03:39.939 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\LikeMapper.class]
+2026-03-10 19:03:39.939 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderItemMapper.class]
+2026-03-10 19:03:39.940 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderMapper.class]
+2026-03-10 19:03:39.940 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ProductMapper.class]
+2026-03-10 19:03:39.940 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewMapper.class]
+2026-03-10 19:03:39.942 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewReplyMapper.class]
+2026-03-10 19:03:39.943 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\UserMapper.class]
+2026-03-10 19:03:39.943 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'cartItemMapper' and 'com.campus.yujianhaowu.mapper.CartItemMapper' mapperInterface
+2026-03-10 19:03:39.945 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'cartItemMapper'.
+2026-03-10 19:03:39.945 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'categoryMapper' and 'com.campus.yujianhaowu.mapper.CategoryMapper' mapperInterface
+2026-03-10 19:03:39.946 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'categoryMapper'.
+2026-03-10 19:03:39.946 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'contentCommentMapper' and 'com.campus.yujianhaowu.mapper.ContentCommentMapper' mapperInterface
+2026-03-10 19:03:39.948 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'contentCommentMapper'.
+2026-03-10 19:03:39.948 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalContentMapper' and 'com.campus.yujianhaowu.mapper.CulturalContentMapper' mapperInterface
+2026-03-10 19:03:39.948 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalContentMapper'.
+2026-03-10 19:03:39.950 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalTagMapper' and 'com.campus.yujianhaowu.mapper.CulturalTagMapper' mapperInterface
+2026-03-10 19:03:39.950 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalTagMapper'.
+2026-03-10 19:03:39.952 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'favoriteMapper' and 'com.campus.yujianhaowu.mapper.FavoriteMapper' mapperInterface
+2026-03-10 19:03:39.954 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'favoriteMapper'.
+2026-03-10 19:03:39.954 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'likeMapper' and 'com.campus.yujianhaowu.mapper.LikeMapper' mapperInterface
+2026-03-10 19:03:39.955 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'likeMapper'.
+2026-03-10 19:03:39.957 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderItemMapper' and 'com.campus.yujianhaowu.mapper.OrderItemMapper' mapperInterface
+2026-03-10 19:03:39.958 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderItemMapper'.
+2026-03-10 19:03:39.958 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderMapper' and 'com.campus.yujianhaowu.mapper.OrderMapper' mapperInterface
+2026-03-10 19:03:39.960 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderMapper'.
+2026-03-10 19:03:39.961 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'productMapper' and 'com.campus.yujianhaowu.mapper.ProductMapper' mapperInterface
+2026-03-10 19:03:39.963 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'productMapper'.
+2026-03-10 19:03:39.964 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewMapper' and 'com.campus.yujianhaowu.mapper.ReviewMapper' mapperInterface
+2026-03-10 19:03:39.965 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewMapper'.
+2026-03-10 19:03:39.966 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewReplyMapper' and 'com.campus.yujianhaowu.mapper.ReviewReplyMapper' mapperInterface
+2026-03-10 19:03:39.967 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewReplyMapper'.
+2026-03-10 19:03:39.968 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.campus.yujianhaowu.mapper.UserMapper' mapperInterface
+2026-03-10 19:03:39.970 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2026-03-10 19:03:40.100 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-10 19:03:40.101 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-10 19:03:40.101 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-10 19:03:40.157 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-03-10 19:03:40.157 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 803 ms
+2026-03-10 19:03:40.395 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Starting...
+2026-03-10 19:03:40.412 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - YujianHaoWuHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@20ea3af4
+2026-03-10 19:03:40.412 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Start completed.
+2026-03-10 19:03:41.165 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 88 mappings in 'requestMappingHandlerMapping'
+2026-03-10 19:03:41.197 [restartedMain] DEBUG o.s.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2026-03-10 19:03:41.206 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-10 19:03:41.212 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-10 19:03:41.268 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: fbf59619-353b-4b22-b86b-d1ad0da820a2
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-10 19:03:41.278 [restartedMain] INFO  o.s.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6215ec5, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4ead35fe, org.springframework.security.web.context.SecurityContextHolderFilter@4d21cb3, org.springframework.security.web.header.HeaderWriterFilter@240319f9, org.springframework.web.filter.CorsFilter@17323497, org.springframework.security.web.csrf.CsrfFilter@70aa118b, org.springframework.security.web.authentication.logout.LogoutFilter@2515f319, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@73355e72, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@367ab27a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@795ff301, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@7932f636, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@245473eb, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@a0aae13, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@75044d99, org.springframework.security.web.access.ExceptionTranslationFilter@7dfa614b, org.springframework.security.web.access.intercept.AuthorizationFilter@19ba3fc0]
+2026-03-10 19:03:41.289 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-03-10 19:03:41.304 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-03-10 19:03:41.312 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Started YujianhaowuBackendApplication in 1.997 seconds (process running for 197.533)
+2026-03-10 19:03:41.315 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-03-10 19:03:48.984 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-03-10 19:03:49.012 [Thread-11] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown initiated...
+2026-03-10 19:03:49.019 [Thread-11] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown completed.
+2026-03-10 19:03:49.141 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Starting YujianhaowuBackendApplication using Java 21.0.10 with PID 13232 (D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes started by 15565 in D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi)
+2026-03-10 19:03:49.142 [restartedMain] DEBUG c.campus.yujianhaowu.YujianhaowuBackendApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-10 19:03:49.142 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - The following 1 profile is active: "dev"
+2026-03-10 19:03:49.503 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-10 19:03:49.513 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-03-10 19:03:49.529 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 0 Redis repository interfaces.
+2026-03-10 19:03:49.586 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CartItemMapper.class]
+2026-03-10 19:03:49.586 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CategoryMapper.class]
+2026-03-10 19:03:49.586 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ContentCommentMapper.class]
+2026-03-10 19:03:49.587 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalContentMapper.class]
+2026-03-10 19:03:49.587 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalTagMapper.class]
+2026-03-10 19:03:49.588 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\FavoriteMapper.class]
+2026-03-10 19:03:49.588 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\LikeMapper.class]
+2026-03-10 19:03:49.588 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderItemMapper.class]
+2026-03-10 19:03:49.588 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderMapper.class]
+2026-03-10 19:03:49.589 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ProductMapper.class]
+2026-03-10 19:03:49.589 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewMapper.class]
+2026-03-10 19:03:49.589 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewReplyMapper.class]
+2026-03-10 19:03:49.589 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\UserMapper.class]
+2026-03-10 19:03:49.590 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'cartItemMapper' and 'com.campus.yujianhaowu.mapper.CartItemMapper' mapperInterface
+2026-03-10 19:03:49.591 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'cartItemMapper'.
+2026-03-10 19:03:49.591 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'categoryMapper' and 'com.campus.yujianhaowu.mapper.CategoryMapper' mapperInterface
+2026-03-10 19:03:49.592 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'categoryMapper'.
+2026-03-10 19:03:49.593 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'contentCommentMapper' and 'com.campus.yujianhaowu.mapper.ContentCommentMapper' mapperInterface
+2026-03-10 19:03:49.594 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'contentCommentMapper'.
+2026-03-10 19:03:49.594 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalContentMapper' and 'com.campus.yujianhaowu.mapper.CulturalContentMapper' mapperInterface
+2026-03-10 19:03:49.595 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalContentMapper'.
+2026-03-10 19:03:49.595 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalTagMapper' and 'com.campus.yujianhaowu.mapper.CulturalTagMapper' mapperInterface
+2026-03-10 19:03:49.596 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalTagMapper'.
+2026-03-10 19:03:49.596 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'favoriteMapper' and 'com.campus.yujianhaowu.mapper.FavoriteMapper' mapperInterface
+2026-03-10 19:03:49.597 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'favoriteMapper'.
+2026-03-10 19:03:49.597 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'likeMapper' and 'com.campus.yujianhaowu.mapper.LikeMapper' mapperInterface
+2026-03-10 19:03:49.598 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'likeMapper'.
+2026-03-10 19:03:49.599 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderItemMapper' and 'com.campus.yujianhaowu.mapper.OrderItemMapper' mapperInterface
+2026-03-10 19:03:49.599 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderItemMapper'.
+2026-03-10 19:03:49.599 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderMapper' and 'com.campus.yujianhaowu.mapper.OrderMapper' mapperInterface
+2026-03-10 19:03:49.600 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderMapper'.
+2026-03-10 19:03:49.600 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'productMapper' and 'com.campus.yujianhaowu.mapper.ProductMapper' mapperInterface
+2026-03-10 19:03:49.600 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'productMapper'.
+2026-03-10 19:03:49.600 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewMapper' and 'com.campus.yujianhaowu.mapper.ReviewMapper' mapperInterface
+2026-03-10 19:03:49.601 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewMapper'.
+2026-03-10 19:03:49.602 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewReplyMapper' and 'com.campus.yujianhaowu.mapper.ReviewReplyMapper' mapperInterface
+2026-03-10 19:03:49.602 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewReplyMapper'.
+2026-03-10 19:03:49.603 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.campus.yujianhaowu.mapper.UserMapper' mapperInterface
+2026-03-10 19:03:49.603 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2026-03-10 19:03:49.714 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-10 19:03:49.716 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-10 19:03:49.716 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-10 19:03:49.766 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-03-10 19:03:49.766 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 621 ms
+2026-03-10 19:03:49.904 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Starting...
+2026-03-10 19:03:49.911 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - YujianHaoWuHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@79cde4a1
+2026-03-10 19:03:49.913 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Start completed.
+2026-03-10 19:03:50.645 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 88 mappings in 'requestMappingHandlerMapping'
+2026-03-10 19:03:50.694 [restartedMain] DEBUG o.s.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2026-03-10 19:03:50.705 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-10 19:03:50.712 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-10 19:03:50.768 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 87a996dc-2dcc-47a4-a300-43d9ff2fb165
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-10 19:03:50.778 [restartedMain] INFO  o.s.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@27e3c595, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@26977345, org.springframework.security.web.context.SecurityContextHolderFilter@89ee5e3, org.springframework.security.web.header.HeaderWriterFilter@1cb9b994, org.springframework.web.filter.CorsFilter@761ab659, org.springframework.security.web.csrf.CsrfFilter@2682943e, org.springframework.security.web.authentication.logout.LogoutFilter@23f2c434, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@83b1cc2, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@1b69f69a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@2643b31d, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@3dddba95, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3a8fa3aa, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4acd834e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1f35052d, org.springframework.security.web.access.ExceptionTranslationFilter@2c1b9520, org.springframework.security.web.access.intercept.AuthorizationFilter@510a0ffb]
+2026-03-10 19:03:50.789 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-03-10 19:03:50.811 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-03-10 19:03:50.814 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Started YujianhaowuBackendApplication in 1.722 seconds (process running for 207.035)
+2026-03-10 19:03:50.816 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-03-10 19:04:01.564 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-03-10 19:04:01.584 [Thread-15] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown initiated...
+2026-03-10 19:04:01.588 [Thread-15] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown completed.
+2026-03-10 19:04:01.720 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Starting YujianhaowuBackendApplication using Java 21.0.10 with PID 13232 (D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes started by 15565 in D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi)
+2026-03-10 19:04:01.720 [restartedMain] DEBUG c.campus.yujianhaowu.YujianhaowuBackendApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-10 19:04:01.721 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - The following 1 profile is active: "dev"
+2026-03-10 19:04:02.000 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-10 19:04:02.000 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-03-10 19:04:02.012 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2026-03-10 19:04:02.053 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CartItemMapper.class]
+2026-03-10 19:04:02.054 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CategoryMapper.class]
+2026-03-10 19:04:02.054 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ContentCommentMapper.class]
+2026-03-10 19:04:02.054 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalContentMapper.class]
+2026-03-10 19:04:02.054 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalTagMapper.class]
+2026-03-10 19:04:02.054 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\FavoriteMapper.class]
+2026-03-10 19:04:02.055 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\LikeMapper.class]
+2026-03-10 19:04:02.055 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderItemMapper.class]
+2026-03-10 19:04:02.056 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderMapper.class]
+2026-03-10 19:04:02.056 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ProductMapper.class]
+2026-03-10 19:04:02.056 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewMapper.class]
+2026-03-10 19:04:02.056 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewReplyMapper.class]
+2026-03-10 19:04:02.056 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\UserMapper.class]
+2026-03-10 19:04:02.056 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'cartItemMapper' and 'com.campus.yujianhaowu.mapper.CartItemMapper' mapperInterface
+2026-03-10 19:04:02.057 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'cartItemMapper'.
+2026-03-10 19:04:02.059 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'categoryMapper' and 'com.campus.yujianhaowu.mapper.CategoryMapper' mapperInterface
+2026-03-10 19:04:02.061 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'categoryMapper'.
+2026-03-10 19:04:02.061 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'contentCommentMapper' and 'com.campus.yujianhaowu.mapper.ContentCommentMapper' mapperInterface
+2026-03-10 19:04:02.063 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'contentCommentMapper'.
+2026-03-10 19:04:02.064 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalContentMapper' and 'com.campus.yujianhaowu.mapper.CulturalContentMapper' mapperInterface
+2026-03-10 19:04:02.065 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalContentMapper'.
+2026-03-10 19:04:02.065 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalTagMapper' and 'com.campus.yujianhaowu.mapper.CulturalTagMapper' mapperInterface
+2026-03-10 19:04:02.066 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalTagMapper'.
+2026-03-10 19:04:02.066 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'favoriteMapper' and 'com.campus.yujianhaowu.mapper.FavoriteMapper' mapperInterface
+2026-03-10 19:04:02.068 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'favoriteMapper'.
+2026-03-10 19:04:02.068 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'likeMapper' and 'com.campus.yujianhaowu.mapper.LikeMapper' mapperInterface
+2026-03-10 19:04:02.069 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'likeMapper'.
+2026-03-10 19:04:02.069 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderItemMapper' and 'com.campus.yujianhaowu.mapper.OrderItemMapper' mapperInterface
+2026-03-10 19:04:02.069 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderItemMapper'.
+2026-03-10 19:04:02.071 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderMapper' and 'com.campus.yujianhaowu.mapper.OrderMapper' mapperInterface
+2026-03-10 19:04:02.071 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderMapper'.
+2026-03-10 19:04:02.073 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'productMapper' and 'com.campus.yujianhaowu.mapper.ProductMapper' mapperInterface
+2026-03-10 19:04:02.073 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'productMapper'.
+2026-03-10 19:04:02.073 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewMapper' and 'com.campus.yujianhaowu.mapper.ReviewMapper' mapperInterface
+2026-03-10 19:04:02.075 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewMapper'.
+2026-03-10 19:04:02.076 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewReplyMapper' and 'com.campus.yujianhaowu.mapper.ReviewReplyMapper' mapperInterface
+2026-03-10 19:04:02.077 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewReplyMapper'.
+2026-03-10 19:04:02.077 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.campus.yujianhaowu.mapper.UserMapper' mapperInterface
+2026-03-10 19:04:02.078 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2026-03-10 19:04:02.149 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-10 19:04:02.150 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-10 19:04:02.150 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-10 19:04:02.198 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-03-10 19:04:02.198 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 475 ms
+2026-03-10 19:04:02.313 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Starting...
+2026-03-10 19:04:02.321 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - YujianHaoWuHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@485d0828
+2026-03-10 19:04:02.321 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Start completed.
+2026-03-10 19:04:02.811 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 88 mappings in 'requestMappingHandlerMapping'
+2026-03-10 19:04:02.851 [restartedMain] DEBUG o.s.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2026-03-10 19:04:02.863 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-10 19:04:02.867 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-10 19:04:02.946 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 46eba4b7-06aa-4acd-92ea-0c4d98174e4e
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-10 19:04:02.961 [restartedMain] INFO  o.s.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@dfa2698, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@631f3ca2, org.springframework.security.web.context.SecurityContextHolderFilter@26685a57, org.springframework.security.web.header.HeaderWriterFilter@1ce800eb, org.springframework.web.filter.CorsFilter@255ec6cb, org.springframework.security.web.csrf.CsrfFilter@382a715b, org.springframework.security.web.authentication.logout.LogoutFilter@769da766, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@74829fb, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@450c7c37, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@11d87083, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@1c7518e3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4d235768, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@193fc8a3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4dca5ac6, org.springframework.security.web.access.ExceptionTranslationFilter@1ef94621, org.springframework.security.web.access.intercept.AuthorizationFilter@374b3815]
+2026-03-10 19:04:02.983 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-03-10 19:04:02.998 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-03-10 19:04:03.003 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Started YujianhaowuBackendApplication in 1.324 seconds (process running for 219.224)
+2026-03-10 19:04:03.005 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-03-10 19:04:10.624 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-03-10 19:04:10.652 [Thread-19] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown initiated...
+2026-03-10 19:04:10.657 [Thread-19] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown completed.
+2026-03-10 19:04:10.799 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Starting YujianhaowuBackendApplication using Java 21.0.10 with PID 13232 (D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes started by 15565 in D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi)
+2026-03-10 19:04:10.800 [restartedMain] DEBUG c.campus.yujianhaowu.YujianhaowuBackendApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-10 19:04:10.801 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - The following 1 profile is active: "dev"
+2026-03-10 19:04:11.070 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-10 19:04:11.070 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-03-10 19:04:11.081 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+2026-03-10 19:04:11.119 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CartItemMapper.class]
+2026-03-10 19:04:11.120 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CategoryMapper.class]
+2026-03-10 19:04:11.120 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ContentCommentMapper.class]
+2026-03-10 19:04:11.120 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalContentMapper.class]
+2026-03-10 19:04:11.120 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalTagMapper.class]
+2026-03-10 19:04:11.120 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\FavoriteMapper.class]
+2026-03-10 19:04:11.122 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\LikeMapper.class]
+2026-03-10 19:04:11.122 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderItemMapper.class]
+2026-03-10 19:04:11.122 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderMapper.class]
+2026-03-10 19:04:11.122 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ProductMapper.class]
+2026-03-10 19:04:11.122 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewMapper.class]
+2026-03-10 19:04:11.122 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewReplyMapper.class]
+2026-03-10 19:04:11.122 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\UserMapper.class]
+2026-03-10 19:04:11.123 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'cartItemMapper' and 'com.campus.yujianhaowu.mapper.CartItemMapper' mapperInterface
+2026-03-10 19:04:11.123 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'cartItemMapper'.
+2026-03-10 19:04:11.123 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'categoryMapper' and 'com.campus.yujianhaowu.mapper.CategoryMapper' mapperInterface
+2026-03-10 19:04:11.125 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'categoryMapper'.
+2026-03-10 19:04:11.126 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'contentCommentMapper' and 'com.campus.yujianhaowu.mapper.ContentCommentMapper' mapperInterface
+2026-03-10 19:04:11.126 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'contentCommentMapper'.
+2026-03-10 19:04:11.126 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalContentMapper' and 'com.campus.yujianhaowu.mapper.CulturalContentMapper' mapperInterface
+2026-03-10 19:04:11.128 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalContentMapper'.
+2026-03-10 19:04:11.128 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalTagMapper' and 'com.campus.yujianhaowu.mapper.CulturalTagMapper' mapperInterface
+2026-03-10 19:04:11.128 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalTagMapper'.
+2026-03-10 19:04:11.130 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'favoriteMapper' and 'com.campus.yujianhaowu.mapper.FavoriteMapper' mapperInterface
+2026-03-10 19:04:11.130 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'favoriteMapper'.
+2026-03-10 19:04:11.130 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'likeMapper' and 'com.campus.yujianhaowu.mapper.LikeMapper' mapperInterface
+2026-03-10 19:04:11.131 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'likeMapper'.
+2026-03-10 19:04:11.131 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderItemMapper' and 'com.campus.yujianhaowu.mapper.OrderItemMapper' mapperInterface
+2026-03-10 19:04:11.131 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderItemMapper'.
+2026-03-10 19:04:11.131 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderMapper' and 'com.campus.yujianhaowu.mapper.OrderMapper' mapperInterface
+2026-03-10 19:04:11.133 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderMapper'.
+2026-03-10 19:04:11.133 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'productMapper' and 'com.campus.yujianhaowu.mapper.ProductMapper' mapperInterface
+2026-03-10 19:04:11.133 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'productMapper'.
+2026-03-10 19:04:11.134 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewMapper' and 'com.campus.yujianhaowu.mapper.ReviewMapper' mapperInterface
+2026-03-10 19:04:11.135 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewMapper'.
+2026-03-10 19:04:11.135 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewReplyMapper' and 'com.campus.yujianhaowu.mapper.ReviewReplyMapper' mapperInterface
+2026-03-10 19:04:11.136 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewReplyMapper'.
+2026-03-10 19:04:11.136 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.campus.yujianhaowu.mapper.UserMapper' mapperInterface
+2026-03-10 19:04:11.136 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2026-03-10 19:04:11.215 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-10 19:04:11.217 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-10 19:04:11.217 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-10 19:04:11.264 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-03-10 19:04:11.264 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 462 ms
+2026-03-10 19:04:11.347 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Starting...
+2026-03-10 19:04:11.354 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - YujianHaoWuHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@2d072235
+2026-03-10 19:04:11.354 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Start completed.
+2026-03-10 19:04:11.809 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 88 mappings in 'requestMappingHandlerMapping'
+2026-03-10 19:04:11.849 [restartedMain] DEBUG o.s.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2026-03-10 19:04:11.855 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-10 19:04:11.857 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-10 19:04:11.916 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 9b5e5ab9-75c1-4c8c-a137-d062e9c7af97
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-10 19:04:11.929 [restartedMain] INFO  o.s.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2a5a6c6f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2e2cbe48, org.springframework.security.web.context.SecurityContextHolderFilter@2d9febed, org.springframework.security.web.header.HeaderWriterFilter@5e9df531, org.springframework.web.filter.CorsFilter@1991288e, org.springframework.security.web.csrf.CsrfFilter@5179e0b8, org.springframework.security.web.authentication.logout.LogoutFilter@7c89f917, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2542590a, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@70ae497f, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@dda99b5, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@16b05df4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@337da2c6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@41ab0806, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@749aa575, org.springframework.security.web.access.ExceptionTranslationFilter@7b2130a7, org.springframework.security.web.access.intercept.AuthorizationFilter@679c7dd9]
+2026-03-10 19:04:11.944 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-03-10 19:04:11.955 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-03-10 19:04:11.958 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Started YujianhaowuBackendApplication in 1.189 seconds (process running for 228.18)
+2026-03-10 19:04:11.960 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-03-10 19:04:21.637 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-03-10 19:04:21.665 [Thread-23] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown initiated...
+2026-03-10 19:04:21.671 [Thread-23] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown completed.
+2026-03-10 19:04:21.804 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Starting YujianhaowuBackendApplication using Java 21.0.10 with PID 13232 (D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes started by 15565 in D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi)
+2026-03-10 19:04:21.807 [restartedMain] DEBUG c.campus.yujianhaowu.YujianhaowuBackendApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-10 19:04:21.807 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - The following 1 profile is active: "dev"
+2026-03-10 19:04:22.009 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-10 19:04:22.009 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-03-10 19:04:22.015 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2026-03-10 19:04:22.037 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CartItemMapper.class]
+2026-03-10 19:04:22.037 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CategoryMapper.class]
+2026-03-10 19:04:22.037 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ContentCommentMapper.class]
+2026-03-10 19:04:22.037 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalContentMapper.class]
+2026-03-10 19:04:22.039 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalTagMapper.class]
+2026-03-10 19:04:22.039 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\FavoriteMapper.class]
+2026-03-10 19:04:22.039 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\LikeMapper.class]
+2026-03-10 19:04:22.039 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderItemMapper.class]
+2026-03-10 19:04:22.039 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderMapper.class]
+2026-03-10 19:04:22.039 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ProductMapper.class]
+2026-03-10 19:04:22.039 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewMapper.class]
+2026-03-10 19:04:22.040 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewReplyMapper.class]
+2026-03-10 19:04:22.040 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\UserMapper.class]
+2026-03-10 19:04:22.040 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'cartItemMapper' and 'com.campus.yujianhaowu.mapper.CartItemMapper' mapperInterface
+2026-03-10 19:04:22.042 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'cartItemMapper'.
+2026-03-10 19:04:22.042 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'categoryMapper' and 'com.campus.yujianhaowu.mapper.CategoryMapper' mapperInterface
+2026-03-10 19:04:22.042 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'categoryMapper'.
+2026-03-10 19:04:22.042 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'contentCommentMapper' and 'com.campus.yujianhaowu.mapper.ContentCommentMapper' mapperInterface
+2026-03-10 19:04:22.044 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'contentCommentMapper'.
+2026-03-10 19:04:22.044 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalContentMapper' and 'com.campus.yujianhaowu.mapper.CulturalContentMapper' mapperInterface
+2026-03-10 19:04:22.044 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalContentMapper'.
+2026-03-10 19:04:22.044 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalTagMapper' and 'com.campus.yujianhaowu.mapper.CulturalTagMapper' mapperInterface
+2026-03-10 19:04:22.045 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalTagMapper'.
+2026-03-10 19:04:22.045 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'favoriteMapper' and 'com.campus.yujianhaowu.mapper.FavoriteMapper' mapperInterface
+2026-03-10 19:04:22.045 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'favoriteMapper'.
+2026-03-10 19:04:22.045 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'likeMapper' and 'com.campus.yujianhaowu.mapper.LikeMapper' mapperInterface
+2026-03-10 19:04:22.047 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'likeMapper'.
+2026-03-10 19:04:22.047 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderItemMapper' and 'com.campus.yujianhaowu.mapper.OrderItemMapper' mapperInterface
+2026-03-10 19:04:22.047 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderItemMapper'.
+2026-03-10 19:04:22.047 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderMapper' and 'com.campus.yujianhaowu.mapper.OrderMapper' mapperInterface
+2026-03-10 19:04:22.048 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderMapper'.
+2026-03-10 19:04:22.048 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'productMapper' and 'com.campus.yujianhaowu.mapper.ProductMapper' mapperInterface
+2026-03-10 19:04:22.048 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'productMapper'.
+2026-03-10 19:04:22.048 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewMapper' and 'com.campus.yujianhaowu.mapper.ReviewMapper' mapperInterface
+2026-03-10 19:04:22.050 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewMapper'.
+2026-03-10 19:04:22.050 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewReplyMapper' and 'com.campus.yujianhaowu.mapper.ReviewReplyMapper' mapperInterface
+2026-03-10 19:04:22.050 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewReplyMapper'.
+2026-03-10 19:04:22.050 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.campus.yujianhaowu.mapper.UserMapper' mapperInterface
+2026-03-10 19:04:22.050 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2026-03-10 19:04:22.133 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-10 19:04:22.133 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-10 19:04:22.133 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-10 19:04:22.181 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-03-10 19:04:22.182 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 373 ms
+2026-03-10 19:04:22.248 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Starting...
+2026-03-10 19:04:22.277 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - YujianHaoWuHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@326aa85b
+2026-03-10 19:04:22.278 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Start completed.
+2026-03-10 19:04:22.601 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 88 mappings in 'requestMappingHandlerMapping'
+2026-03-10 19:04:22.632 [restartedMain] DEBUG o.s.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2026-03-10 19:04:22.637 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-10 19:04:22.643 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-10 19:04:22.695 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 80f1040f-4cc0-4d7e-b7d7-a876163d6f19
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-10 19:04:22.703 [restartedMain] INFO  o.s.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4f4aa7bb, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@ee3357a, org.springframework.security.web.context.SecurityContextHolderFilter@699b1540, org.springframework.security.web.header.HeaderWriterFilter@1558bfff, org.springframework.web.filter.CorsFilter@5aa1781b, org.springframework.security.web.csrf.CsrfFilter@18bc3339, org.springframework.security.web.authentication.logout.LogoutFilter@3bdbedae, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@7b85e267, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@24076334, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@7b66f39d, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@1fd7d624, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1047d6b1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@74f08d12, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@610bf435, org.springframework.security.web.access.ExceptionTranslationFilter@70c28221, org.springframework.security.web.access.intercept.AuthorizationFilter@54b2ab5b]
+2026-03-10 19:04:22.723 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-03-10 19:04:22.735 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-03-10 19:04:22.753 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Started YujianhaowuBackendApplication in 0.972 seconds (process running for 238.974)
+2026-03-10 19:04:22.753 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-03-10 19:04:32.455 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-03-10 19:04:32.484 [Thread-27] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown initiated...
+2026-03-10 19:04:32.489 [Thread-27] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown completed.
+2026-03-10 19:04:32.626 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Starting YujianhaowuBackendApplication using Java 21.0.10 with PID 13232 (D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes started by 15565 in D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi)
+2026-03-10 19:04:32.628 [restartedMain] DEBUG c.campus.yujianhaowu.YujianhaowuBackendApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-10 19:04:32.628 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - The following 1 profile is active: "dev"
+2026-03-10 19:04:32.899 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-10 19:04:32.899 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-03-10 19:04:32.911 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2026-03-10 19:04:32.948 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CartItemMapper.class]
+2026-03-10 19:04:32.948 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CategoryMapper.class]
+2026-03-10 19:04:32.949 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ContentCommentMapper.class]
+2026-03-10 19:04:32.949 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalContentMapper.class]
+2026-03-10 19:04:32.949 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\CulturalTagMapper.class]
+2026-03-10 19:04:32.950 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\FavoriteMapper.class]
+2026-03-10 19:04:32.950 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\LikeMapper.class]
+2026-03-10 19:04:32.950 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderItemMapper.class]
+2026-03-10 19:04:32.950 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\OrderMapper.class]
+2026-03-10 19:04:32.950 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ProductMapper.class]
+2026-03-10 19:04:32.950 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewMapper.class]
+2026-03-10 19:04:32.950 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\ReviewReplyMapper.class]
+2026-03-10 19:04:32.951 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Identified candidate component class: file [D:\work\兼职\毕业设计\2026-03-06\kaiti-fanjiaqi\second-hand-trade-backend\target\classes\com\campus\yujianhaowu\mapper\UserMapper.class]
+2026-03-10 19:04:32.951 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'cartItemMapper' and 'com.campus.yujianhaowu.mapper.CartItemMapper' mapperInterface
+2026-03-10 19:04:32.952 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'cartItemMapper'.
+2026-03-10 19:04:32.953 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'categoryMapper' and 'com.campus.yujianhaowu.mapper.CategoryMapper' mapperInterface
+2026-03-10 19:04:32.953 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'categoryMapper'.
+2026-03-10 19:04:32.953 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'contentCommentMapper' and 'com.campus.yujianhaowu.mapper.ContentCommentMapper' mapperInterface
+2026-03-10 19:04:32.954 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'contentCommentMapper'.
+2026-03-10 19:04:32.954 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalContentMapper' and 'com.campus.yujianhaowu.mapper.CulturalContentMapper' mapperInterface
+2026-03-10 19:04:32.955 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalContentMapper'.
+2026-03-10 19:04:32.955 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'culturalTagMapper' and 'com.campus.yujianhaowu.mapper.CulturalTagMapper' mapperInterface
+2026-03-10 19:04:32.956 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'culturalTagMapper'.
+2026-03-10 19:04:32.956 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'favoriteMapper' and 'com.campus.yujianhaowu.mapper.FavoriteMapper' mapperInterface
+2026-03-10 19:04:32.957 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'favoriteMapper'.
+2026-03-10 19:04:32.957 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'likeMapper' and 'com.campus.yujianhaowu.mapper.LikeMapper' mapperInterface
+2026-03-10 19:04:32.959 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'likeMapper'.
+2026-03-10 19:04:32.959 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderItemMapper' and 'com.campus.yujianhaowu.mapper.OrderItemMapper' mapperInterface
+2026-03-10 19:04:32.960 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderItemMapper'.
+2026-03-10 19:04:32.960 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'orderMapper' and 'com.campus.yujianhaowu.mapper.OrderMapper' mapperInterface
+2026-03-10 19:04:32.960 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'orderMapper'.
+2026-03-10 19:04:32.960 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'productMapper' and 'com.campus.yujianhaowu.mapper.ProductMapper' mapperInterface
+2026-03-10 19:04:32.962 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'productMapper'.
+2026-03-10 19:04:32.962 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewMapper' and 'com.campus.yujianhaowu.mapper.ReviewMapper' mapperInterface
+2026-03-10 19:04:32.963 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewMapper'.
+2026-03-10 19:04:32.963 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'reviewReplyMapper' and 'com.campus.yujianhaowu.mapper.ReviewReplyMapper' mapperInterface
+2026-03-10 19:04:32.963 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'reviewReplyMapper'.
+2026-03-10 19:04:32.963 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.campus.yujianhaowu.mapper.UserMapper' mapperInterface
+2026-03-10 19:04:32.965 [restartedMain] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2026-03-10 19:04:33.037 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-10 19:04:33.038 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-10 19:04:33.038 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-10 19:04:33.084 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-03-10 19:04:33.085 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 454 ms
+2026-03-10 19:04:33.163 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Starting...
+2026-03-10 19:04:33.172 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - YujianHaoWuHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@3f68a820
+2026-03-10 19:04:33.172 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Start completed.
+2026-03-10 19:04:33.448 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 88 mappings in 'requestMappingHandlerMapping'
+2026-03-10 19:04:33.471 [restartedMain] DEBUG o.s.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2026-03-10 19:04:33.482 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-10 19:04:33.486 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-10 19:04:33.518 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 74fee553-a5c8-4ec2-9f0e-b0f527cc7ad1
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-10 19:04:33.524 [restartedMain] INFO  o.s.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7f65d09b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@a20f790, org.springframework.security.web.context.SecurityContextHolderFilter@31a434eb, org.springframework.security.web.header.HeaderWriterFilter@33d9fff0, org.springframework.web.filter.CorsFilter@72daa6e7, org.springframework.security.web.csrf.CsrfFilter@18eb5141, org.springframework.security.web.authentication.logout.LogoutFilter@644c131a, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5655dae1, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@3f451d6a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@e1cd509, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@5285d7f2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@73871ac7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@431f4c86, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5fac2d59, org.springframework.security.web.access.ExceptionTranslationFilter@676ae851, org.springframework.security.web.access.intercept.AuthorizationFilter@4a37e0ff]
+2026-03-10 19:04:33.537 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-03-10 19:04:33.546 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-03-10 19:04:33.549 [restartedMain] INFO  c.campus.yujianhaowu.YujianhaowuBackendApplication - Started YujianhaowuBackendApplication in 0.951 seconds (process running for 249.77)
+2026-03-10 19:04:33.551 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-03-10 19:05:10.255 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown initiated...
+2026-03-10 19:05:10.258 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - YujianHaoWuHikariCP - Shutdown completed.

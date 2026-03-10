@@ -29,7 +29,7 @@ export interface CartCheckoutInfo {
  */
 export function getCartItems() {
   return request<ApiResponse<CartItem[]>>({
-    url: '/api/cart',
+    url: '/cart',
     method: 'get',
   })
 }
@@ -39,7 +39,7 @@ export function getCartItems() {
  */
 export function getCartCount() {
   return request<ApiResponse<number>>({
-    url: '/api/cart/count',
+    url: '/cart/count',
     method: 'get',
   })
 }
@@ -49,7 +49,7 @@ export function getCartCount() {
  */
 export function addToCart(productId: number, quantity: number) {
   return request<ApiResponse<CartItem>>({
-    url: '/api/cart/add',
+    url: '/cart/add',
     method: 'post',
     params: {
       productId,
@@ -63,7 +63,7 @@ export function addToCart(productId: number, quantity: number) {
  */
 export function updateQuantity(productId: number, quantity: number) {
   return request<ApiResponse<void>>({
-    url: '/api/cart/update',
+    url: '/cart/update',
     method: 'put',
     params: {
       productId,
@@ -77,7 +77,7 @@ export function updateQuantity(productId: number, quantity: number) {
  */
 export function selectItem(productId: number, selected: boolean) {
   return request<ApiResponse<void>>({
-    url: '/api/cart/select',
+    url: '/cart/select',
     method: 'put',
     params: {
       productId,
@@ -91,7 +91,7 @@ export function selectItem(productId: number, selected: boolean) {
  */
 export function selectAll(selected: boolean) {
   return request<ApiResponse<void>>({
-    url: '/api/cart/select-all',
+    url: '/cart/select-all',
     method: 'put',
     params: {
       selected,
@@ -104,7 +104,7 @@ export function selectAll(selected: boolean) {
  */
 export function deleteItem(productId: number) {
   return request<ApiResponse<void>>({
-    url: '/api/cart/delete',
+    url: '/cart/delete',
     method: 'delete',
     params: {
       productId,
@@ -117,7 +117,7 @@ export function deleteItem(productId: number) {
  */
 export function clearCart() {
   return request<ApiResponse<void>>({
-    url: '/api/cart/clear',
+    url: '/cart/clear',
     method: 'delete',
   })
 }
@@ -127,7 +127,7 @@ export function clearCart() {
  */
 export function checkout(cartItemIds: number[]) {
   return request<ApiResponse<CartCheckoutInfo>>({
-    url: '/api/cart/checkout',
+    url: '/cart/checkout',
     method: 'post',
     params: {
       cartItemIds,

@@ -3,77 +3,71 @@ import { ref, computed } from 'vue'
 import type { UserInfo } from '@/types'
 
 export const useUserStore = defineStore('user', () => {
-  // 状态
-  const token = ref<string>('')
+  // 状态 - 只保存 userInfo
   const userInfo = ref<UserInfo | null>(null)
   
   // 计算属性
-  const isLoggedIn = computed(() => !!token.value)
+  const isLoggedIn = computed(() => !!userInfo.value)
+  const userId = computed(() => userInfo.value?.id)
+  const username = computed(() => userInfo.value?.username)
+  const nickname = computed(() => userInfo.value?.nickname)
+  const role = computed(() => userInfo.value?.role)
+  const avatar = computed(() => userInfo.value?.avatar)
   const isSeller = computed(() => userInfo.value?.role === 'seller')
   const isAdmin = computed(() => userInfo.value?.role === 'admin')
   const isBuyer = computed(() => userInfo.value?.role === 'buyer')
   
   // 方法
-  const setToken = (newToken: string) => {
-    token.value = newToken
-    localStorage.setItem('token', newToken)
-  }
-  
   const setUserInfo = (info: UserInfo) => {
     userInfo.value = info
     localStorage.setItem('userInfo', JSON.stringify(info))
   }
   
-  const login = (newToken: string, info: UserInfo) => {
-    setToken(newToken)
+  const login = (info: UserInfo) => {
     setUserInfo(info)
   }
   
   const logout = () => {
-    token.value = ''
     userInfo.value = null
-    localStorage.removeItem('token')
     localStorage.removeItem('userInfo')
   }
   
-  // 从本地存储恢复状态
-  const restoreFromStorage = () => {
-    const storedToken = localStorage.getItem('token')
-    const storedUserInfo = localStorage.getItem('userInfo')
-    
-    if (storedToken) {
-      token.value = storedToken
-    }
-    
-    if (storedUserInfo) {
-      try {
-        userInfo.value = JSON.parse(storedUserInfo)
-      } catch (e) {
-        console.error('解析用户信息失败', e)
+  // 从本地存储恢复用户信息
+  const restoreUserInfo = () => {
+    try {
+      const userInfoStr = localStorage.getItem('userInfo')
+      if (userInfoStr) {
+        userInfo.value = JSON.parse(userInfoStr)
       }
+    } catch (e) {
+      console.error('恢复用户信息失败', e)
+      userInfo.value = null
     }
   }
   
   return {
     // 状态
-    token,
     userInfo,
     // 计算属性
     isLoggedIn,
+    userId,
+    username,
+    nickname,
+    role,
+    avatar,
     isSeller,
     isAdmin,
     isBuyer,
     // 方法
-    setToken,
     setUserInfo,
     login,
     logout,
-    restoreFromStorage,
+    restoreUserInfo,
   }
 }, {
   persist: {
-    key: 'user-store',
+    key: 'user',
     storage: localStorage,
-    paths: ['token', 'userInfo'],
+    paths: ['userInfo'],
   },
 })

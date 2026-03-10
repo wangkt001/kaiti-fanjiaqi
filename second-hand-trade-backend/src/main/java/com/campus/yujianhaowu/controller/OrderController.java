@@ -3,7 +3,7 @@ package com.campus.yujianhaowu.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campus.yujianhaowu.common.PageResult;
 import com.campus.yujianhaowu.common.Result;
-import com.campus.yujianhaowu.interceptor.AuthInterceptor;
+
 import com.campus.yujianhaowu.model.dto.OrderCreateRequest;
 import com.campus.yujianhaowu.model.vo.OrderVO;
 import com.campus.yujianhaowu.service.OrderService;
@@ -29,7 +29,7 @@ public class OrderController {
     public Result<String> createOrder(
             @RequestBody @Validated OrderCreateRequest request,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         String orderNo = orderService.createOrder(userId, request);
         return Result.success(orderNo);
     }
@@ -41,7 +41,7 @@ public class OrderController {
             @Parameter(description = "页码") @RequestParam(defaultValue = "1") Integer current,
             @Parameter(description = "每页数量") @RequestParam(defaultValue = "10") Integer size,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         Page<OrderVO> page = orderService.getUserOrders(userId, status, current, size);
         PageResult<OrderVO> result = new PageResult<>(
                 page.getRecords(),
@@ -56,7 +56,7 @@ public class OrderController {
     public Result<OrderVO> getOrderDetail(
             @Parameter(description = "订单 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         OrderVO order = orderService.getOrderDetail(id, userId);
         return Result.success(order);
     }
@@ -66,7 +66,7 @@ public class OrderController {
     public Result<Void> cancelOrder(
             @Parameter(description = "订单 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         orderService.cancelOrder(id, userId);
         return Result.success(null);
     }
@@ -76,7 +76,7 @@ public class OrderController {
     public Result<Void> confirmOrder(
             @Parameter(description = "订单 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         orderService.confirmOrder(id, userId);
         return Result.success(null);
     }
@@ -86,7 +86,7 @@ public class OrderController {
     public Result<Void> deleteOrder(
             @Parameter(description = "订单 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         orderService.deleteOrder(id, userId);
         return Result.success(null);
     }
@@ -98,7 +98,7 @@ public class OrderController {
             @Parameter(description = "页码") @RequestParam(defaultValue = "1") Integer current,
             @Parameter(description = "每页数量") @RequestParam(defaultValue = "10") Integer size,
             HttpServletRequest httpRequest) {
-        Long sellerId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long sellerId = (Long) httpRequest.getAttribute("userId");
         Page<OrderVO> page = orderService.getSellerOrders(sellerId, status, current, size);
         PageResult<OrderVO> result = new PageResult<>(
                 page.getRecords(),
@@ -115,7 +115,7 @@ public class OrderController {
             @Parameter(description = "物流单号") @RequestParam String deliveryNo,
             @Parameter(description = "配送方式") @RequestParam String deliveryType,
             HttpServletRequest httpRequest) {
-        Long sellerId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long sellerId = (Long) httpRequest.getAttribute("userId");
         orderService.shipOrder(id, deliveryNo, deliveryType, sellerId);
         return Result.success(null);
     }

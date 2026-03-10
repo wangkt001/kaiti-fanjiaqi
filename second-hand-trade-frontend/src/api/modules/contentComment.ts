@@ -35,7 +35,7 @@ export function getContentComments(params: {
   size: number
 }) {
   return request<ApiResponse<PageResult<ContentComment>>>({
-    url: `/api/content-comments/content/${params.contentId}`,
+    url: `/content-comments/content/${params.contentId}`,
     method: 'get',
     params: {
       current: params.current,
@@ -49,7 +49,7 @@ export function getContentComments(params: {
  */
 export function createComment(data: ContentCommentCreateParams) {
   return request<ApiResponse<ContentComment>>({
-    url: '/api/content-comments',
+    url: '/content-comments',
     method: 'post',
     data,
   })
@@ -60,7 +60,7 @@ export function createComment(data: ContentCommentCreateParams) {
  */
 export function getCommentReplies(commentId: number) {
   return request<ApiResponse<ContentComment[]>>({
-    url: `/api/content-comments/${commentId}/replies`,
+    url: `/content-comments/${commentId}/replies`,
     method: 'get',
   })
 }
@@ -70,7 +70,7 @@ export function getCommentReplies(commentId: number) {
  */
 export function deleteComment(id: number) {
   return request<ApiResponse<void>>({
-    url: `/api/content-comments/${id}`,
+    url: `/content-comments/${id}`,
     method: 'delete',
   })
 }

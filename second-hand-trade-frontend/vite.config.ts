@@ -50,7 +50,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         '/api': {
           target: env.VITE_API_BASE_URL || 'http://localhost:8080',
           changeOrigin: true,
-          rewrite: (path) => path,
+          secure: false,
         },
       },
     },

@@ -186,23 +186,21 @@ const contentLoading = ref(false);
 const banners = ref([
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1543166109-80d1753c0031?w=1200",
+    image: "https://picsum.photos/1920/600?random=1",
     title: "河南非遗文化",
     description: "传承千年工艺，感受中原文化魅力",
     buttonText: "立即探索",
   },
   {
     id: 2,
-    image:
-      "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=1200",
+    image: "https://picsum.photos/1920/600?random=2",
     title: "博物馆文创",
     description: "把博物馆带回家",
     buttonText: "选购好物",
   },
   {
     id: 3,
-    image:
-      "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=1200",
+    image: "https://picsum.photos/1920/600?random=3",
     title: "传统工艺品",
     description: "匠心独运，精品呈现",
     buttonText: "查看详情",
@@ -223,9 +221,17 @@ const formatDate = (date: string) => {
 const loadCategories = async () => {
   try {
     const res = await getCategoryTree();
-    categories.value = res.data.slice(0, 5);
+    console.log("分类数据:", res);
+    // res 已经是 Category[] 类型
+    if (Array.isArray(res)) {
+      categories.value = res.slice(0, 5);
+    } else {
+      console.warn("分类数据格式异常:", res);
+      categories.value = [];
+    }
   } catch (error) {
     console.error("加载分类失败", error);
+    categories.value = [];
   }
 };
 

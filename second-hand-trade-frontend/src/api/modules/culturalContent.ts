@@ -43,7 +43,7 @@ export function getCulturalContents(params: {
   size: number
 }) {
   return request<ApiResponse<PageResult<CulturalContent>>>({
-    url: '/api/cultural-contents',
+    url: '/cultural-contents',
     method: 'get',
     params,
   })
@@ -57,7 +57,7 @@ export function getRecommendContents(params: {
   size: number
 }) {
   return request<ApiResponse<PageResult<CulturalContent>>>({
-    url: '/api/cultural-contents/recommend',
+    url: '/cultural-contents/recommend',
     method: 'get',
     params,
   })
@@ -68,7 +68,7 @@ export function getRecommendContents(params: {
  */
 export function getContentDetail(id: number) {
   return request<ApiResponse<CulturalContent>>({
-    url: `/api/cultural-contents/${id}`,
+    url: `/cultural-contents/${id}`,
     method: 'get',
   })
 }
@@ -78,7 +78,7 @@ export function getContentDetail(id: number) {
  */
 export function createContent(data: CulturalContentCreateParams) {
   return request<ApiResponse<CulturalContent>>({
-    url: '/api/cultural-contents',
+    url: '/cultural-contents',
     method: 'post',
     data,
   })
@@ -89,7 +89,7 @@ export function createContent(data: CulturalContentCreateParams) {
  */
 export function updateContent(id: number, data: CulturalContentCreateParams) {
   return request<ApiResponse<void>>({
-    url: `/api/cultural-contents/${id}`,
+    url: `/cultural-contents/${id}`,
     method: 'put',
     data,
   })
@@ -100,7 +100,7 @@ export function updateContent(id: number, data: CulturalContentCreateParams) {
  */
 export function deleteContent(id: number) {
   return request<ApiResponse<void>>({
-    url: `/api/cultural-contents/${id}`,
+    url: `/cultural-contents/${id}`,
     method: 'delete',
   })
 }

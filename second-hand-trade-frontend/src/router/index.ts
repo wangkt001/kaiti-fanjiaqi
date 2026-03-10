@@ -80,6 +80,12 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '卖家中心', requiresAuth: true, requiresSeller: true },
   },
   {
+    path: '/seller/apply',
+    name: 'SellerApply',
+    component: () => import('@/views/SellerApplyView.vue'),
+    meta: { title: '申请入驻', requiresAuth: true },
+  },
+  {
     path: '/admin',
     name: 'Admin',
     component: () => import('@/views/AdminView.vue'),

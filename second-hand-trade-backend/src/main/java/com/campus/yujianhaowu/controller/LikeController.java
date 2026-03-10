@@ -1,7 +1,6 @@
 package com.campus.yujianhaowu.controller;
 
 import com.campus.yujianhaowu.common.Result;
-import com.campus.yujianhaowu.interceptor.AuthInterceptor;
 import com.campus.yujianhaowu.service.LikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,7 +25,7 @@ public class LikeController {
             @Parameter(description = "目标类型（review/reply/product/content/comment）") @PathVariable String targetType,
             @Parameter(description = "目标 ID") @PathVariable Long targetId,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         likeService.like(targetType, targetId, userId);
         return Result.success(null);
     }
@@ -37,7 +36,7 @@ public class LikeController {
             @Parameter(description = "目标类型") @PathVariable String targetType,
             @Parameter(description = "目标 ID") @PathVariable Long targetId,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         likeService.unlike(targetType, targetId, userId);
         return Result.success(null);
     }
@@ -48,7 +47,7 @@ public class LikeController {
             @Parameter(description = "目标类型") @PathVariable String targetType,
             @Parameter(description = "目标 ID") @PathVariable Long targetId,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         Map<String, Object> status = likeService.getLikeStatus(targetType, targetId, userId);
         return Result.success(status);
     }

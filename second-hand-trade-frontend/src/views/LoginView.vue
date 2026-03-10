@@ -75,9 +75,6 @@
 
           <div class="social-login">
             <el-button circle class="social-btn">
-              <el-icon><Wechat /></el-icon>
-            </el-button>
-            <el-button circle class="social-btn">
               <el-icon><ChatDotRound /></el-icon>
             </el-button>
           </div>
@@ -99,13 +96,7 @@ import { ref, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
-import {
-  ArrowLeft,
-  User,
-  Lock,
-  Wechat,
-  ChatDotRound,
-} from "@element-plus/icons-vue";
+import { ArrowLeft, User, Lock, ChatDotRound } from "@element-plus/icons-vue";
 import { useUserStore } from "@/store/user";
 import { login as loginApi } from "@/api/modules/user";
 import type { LoginParams } from "@/types";
@@ -154,8 +145,9 @@ const handleLogin = async () => {
         password: loginForm.password,
       });
 
-      const { token, userInfo } = res.data;
-      userStore.login(token, userInfo);
+      // res 已经是解包后的数据，直接使用
+      const { userInfo } = res;
+      userStore.login(userInfo);
 
       ElMessage.success("登录成功");
 

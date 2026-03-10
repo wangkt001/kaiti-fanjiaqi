@@ -40,14 +40,6 @@ public interface UserService {
     void logout(Long userId);
 
     /**
-     * 刷新 Token
-     *
-     * @param refreshToken 刷新 Token
-     * @return 新 Token
-     */
-    String refreshToken(String refreshToken);
-
-    /**
      * 获取当前用户信息
      *
      * @param userId 用户 ID

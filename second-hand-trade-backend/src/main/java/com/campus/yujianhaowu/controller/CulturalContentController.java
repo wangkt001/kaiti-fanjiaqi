@@ -3,7 +3,6 @@ package com.campus.yujianhaowu.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campus.yujianhaowu.common.PageResult;
 import com.campus.yujianhaowu.common.Result;
-import com.campus.yujianhaowu.interceptor.AuthInterceptor;
 import com.campus.yujianhaowu.model.dto.CulturalContentCreateRequest;
 import com.campus.yujianhaowu.model.vo.CulturalContentVO;
 import com.campus.yujianhaowu.service.CulturalContentService;
@@ -70,7 +69,7 @@ public class CulturalContentController {
     public Result<CulturalContentVO> createContent(
             @RequestBody @Validated CulturalContentCreateRequest request,
             HttpServletRequest httpRequest) {
-        Long authorId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long authorId = (Long) httpRequest.getAttribute("userId");
         CulturalContentVO content = culturalContentService.createContent(request, authorId);
         return Result.success(content);
     }

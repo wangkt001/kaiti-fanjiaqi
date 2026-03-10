@@ -3,7 +3,6 @@ package com.campus.yujianhaowu.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campus.yujianhaowu.common.PageResult;
 import com.campus.yujianhaowu.common.Result;
-import com.campus.yujianhaowu.interceptor.AuthInterceptor;
 import com.campus.yujianhaowu.model.dto.ReviewCreateRequest;
 import com.campus.yujianhaowu.model.dto.ReviewReplyRequest;
 import com.campus.yujianhaowu.model.vo.ReviewVO;
@@ -64,7 +63,7 @@ public class ReviewController {
     public Result<ReviewVO> createReview(
             @RequestBody @Validated ReviewCreateRequest request,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         ReviewVO review = reviewService.createReview(request, userId);
         return Result.success(review);
     }
@@ -74,7 +73,7 @@ public class ReviewController {
     public Result<ReviewReplyVO> replyReview(
             @RequestBody @Validated ReviewReplyRequest request,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         ReviewReplyVO reply = reviewService.replyReview(request, userId);
         return Result.success(reply);
     }
@@ -84,7 +83,7 @@ public class ReviewController {
     public Result<Void> deleteReview(
             @Parameter(description = "评价 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         reviewService.deleteReview(id, userId);
         return Result.success(null);
     }
@@ -94,7 +93,7 @@ public class ReviewController {
     public Result<Void> deleteReply(
             @Parameter(description = "回复 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         reviewService.deleteReply(id, userId);
         return Result.success(null);
     }
@@ -104,7 +103,7 @@ public class ReviewController {
     public Result<Void> likeReview(
             @Parameter(description = "评价 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         reviewService.likeReview(id, userId);
         return Result.success(null);
     }
@@ -114,7 +113,7 @@ public class ReviewController {
     public Result<Void> unlikeReview(
             @Parameter(description = "评价 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         reviewService.unlikeReview(id, userId);
         return Result.success(null);
     }
@@ -124,7 +123,7 @@ public class ReviewController {
     public Result<Boolean> isUserLikedReview(
             @Parameter(description = "评价 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
+        Long userId = (Long) httpRequest.getAttribute("userId");
         boolean liked = reviewService.isUserLikedReview(id, userId);
         return Result.success(liked);
     }

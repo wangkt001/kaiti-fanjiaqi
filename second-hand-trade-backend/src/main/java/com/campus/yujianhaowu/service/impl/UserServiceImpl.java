@@ -12,17 +12,14 @@ import com.campus.yujianhaowu.model.dto.RegisterRequest;
 import com.campus.yujianhaowu.model.entity.User;
 import com.campus.yujianhaowu.model.vo.UserVO;
 import com.campus.yujianhaowu.service.UserService;
-import com.campus.yujianhaowu.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 用户服务实现类
@@ -37,10 +34,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
-    private final RedisTemplate<String, String> redisTemplate;
-
-    private static final String REDIS_TOKEN_PREFIX = "token:";
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -61,22 +54,12 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(ResultCode.USER_DISABLED);
         }
 
-        // 生成 Token
-        String token = jwtUtil.generateToken(user.getId());
-        String refreshToken = jwtUtil.generateRefreshToken(user.getId());
-
-        // 存储 Token 到 Redis
-        String redisKey = REDIS_TOKEN_PREFIX + user.getId();
-        redisTemplate.opsForValue().set(redisKey, token, 30, TimeUnit.MINUTES);
-
         // 更新最后登录信息
         user.setLastLoginAt(java.time.LocalDateTime.now());
         userMapper.updateById(user);
 
         // 返回结果
         Map<String, Object> result = new HashMap<>();
-        result.put("token", token);
-        result.put("refreshToken", refreshToken);
         result.put("userInfo", convertToVO(user));
 
         return result;
@@ -110,22 +93,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(Long userId) {
-        String redisKey = REDIS_TOKEN_PREFIX + userId;
-        redisTemplate.delete(redisKey);
         log.info("用户登出成功，userId: {}", userId);
-    }
-
-    @Override
-    public String refreshToken(String refreshToken) {
-        try {
-            Long userId = jwtUtil.validateToken(refreshToken);
-            if (userId == null) {
-                throw new BusinessException(ResultCode.UNAUTHORIZED);
-            }
-            return jwtUtil.generateToken(userId);
-        } catch (Exception e) {
-            throw new BusinessException(ResultCode.UNAUTHORIZED);
-        }
     }
 
     @Override

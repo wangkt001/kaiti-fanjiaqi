@@ -57,7 +57,7 @@ export interface OrderCheckoutInfo {
  */
 export function createOrder(data: OrderCreateParams) {
   return request<ApiResponse<string>>({
-    url: '/api/orders',
+    url: '/orders',
     method: 'post',
     data,
   })
@@ -72,7 +72,7 @@ export function getOrderList(params: {
   size: number
 }) {
   return request<ApiResponse<PageResult<Order>>>({
-    url: '/api/orders',
+    url: '/orders',
     method: 'get',
     params,
   })
@@ -83,7 +83,7 @@ export function getOrderList(params: {
  */
 export function getOrderDetail(id: number) {
   return request<ApiResponse<Order>>({
-    url: `/api/orders/${id}`,
+    url: `/orders/${id}`,
     method: 'get',
   })
 }
@@ -93,7 +93,7 @@ export function getOrderDetail(id: number) {
  */
 export function cancelOrder(id: number) {
   return request<ApiResponse<void>>({
-    url: `/api/orders/${id}/cancel`,
+    url: `/orders/${id}/cancel`,
     method: 'put',
   })
 }
@@ -123,7 +123,7 @@ export function deleteOrder(id: number) {
  */
 export function getCheckoutInfo(cartItemIds: number[]) {
   return request<ApiResponse<OrderCheckoutInfo>>({
-    url: '/api/cart/checkout',
+    url: '/cart/checkout',
     method: 'post',
     params: {
       cartItemIds,
@@ -136,7 +136,7 @@ export function getCheckoutInfo(cartItemIds: number[]) {
  */
 export function payOrder(orderNo: string, paymentType: number) {
   return request<ApiResponse<void>>({
-    url: '/api/orders/pay',
+    url: '/orders/pay',
     method: 'post',
     data: {
       orderNo,
