@@ -50,7 +50,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/files/**",
                         "/api/categories/**",
                         "/api/tags/**",
-                        "/api/products/**",
+                        // 以下接口不需要认证
                         "/api/cultural-contents/**",
                         "/api/content-comments/**");
     }

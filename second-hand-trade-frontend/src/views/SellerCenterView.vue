@@ -463,6 +463,19 @@ const handleSubmit = async () => {
     return;
   }
 
+  // 先验证当前用户是否是卖家
+  try {
+    const userData = await getCurrentUser();
+    if (!userData || userData.role !== "seller") {
+      ElMessage.warning("您的账号还不是卖家，请先申请入驻");
+      return;
+    }
+  } catch (error) {
+    console.error("获取用户信息失败:", error);
+    ElMessage.error("获取用户信息失败，请重新登录");
+    return;
+  }
+
   submitting.value = true;
 
   try {
@@ -502,6 +515,20 @@ const handlePublish = async () => {
 
   await publishFormRef.value.validate(async (valid: boolean) => {
     if (!valid) return;
+
+    // 先验证当前用户是否是卖家
+    try {
+      const userData = await getCurrentUser();
+      console.log("获取用户信息:", userData);
+      if (!userData || userData.role !== "seller") {
+        ElMessage.warning("您的账号还不是卖家，请先申请入驻");
+        return;
+      }
+    } catch (error) {
+      console.error("获取用户信息失败:", error);
+      ElMessage.error("获取用户信息失败，请重新登录");
+      return;
+    }
 
     publishing.value = true;
 
@@ -552,8 +579,7 @@ onMounted(() => {
 // 刷新用户信息
 const refreshUserInfo = async () => {
   try {
-    const response = await getCurrentUser();
-    const userData = response.data;
+    const userData = await getCurrentUser();
 
     if (userData) {
       // 更新 store 中的用户信息

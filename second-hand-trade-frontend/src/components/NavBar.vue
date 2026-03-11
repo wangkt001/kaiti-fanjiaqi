@@ -105,7 +105,6 @@ import { getCartCount } from "@/api/modules/cart";
 
 const router = useRouter();
 const userStore = useUserStore();
-
 const searchKeyword = ref("");
 const cartCount = ref(0);
 const messageCount = ref(0);

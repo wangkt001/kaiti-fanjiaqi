@@ -3,6 +3,8 @@ package com.campus.yujianhaowu.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campus.yujianhaowu.common.PageResult;
 import com.campus.yujianhaowu.common.Result;
+import com.campus.yujianhaowu.common.ResultCode;
+import com.campus.yujianhaowu.exception.BusinessException;
 import com.campus.yujianhaowu.model.entity.Product;
 import com.campus.yujianhaowu.model.vo.ProductVO;
 import com.campus.yujianhaowu.service.ProductService;
@@ -73,7 +75,14 @@ public class ProductController {
     @PostMapping
     @Operation(summary = "创建商品")
     public Result<Long> createProduct(@RequestBody Product product, HttpServletRequest request) {
-        Long sellerId = (Long) request.getAttribute("userId");
+        // 直接从请求头获取 userId（与 UserController 保持一致）
+        String userIdStr = request.getHeader("X-User-Id");
+
+        if (userIdStr == null || userIdStr.isEmpty()) {
+            throw new BusinessException(ResultCode.UNAUTHORIZED);
+        }
+
+        Long sellerId = Long.parseLong(userIdStr);
         return Result.success(productService.createProduct(product, sellerId));
     }
 
@@ -110,7 +119,15 @@ public class ProductController {
             @RequestParam(required = false) String status,
             HttpServletRequest request) {
 
-        Long sellerId = (Long) request.getAttribute("userId");
+        // 直接从请求头获取 userId（与 UserController 保持一致）
+        String userIdStr = request.getHeader("X-User-Id");
+
+        if (userIdStr == null || userIdStr.isEmpty()) {
+            throw new BusinessException(ResultCode.UNAUTHORIZED);
+        }
+
+        Long sellerId = Long.parseLong(userIdStr);
+
         Page<ProductVO> page = productService.listSellerProducts(current, size, sellerId, status);
         PageResult<ProductVO> result = PageResult.of(
                 page.getRecords(),

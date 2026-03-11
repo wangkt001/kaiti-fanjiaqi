@@ -68,7 +68,18 @@ public class ProductServiceImpl implements ProductService {
     public Long createProduct(Product product, Long sellerId) {
         // 验证卖家身份
         User seller = userService.getById(sellerId);
-        if (seller == null || !"seller".equals(seller.getRole())) {
+        
+        if (seller == null) {
+            log.warn("用户不存在，sellerId: {}", sellerId);
+            throw new BusinessException(ResultCode.USER_NOT_SELLER);
+        }
+        
+        log.info("创建商品 - userId: {}, username: {}, role: {}", 
+                seller.getId(), seller.getUsername(), seller.getRole());
+        
+        if (!"seller".equals(seller.getRole())) {
+            log.warn("用户不是卖家 - userId: {}, username: {}, role: {}", 
+                    seller.getId(), seller.getUsername(), seller.getRole());
             throw new BusinessException(ResultCode.USER_NOT_SELLER);
         }
 

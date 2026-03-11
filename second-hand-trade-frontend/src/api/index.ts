@@ -56,7 +56,7 @@ service.interceptors.response.use(
   (response: AxiosResponse<ApiResponse>) => {
     const res = response.data
     
-    // 如果返回的状态码不是 200，说明接口有错误
+    // 如果返回的业务状态码不是 200，说明接口有错误
     if (res.code !== 200) {
       // 401: 未授权
       if (res.code === 401) {

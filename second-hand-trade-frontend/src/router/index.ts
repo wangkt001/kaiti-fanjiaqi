@@ -151,10 +151,8 @@ router.beforeEach(async (to, from, next) => {
     try {
       // 刷新用户信息
       const userStore = useUserStore()
-      const response = await getCurrentUser()
-      console.log('路由守卫：API 响应', response)
-      
-      const userData = response.data
+      const userData = await getCurrentUser()
+      console.log('路由守卫：API 响应', userData)
       console.log('路由守卫：用户数据', userData)
       console.log('路由守卫：用户角色', userData?.role)
       
