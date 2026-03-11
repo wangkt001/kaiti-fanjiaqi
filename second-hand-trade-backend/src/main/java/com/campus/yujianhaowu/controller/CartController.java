@@ -1,6 +1,7 @@
 package com.campus.yujianhaowu.controller;
 
 import com.campus.yujianhaowu.common.Result;
+import com.campus.yujianhaowu.interceptor.AuthInterceptor;
 import com.campus.yujianhaowu.model.vo.CartItemVO;
 import com.campus.yujianhaowu.service.CartService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +26,7 @@ public class CartController {
     @GetMapping
     @Operation(summary = "获取购物车列表")
     public Result<List<CartItemVO>> getCartItems(HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
         List<CartItemVO> items = cartService.getCartItems(userId);
         return Result.success(items);
     }
@@ -33,7 +34,7 @@ public class CartController {
     @GetMapping("/count")
     @Operation(summary = "获取购物车商品数量")
     public Result<Integer> getCartCount(HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
         Integer count = cartService.getCartCount(userId);
         return Result.success(count);
     }
@@ -44,7 +45,7 @@ public class CartController {
             @Parameter(description = "商品 ID") @RequestParam Long productId,
             @Parameter(description = "数量") @RequestParam(defaultValue = "1") Integer quantity,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
         CartItemVO item = cartService.addToCart(userId, productId, quantity);
         return Result.success(item);
     }
@@ -55,7 +56,7 @@ public class CartController {
             @Parameter(description = "商品 ID") @RequestParam Long productId,
             @Parameter(description = "数量") @RequestParam Integer quantity,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
         cartService.updateQuantity(userId, productId, quantity);
         return Result.success(null);
     }
@@ -66,7 +67,7 @@ public class CartController {
             @Parameter(description = "商品 ID") @RequestParam Long productId,
             @Parameter(description = "是否选中") @RequestParam Boolean selected,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
         cartService.selectItem(userId, productId, selected);
         return Result.success(null);
     }
@@ -76,7 +77,7 @@ public class CartController {
     public Result<Void> selectAll(
             @Parameter(description = "是否全选") @RequestParam Boolean selected,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
         cartService.selectAll(userId, selected);
         return Result.success(null);
     }
@@ -86,7 +87,7 @@ public class CartController {
     public Result<Void> deleteItem(
             @Parameter(description = "商品 ID") @RequestParam Long productId,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
         cartService.deleteItem(userId, productId);
         return Result.success(null);
     }
@@ -94,7 +95,7 @@ public class CartController {
     @DeleteMapping("/clear")
     @Operation(summary = "清空购物车")
     public Result<Void> clearCart(HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
         cartService.clearCart(userId);
         return Result.success(null);
     }
@@ -104,7 +105,7 @@ public class CartController {
     public Result<Map<String, Object>> checkout(
             @Parameter(description = "购物车项 ID 列表") @RequestParam List<Long> cartItemIds,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = (Long) httpRequest.getAttribute(AuthInterceptor.USER_ID_ATTR);
         // TODO: 实现结算逻辑
         Map<String, Object> result = new HashMap<>();
         result.put("totalAmount", 0);

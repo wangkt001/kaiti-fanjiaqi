@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/cultural-contents")
+@RequestMapping("/cultural-contents")
 @RequiredArgsConstructor
 @Tag(name = "文化资讯管理", description = "文化资讯相关接口")
 public class CulturalContentController {
