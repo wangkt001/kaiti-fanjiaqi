@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { useUserStore } from '@/store/user'
+import { getCurrentUser } from '@/api/modules/auth'
+import { ElMessage } from 'element-plus'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -130,7 +133,7 @@ const router = createRouter({
 })
 
 // 路由守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // 设置页面标题
   document.title = `${to.meta.title || '豫见好物'} - 河南文创产品销售平台`
   
@@ -145,8 +148,34 @@ router.beforeEach((to, from, next) => {
   
   // 检查是否需要卖家权限
   if (to.meta.requiresSeller) {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
-    if (userInfo.role !== 'seller') {
+    try {
+      // 刷新用户信息
+      const userStore = useUserStore()
+      const response = await getCurrentUser()
+      console.log('路由守卫：API 响应', response)
+      
+      const userData = response.data
+      console.log('路由守卫：用户数据', userData)
+      console.log('路由守卫：用户角色', userData?.role)
+      
+      if (userData) {
+        // 更新 store 中的用户信息
+        userStore.setUserInfo(userData)
+        console.log('路由守卫：用户信息已刷新', userData)
+      }
+      
+      // 检查角色
+      if (userData?.role !== 'seller') {
+        console.warn('路由守卫：角色不是 seller，当前角色:', userData?.role)
+        ElMessage.warning('您的账号还不是卖家，请先申请入驻')
+        next({ name: 'SellerApply' })
+        return
+      }
+      
+      console.log('路由守卫：角色验证通过，允许访问')
+    } catch (error) {
+      console.error('路由守卫：获取用户信息失败:', error)
+      ElMessage.error('获取用户信息失败，请重新登录')
       next({ name: 'Home' })
       return
     }

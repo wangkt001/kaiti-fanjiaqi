@@ -37,3 +37,10 @@ export function register(data: RegisterParams) {
 export function logout() {
   return http.post('/auth/logout');
 }
+
+/**
+ * 获取当前用户信息
+ */
+export function getCurrentUser() {
+  return http.get('/users/profile');
+}

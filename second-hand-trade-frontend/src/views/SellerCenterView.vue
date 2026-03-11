@@ -52,6 +52,145 @@
           </div>
         </el-tab-pane>
 
+        <!-- 发布商品 -->
+        <el-tab-pane label="发布商品" name="publish">
+          <div class="tab-content">
+            <div class="publish-form-container">
+              <el-form
+                ref="publishFormRef"
+                :model="publishForm"
+                label-width="120px"
+                style="max-width: 600px"
+              >
+                <el-form-item
+                  label="商品名称"
+                  prop="name"
+                  :rules="{
+                    required: true,
+                    message: '请输入商品名称',
+                    trigger: 'blur',
+                  }"
+                >
+                  <el-input
+                    v-model="publishForm.name"
+                    placeholder="请输入商品名称"
+                    maxlength="100"
+                    show-word-limit
+                  />
+                </el-form-item>
+
+                <el-form-item
+                  label="商品描述"
+                  prop="description"
+                  :rules="{
+                    required: true,
+                    message: '请输入商品描述',
+                    trigger: 'blur',
+                  }"
+                >
+                  <el-input
+                    v-model="publishForm.description"
+                    type="textarea"
+                    :rows="4"
+                    placeholder="请输入商品描述"
+                    maxlength="1000"
+                    show-word-limit
+                  />
+                </el-form-item>
+
+                <el-form-item
+                  label="商品价格"
+                  prop="price"
+                  :rules="{
+                    required: true,
+                    type: 'number',
+                    min: 0.01,
+                    message: '请输入正确的价格',
+                    trigger: 'blur',
+                  }"
+                >
+                  <el-input-number
+                    v-model="publishForm.price"
+                    :min="0.01"
+                    :max="999999"
+                    :precision="2"
+                    :step="0.1"
+                    placeholder="请输入价格"
+                    style="width: 100%"
+                  />
+                </el-form-item>
+
+                <el-form-item
+                  label="商品库存"
+                  prop="stock"
+                  :rules="{
+                    required: true,
+                    type: 'number',
+                    min: 0,
+                    message: '请输入正确的库存',
+                    trigger: 'blur',
+                  }"
+                >
+                  <el-input-number
+                    v-model="publishForm.stock"
+                    :min="0"
+                    :max="9999"
+                    placeholder="请输入库存"
+                    style="width: 100%"
+                  />
+                </el-form-item>
+
+                <el-form-item
+                  label="商品分类"
+                  prop="categoryId"
+                  :rules="{
+                    required: true,
+                    message: '请选择商品分类',
+                    trigger: 'change',
+                  }"
+                >
+                  <el-select
+                    v-model="publishForm.categoryId"
+                    placeholder="请选择商品分类"
+                    style="width: 100%"
+                  >
+                    <el-option label="传统工艺品" :value="1" />
+                    <el-option label="文化创意产品" :value="2" />
+                    <el-option label="非遗传承" :value="3" />
+                    <el-option label="博物馆文创" :value="4" />
+                    <el-option label="地方特色" :value="5" />
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item label="商品图片">
+                  <el-upload
+                    action="#"
+                    list-type="picture-card"
+                    :auto-upload="false"
+                    :limit="1"
+                  >
+                    <el-icon><Plus /></el-icon>
+                  </el-upload>
+                  <div class="form-tip">
+                    请上传图片，支持 jpg/png 格式，大小不超过 2MB
+                  </div>
+                </el-form-item>
+
+                <el-form-item>
+                  <el-button
+                    type="primary"
+                    :loading="publishing"
+                    @click="handlePublish"
+                  >
+                    立即发布
+                  </el-button>
+                  <el-button @click="resetPublishForm">重置</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+          </div>
+        </el-tab-pane>
+
         <!-- 订单管理 -->
         <el-tab-pane label="订单管理" name="orders">
           <div class="tab-content">
@@ -176,6 +315,11 @@
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import NavBar from "@/components/NavBar.vue";
+import { createGoods } from "@/api/modules/goods";
+import { getCurrentUser } from "@/api/modules/auth";
+import { useUserStore } from "@/store/user";
+
+const userStore = useUserStore();
 
 const activeTab = ref("products");
 const loading = ref(false);
@@ -220,6 +364,19 @@ const productForm = reactive({
   stock: 0,
   categoryId: 1,
 });
+
+// 发布商品表单
+const publishForm = reactive({
+  name: "",
+  description: "",
+  price: 0,
+  stock: 0,
+  categoryId: 1,
+});
+
+// 发布商品相关状态
+const publishing = ref(false);
+const publishFormRef = ref();
 
 const getStatusType = (status: string) => {
   const typeMap: Record<string, any> = {
@@ -301,12 +458,34 @@ const handleSubmit = async () => {
     return;
   }
 
+  if (productForm.price <= 0 || productForm.stock < 0) {
+    ElMessage.warning("价格和库存必须大于 0");
+    return;
+  }
+
   submitting.value = true;
-  setTimeout(() => {
+
+  try {
+    // 构造提交数据
+    const submitData = {
+      name: productForm.name,
+      description: productForm.description,
+      price: productForm.price,
+      stock: productForm.stock,
+      categoryId: productForm.categoryId,
+    };
+
+    await createGoods(submitData);
+
     ElMessage.success("发布成功");
     showAddDialog.value = false;
+    // 这里可以刷新商品列表
+  } catch (error) {
+    console.error("发布商品失败:", error);
+    ElMessage.error("发布失败，请稍后重试");
+  } finally {
     submitting.value = false;
-  }, 500);
+  }
 };
 
 const resetForm = () => {
@@ -317,10 +496,81 @@ const resetForm = () => {
   productForm.categoryId = 1;
 };
 
+// 处理发布商品
+const handlePublish = async () => {
+  if (!publishFormRef.value) return;
+
+  await publishFormRef.value.validate(async (valid: boolean) => {
+    if (!valid) return;
+
+    publishing.value = true;
+
+    try {
+      const submitData = {
+        name: publishForm.name,
+        description: publishForm.description,
+        price: publishForm.price,
+        stock: publishForm.stock,
+        categoryId: publishForm.categoryId,
+      };
+
+      await createGoods(submitData);
+
+      ElMessage.success("发布成功");
+      resetPublishForm();
+      // 切换到商品管理标签页
+      activeTab.value = "products";
+    } catch (error) {
+      console.error("发布商品失败:", error);
+      ElMessage.error("发布失败，请稍后重试");
+    } finally {
+      publishing.value = false;
+    }
+  });
+};
+
+// 重置发布表单
+const resetPublishForm = () => {
+  publishForm.name = "";
+  publishForm.description = "";
+  publishForm.price = 0;
+  publishForm.stock = 0;
+  publishForm.categoryId = 1;
+  if (publishFormRef.value) {
+    publishFormRef.value.clearValidate();
+  }
+};
+
 onMounted(() => {
   // 简化版：使用模拟数据，不请求后端
   console.log("卖家中心已加载");
+
+  // 刷新用户信息，确保角色是最新的
+  refreshUserInfo();
 });
+
+// 刷新用户信息
+const refreshUserInfo = async () => {
+  try {
+    const response = await getCurrentUser();
+    const userData = response.data;
+
+    if (userData) {
+      // 更新 store 中的用户信息
+      userStore.setUserInfo(userData);
+      console.log("用户信息已刷新:", userData);
+
+      // 检查角色是否为卖家
+      if (userData.role !== "seller") {
+        ElMessage.warning("您的账号还不是卖家，请先申请入驻");
+        // 可以重定向到申请页面
+        // router.push('/seller/apply');
+      }
+    }
+  } catch (error) {
+    console.error("获取用户信息失败:", error);
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -353,5 +603,15 @@ onMounted(() => {
 
 .toolbar {
   margin-bottom: 20px;
+}
+
+.publish-form-container {
+  padding: 20px 0;
+
+  .form-tip {
+    font-size: 12px;
+    color: #999;
+    margin-top: 8px;
+  }
 }
 </style>

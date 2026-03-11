@@ -32,7 +32,14 @@ public class UserController {
     @GetMapping("/profile")
     @Operation(summary = "获取当前用户信息")
     public Result<UserVO> getCurrentUser(HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
+        // 直接从请求头获取 userId
+        String userIdStr = request.getHeader("X-User-Id");
+
+        if (userIdStr == null || userIdStr.isEmpty()) {
+            throw new BusinessException(ResultCode.UNAUTHORIZED);
+        }
+
+        Long userId = Long.parseLong(userIdStr);
         return Result.success(userService.getCurrentUser(userId));
     }
 

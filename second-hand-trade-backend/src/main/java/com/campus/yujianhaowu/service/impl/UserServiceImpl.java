@@ -169,8 +169,15 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(ResultCode.USER_NOT_FOUND);
         }
 
+        // 设置卖家状态和申请信息
         user.setSellerStatus("pending");
         user.setSellerInfo(JSONUtil.toJsonStr(sellerInfo));
+
+        // 直接将角色从 buyer 改为 seller
+        if ("buyer".equals(user.getRole())) {
+            user.setRole("seller");
+        }
+
         userMapper.updateById(user);
     }
 
