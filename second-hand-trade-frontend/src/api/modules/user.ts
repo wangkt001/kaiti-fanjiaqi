@@ -55,8 +55,8 @@ export const changePassword = (data: { oldPassword: string; newPassword: string 
 /**
  * 申请成为卖家
  */
-export const applySeller = (data: { sellerInfo: any }) => {
-  return http.post<ApiResponse>('/users/apply-seller', data)
+export const applySeller = (sellerInfo: any) => {
+  return http.post<ApiResponse>('/users/apply-seller', sellerInfo)
 }
 
 /**

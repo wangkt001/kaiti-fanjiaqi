@@ -26,29 +26,45 @@ public class AuthInterceptor implements HandlerInterceptor {
         // 从请求头获取 userId
         String userIdStr = request.getHeader(USER_ID_HEADER);
 
+        System.out.println("=== [AuthInterceptor] ===");
+        System.out.println("请求 URL: " + request.getRequestURI());
+        System.out.println("请求头 X-User-Id: " + userIdStr);
+
         if (!StringUtils.hasText(userIdStr)) {
+            System.out.println("❌ 未找到 X-User-Id 请求头");
             throw new BusinessException(ResultCode.UNAUTHORIZED);
         }
+
+        System.out.println("✅ 找到 X-User-Id: " + userIdStr);
 
         try {
             Long userId = Long.parseLong(userIdStr);
 
+            System.out.println("解析后的 userId: " + userId);
+
             if (userId <= 0) {
+                System.out.println("❌ userId <= 0");
                 throw new BusinessException(ResultCode.UNAUTHORIZED);
             }
 
             // 将用户 ID 存入请求属性
             request.setAttribute("userId", userId);
 
+            System.out.println("✅ 已设置 request.userId = " + userId);
+            System.out.println("验证 request.getAttribute('userId'): " + request.getAttribute("userId"));
+            System.out.println("=========================");
+
             // 设置到用户上下文
             UserContextUtil.setCurrentUserId(userId);
 
             return true;
         } catch (NumberFormatException e) {
+            System.out.println("❌ NumberFormatException: " + e.getMessage());
             throw new BusinessException(ResultCode.UNAUTHORIZED);
         } catch (BusinessException e) {
             throw e;
         } catch (Exception e) {
+            System.out.println("❌ Exception: " + e.getMessage());
             throw new BusinessException(ResultCode.UNAUTHORIZED);
         }
     }

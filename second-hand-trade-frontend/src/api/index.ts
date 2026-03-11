@@ -15,18 +15,25 @@ const service: AxiosInstance = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {
+    // 使用 userStore 获取 userId
+    const userStore = useUserStore()
+    const uid = userStore.userId
+    
+    console.log('🔍 [请求拦截器]')
+    console.log('  URL:', config.url)
+    console.log('  userId from store:', uid)
+    console.log('  userInfo:', userStore.userInfo)
+    
     // 添加 userId 到请求头
-    const userInfo = localStorage.getItem('userInfo')
-    if (userInfo) {
-      try {
-        const parsed = JSON.parse(userInfo)
-        if (parsed && parsed.id) {
-          config.headers['X-User-Id'] = String(parsed.id)
-        }
-      } catch (e) {
-        console.error('解析用户信息失败', e)
-      }
+    if (uid) {
+      config.headers['X-User-Id'] = String(uid)
+      console.log('  ✅ 已添加 X-User-Id:', uid)
+    } else {
+      console.log('  ⚠️ 未登录或 userId 为空')
     }
+    
+    console.log('  请求头:', config.headers)
+    console.log('------------------')
     
     // 添加请求时间戳（防止缓存）
     if (config.method === 'get') {

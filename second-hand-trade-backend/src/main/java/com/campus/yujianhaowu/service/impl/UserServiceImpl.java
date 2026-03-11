@@ -98,7 +98,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserVO getCurrentUser(Long userId) {
+        log.info("=== [getCurrentUser] userId: {}", userId);
         User user = userMapper.selectById(userId);
+        log.info("查询结果：{}", user == null ? "null" : "user found: " + user.getUsername());
         if (user == null) {
             throw new BusinessException(ResultCode.USER_NOT_FOUND);
         }

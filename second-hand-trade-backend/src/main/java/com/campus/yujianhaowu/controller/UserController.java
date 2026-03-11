@@ -1,6 +1,8 @@
 package com.campus.yujianhaowu.controller;
 
 import com.campus.yujianhaowu.common.Result;
+import com.campus.yujianhaowu.common.ResultCode;
+import com.campus.yujianhaowu.exception.BusinessException;
 import com.campus.yujianhaowu.model.entity.User;
 import com.campus.yujianhaowu.model.vo.UserVO;
 import com.campus.yujianhaowu.service.UserService;
@@ -68,7 +70,14 @@ public class UserController {
     public Result<Void> applySeller(
             @RequestBody Map<String, Object> sellerInfo,
             HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
+        // 直接从请求头获取 userId
+        String userIdStr = request.getHeader("X-User-Id");
+
+        if (userIdStr == null || userIdStr.isEmpty()) {
+            throw new BusinessException(ResultCode.UNAUTHORIZED);
+        }
+
+        Long userId = Long.parseLong(userIdStr);
         userService.applySeller(userId, sellerInfo);
         return Result.success();
     }
@@ -76,7 +85,14 @@ public class UserController {
     @GetMapping("/seller-status")
     @Operation(summary = "获取卖家状态")
     public Result<Map<String, String>> getSellerStatus(HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
+        // 直接从请求头获取 userId
+        String userIdStr = request.getHeader("X-User-Id");
+
+        if (userIdStr == null || userIdStr.isEmpty()) {
+            throw new BusinessException(ResultCode.UNAUTHORIZED);
+        }
+
+        Long userId = Long.parseLong(userIdStr);
         return Result.success(userService.getSellerStatus(userId));
     }
 }
