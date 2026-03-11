@@ -217,11 +217,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
-import { applySeller } from "@/api/modules/user";
+import { applySeller, getSellerApplyInfo } from "@/api/modules/user";
 
 const router = useRouter();
 
@@ -410,6 +410,43 @@ const submitApply = async () => {
 const goBack = () => {
   router.back();
 };
+
+// 加载卖家申请信息
+const loadSellerApplyInfo = async () => {
+  try {
+    const response = await getSellerApplyInfo();
+    console.log("加载申请信息响应:", response);
+
+    // response.data 是 ApiResponse 对象，response.data.data 才是实际数据
+    const applyData = response;
+    console.log("申请数据:", applyData);
+
+    if (applyData && applyData.status) {
+      // 回显表单数据
+      applyForm.realName = applyData.realName || "";
+      applyForm.idCard = applyData.idCard || "";
+      applyForm.phone = applyData.phone || "";
+      applyForm.wechat = applyData.wechat || "";
+      applyForm.shopName = applyData.shopName || "";
+      applyForm.shopType = applyData.shopType || "";
+      applyForm.mainCategory = applyData.mainCategory || "";
+      applyForm.shopDescription = applyData.shopDescription || "";
+      applyForm.shopLogo = applyData.shopLogo || "";
+      applyForm.certificates = applyData.certificates || [];
+      applyForm.remark = applyData.remark || "";
+
+      console.log("表单已回显:", applyForm);
+    }
+  } catch (error) {
+    console.error("加载申请信息失败:", error);
+    // 忽略错误，可能是第一次申请
+  }
+};
+
+// 组件加载时获取申请信息
+onMounted(() => {
+  loadSellerApplyInfo();
+});
 </script>
 
 <style lang="scss" scoped>

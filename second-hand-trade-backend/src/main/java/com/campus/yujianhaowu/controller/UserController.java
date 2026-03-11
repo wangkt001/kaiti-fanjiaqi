@@ -95,4 +95,18 @@ public class UserController {
         Long userId = Long.parseLong(userIdStr);
         return Result.success(userService.getSellerStatus(userId));
     }
+
+    @GetMapping("/seller-apply-info")
+    @Operation(summary = "获取卖家申请信息")
+    public Result<Map<String, Object>> getSellerApplyInfo(HttpServletRequest request) {
+        // 直接从请求头获取 userId
+        String userIdStr = request.getHeader("X-User-Id");
+
+        if (userIdStr == null || userIdStr.isEmpty()) {
+            throw new BusinessException(ResultCode.UNAUTHORIZED);
+        }
+
+        Long userId = Long.parseLong(userIdStr);
+        return Result.success(userService.getSellerApplyInfo(userId));
+    }
 }

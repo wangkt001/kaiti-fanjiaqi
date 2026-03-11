@@ -187,6 +187,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Map<String, Object> getSellerApplyInfo(Long userId) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", user.getSellerStatus());
+
+        // 解析 seller_info 字段
+        String sellerInfo = user.getSellerInfo();
+        if (sellerInfo != null && !sellerInfo.isEmpty()) {
+            try {
+                Map<String, Object> info = JSONUtil.toBean(sellerInfo, Map.class);
+                result.putAll(info);
+            } catch (Exception e) {
+                // 忽略解析错误
+            }
+        }
+
+        return result;
+    }
+
+    @Override
     public User getById(Long userId) {
         return userMapper.selectById(userId);
     }

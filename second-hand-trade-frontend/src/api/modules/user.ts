@@ -65,3 +65,10 @@ export const applySeller = (sellerInfo: any) => {
 export const getSellerStatus = () => {
   return http.get<ApiResponse<{ status: string; remark?: string }>>('/users/seller-status')
 }
+
+/**
+ * 获取卖家申请信息
+ */
+export const getSellerApplyInfo = () => {
+  return http.get<ApiResponse<any>>('/users/seller-apply-info')
+}

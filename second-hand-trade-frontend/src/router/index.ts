@@ -68,6 +68,12 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '个人中心', requiresAuth: true },
   },
   {
+    path: '/user-center',
+    name: 'UserCenterAlias',
+    component: () => import('@/views/UserCenterView.vue'),
+    meta: { title: '个人中心', requiresAuth: true },
+  },
+  {
     path: '/favorites',
     name: 'Favorites',
     component: () => import('@/views/FavoriteView.vue'),

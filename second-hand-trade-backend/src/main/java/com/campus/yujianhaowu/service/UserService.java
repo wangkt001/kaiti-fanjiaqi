@@ -89,6 +89,14 @@ public interface UserService {
     Map<String, String> getSellerStatus(Long userId);
 
     /**
+     * 获取卖家申请信息
+     *
+     * @param userId 用户 ID
+     * @return 卖家申请信息
+     */
+    Map<String, Object> getSellerApplyInfo(Long userId);
+
+    /**
      * 根据 ID 获取用户
      *
      * @param userId 用户 ID
