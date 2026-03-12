@@ -175,4 +175,33 @@ public class ProductController {
 
         return Result.success(result);
     }
+
+    // ==================== 后台管理接口 ====================
+
+    @GetMapping("/admin/pending")
+    @Operation(summary = "获取待审核商品列表")
+    public Result<PageResult<ProductVO>> listPendingProducts(
+            @RequestParam(defaultValue = "1") Long current,
+            @RequestParam(defaultValue = "10") Long size) {
+        Page<ProductVO> page = productService.listPendingProducts(current, size);
+        PageResult<ProductVO> result = PageResult.of(
+                page.getRecords(),
+                page.getTotal(),
+                page.getCurrent(),
+                page.getSize());
+        return Result.success(result);
+    }
+
+    @PutMapping("/admin/audit/{id}")
+    @Operation(summary = "审核商品")
+    public Result<Void> auditProduct(
+            @PathVariable Long id,
+            @RequestParam String status) {
+        // 验证状态参数
+        if (!"on_sale".equals(status) && !"offline".equals(status)) {
+            return Result.error(ResultCode.VALIDATION_ERROR.getCode(), "状态参数错误，只能是 on_sale 或 offline");
+        }
+        productService.auditProduct(id, status);
+        return Result.success();
+    }
 }

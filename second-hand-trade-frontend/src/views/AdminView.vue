@@ -117,20 +117,13 @@
 import { ref, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import NavBar from "@/components/NavBar.vue";
+import { getPendingProducts, auditProduct } from "@/api/modules/goods";
 
 const activeTab = ref("products");
 const loading = ref(false);
 
 // 审核列表
-const auditList = ref([
-  {
-    id: 1,
-    name: "待审核商品 1",
-    sellerName: "卖家 1",
-    price: 99.0,
-    status: "pending",
-  },
-]);
+const auditList = ref<any[]>([]);
 
 // 用户列表
 const userList = ref([
@@ -190,23 +183,55 @@ const getOrderStatusText = (status: number) => {
   return textMap[status] || "";
 };
 
+// 加载待审核商品列表
+const loadPendingProducts = async () => {
+  loading.value = true;
+  try {
+    const response = await getPendingProducts(1, 10);
+    auditList.value = response.records || [];
+  } catch (error) {
+    console.error("获取待审核商品失败:", error);
+    ElMessage.error("获取待审核商品失败");
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 审核通过
 const handleApprove = (row: any) => {
   ElMessageBox.confirm("确定要通过该商品审核吗？", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
-  }).then(() => {
-    ElMessage.success("审核通过");
+  }).then(async () => {
+    try {
+      await auditProduct(row.id, "on_sale");
+      ElMessage.success("审核通过");
+      // 重新加载列表
+      await loadPendingProducts();
+    } catch (error) {
+      console.error("审核失败:", error);
+      ElMessage.error("审核失败，请重试");
+    }
   });
 };
 
+// 审核拒绝
 const handleReject = (row: any) => {
   ElMessageBox.confirm("确定要拒绝该商品吗？", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
-  }).then(() => {
-    ElMessage.success("已拒绝");
+  }).then(async () => {
+    try {
+      await auditProduct(row.id, "offline");
+      ElMessage.success("已拒绝");
+      // 重新加载列表
+      await loadPendingProducts();
+    } catch (error) {
+      console.error("审核失败:", error);
+      ElMessage.error("审核失败，请重试");
+    }
   });
 };
 
@@ -226,7 +251,8 @@ const handleViewOrder = (row: any) => {
 };
 
 onMounted(() => {
-  // 简化版：使用模拟数据
+  // 加载待审核商品
+  loadPendingProducts();
   console.log("后台管理已加载");
 });
 </script>

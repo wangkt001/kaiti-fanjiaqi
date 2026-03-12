@@ -125,4 +125,21 @@ public interface ProductService {
      * @param quantity 数量
      */
     void incrementSalesCount(Long id, Integer quantity);
+
+    /**
+     * 获取待审核商品列表
+     *
+     * @param current 当前页
+     * @param size    每页大小
+     * @return 商品分页数据
+     */
+    Page<ProductVO> listPendingProducts(Long current, Long size);
+
+    /**
+     * 审核商品
+     *
+     * @param id     商品 ID
+     * @param status 审核状态（on_sale 表示通过，offline 表示拒绝）
+     */
+    void auditProduct(Long id, String status);
 }

@@ -68,17 +68,17 @@ public class ProductServiceImpl implements ProductService {
     public Long createProduct(Product product, Long sellerId) {
         // 验证卖家身份
         User seller = userService.getById(sellerId);
-        
+
         if (seller == null) {
             log.warn("用户不存在，sellerId: {}", sellerId);
             throw new BusinessException(ResultCode.USER_NOT_SELLER);
         }
-        
-        log.info("创建商品 - userId: {}, username: {}, role: {}", 
+
+        log.info("创建商品 - userId: {}, username: {}, role: {}",
                 seller.getId(), seller.getUsername(), seller.getRole());
-        
+
         if (!"seller".equals(seller.getRole())) {
-            log.warn("用户不是卖家 - userId: {}, username: {}, role: {}", 
+            log.warn("用户不是卖家 - userId: {}, username: {}, role: {}",
                     seller.getId(), seller.getUsername(), seller.getRole());
             throw new BusinessException(ResultCode.USER_NOT_SELLER);
         }
@@ -237,6 +237,42 @@ public class ProductServiceImpl implements ProductService {
             product.setStock(product.getStock() - quantity);
             productMapper.updateById(product);
         }
+    }
+
+    @Override
+    public Page<ProductVO> listPendingProducts(Long current, Long size) {
+        Page<Product> page = new Page<>(current, size);
+        LambdaQueryWrapper<Product> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Product::getStatus, "pending")
+                .orderByDesc(Product::getCreatedAt);
+
+        Page<Product> productPage = productMapper.selectPage(page, wrapper);
+        Page<ProductVO> voPage = new Page<>(current, size, productPage.getTotal());
+        voPage.setRecords(productPage.getRecords().stream()
+                .map(this::convertToVO)
+                .toList());
+        return voPage;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void auditProduct(Long id, String status) {
+        Product product = productMapper.selectById(id);
+        if (product == null) {
+            throw new BusinessException(ResultCode.PRODUCT_NOT_FOUND);
+        }
+
+        if (!"pending".equals(product.getStatus())) {
+            throw new BusinessException("该商品状态不是待审核状态");
+        }
+
+        product.setStatus(status);
+        if ("on_sale".equals(status)) {
+            product.setPublishedAt(LocalDateTime.now());
+        }
+        productMapper.updateById(product);
+
+        log.info("商品审核完成 - productId: {}, status: {}", id, status);
     }
 
     /**

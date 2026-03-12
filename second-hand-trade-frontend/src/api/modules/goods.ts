@@ -79,3 +79,21 @@ export const getHotGoods = (limit?: number) => {
 export const getNewGoods = (limit?: number) => {
   return http.get<ApiResponse<Goods[]>>('/products/new', { params: { limit } })
 }
+
+/**
+ * 后台管理：获取待审核商品列表
+ */
+export const getPendingProducts = (current: number, size: number) => {
+  return http.get<ApiResponse<PageResult<Goods>>>('/products/admin/pending', {
+    params: { current, size }
+  })
+}
+
+/**
+ * 后台管理：审核商品
+ */
+export const auditProduct = (id: number, status: string) => {
+  return http.put<ApiResponse>(`/products/admin/audit/${id}`, null, {
+    params: { status }
+  })
+}
