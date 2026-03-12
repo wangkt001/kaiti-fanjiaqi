@@ -178,6 +178,10 @@
                     list-type="picture-card"
                     :auto-upload="false"
                     :limit="1"
+                    :file-list="imageFileList"
+                    :on-change="handleImageChange"
+                    :on-remove="handleImageRemove"
+                    accept="image/png, image/jpeg, image/jpg"
                   >
                     <el-icon><Plus /></el-icon>
                   </el-upload>
@@ -407,7 +411,11 @@ const publishForm = reactive({
   price: 0,
   stock: 0,
   categoryId: 1,
+  imageUrl: "",
 });
+
+// 图片文件列表
+const imageFileList = ref<any[]>([]);
 
 // 发布商品相关状态
 const publishing = ref(false);
@@ -582,6 +590,7 @@ const handlePublish = async () => {
         price: publishForm.price,
         stock: publishForm.stock,
         categoryId: publishForm.categoryId,
+        imageUrl: publishForm.imageUrl,
       };
 
       await createGoods(submitData);
@@ -607,9 +616,33 @@ const resetPublishForm = () => {
   publishForm.price = 0;
   publishForm.stock = 0;
   publishForm.categoryId = 1;
+  publishForm.imageUrl = "";
+  imageFileList.value = [];
   if (publishFormRef.value) {
     publishFormRef.value.clearValidate();
   }
+};
+
+// 处理图片变化
+const handleImageChange = (file: any) => {
+  // 验证文件大小（2MB）
+  const maxSize = 2 * 1024 * 1024;
+  if (file.size > maxSize) {
+    ElMessage.error("图片大小不能超过 2MB");
+    return;
+  }
+
+  // 转换为 Base64
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+    publishForm.imageUrl = e.target.result;
+  };
+  reader.readAsDataURL(file.raw);
+};
+
+// 处理图片移除
+const handleImageRemove = () => {
+  publishForm.imageUrl = "";
 };
 
 onMounted(() => {

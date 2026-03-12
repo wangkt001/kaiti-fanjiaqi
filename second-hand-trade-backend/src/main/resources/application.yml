@@ -77,6 +77,8 @@ mybatis-plus:
       logic-not-delete-value: 0
       table-underline: true
     banner: false
+  # 启用自动更新表结构
+  schema: classpath:schema.sql
 
 jwt:
   secret: yujianhaowu2026henanculturalcreativeproductsplatform

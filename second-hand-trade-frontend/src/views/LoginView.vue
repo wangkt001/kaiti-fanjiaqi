@@ -146,7 +146,12 @@ const handleLogin = async () => {
       });
 
       // res 已经是解包后的数据，直接使用
-      const { userInfo } = res;
+      const { token, userInfo } = res;
+      
+      // 保存 token 到 localStorage
+      localStorage.setItem('token', token);
+      
+      // 保存用户信息到 store
       userStore.login(userInfo);
 
       ElMessage.success("登录成功");

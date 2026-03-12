@@ -3,7 +3,7 @@
     <!-- 商品图片 -->
     <div class="goods-image-wrapper">
       <el-image
-        :src="goods.images?.[0]?.imageUrl || '/placeholder.png'"
+        :src="goods.imageUrl || '/placeholder.png'"
         :alt="goods.name"
         class="goods-image"
         fit="cover"

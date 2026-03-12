@@ -70,6 +70,9 @@ public class Product extends BaseEntity {
     @Schema(description = "运费模板 ID")
     private Long freightTemplateId;
 
+    @Schema(description = "商品主图（Base64 编码或图片 ID）")
+    private String imageUrl;
+
     @Schema(description = "上架时间", accessMode = io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY)
     private LocalDateTime publishedAt;
 }

@@ -91,6 +91,11 @@ public class ProductServiceImpl implements ProductService {
             throw new BusinessException(ResultCode.USER_NOT_SELLER);
         }
 
+        // 处理 Base64 图片（如果是 Base64 格式，直接存储）
+        if (StrUtil.isNotBlank(product.getImageUrl()) && product.getImageUrl().startsWith("data:image")) {
+            log.info("检测到 Base64 图片，直接存储");
+        }
+
         product.setSellerId(sellerId);
         product.setStatus("pending"); // 待审核
         productMapper.insert(product);
@@ -355,7 +360,12 @@ public class ProductServiceImpl implements ProductService {
         vo.setCreatedAt(product.getCreatedAt());
         vo.setPublishedAt(product.getPublishedAt());
 
-        // TODO: 设置卖家信息、图片、标签、文化信息等
+        // 设置图片信息（Base64 直接返回）
+        if (StrUtil.isNotBlank(product.getImageUrl())) {
+            vo.setImageUrl(product.getImageUrl());
+        }
+
+        // TODO: 设置卖家信息、标签、文化信息等
 
         return vo;
     }
