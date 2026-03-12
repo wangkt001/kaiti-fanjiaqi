@@ -189,8 +189,8 @@ const loadGoodsList = async () => {
     if (filters.keyword) params.keyword = filters.keyword;
 
     const res = await getGoodsList(params);
-    goodsList.value = res.data.records;
-    pagination.total = res.data.total;
+    goodsList.value = res.records;
+    pagination.total = res.total;
   } catch (error) {
     console.error("加载商品列表失败", error);
   } finally {

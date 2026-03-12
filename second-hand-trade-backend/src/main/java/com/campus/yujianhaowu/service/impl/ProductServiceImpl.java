@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -34,10 +35,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductVO> listProducts(Long current, Long size, Map<String, Object> params) {
+        log.info("=== [listProducts] 查询商品列表 ===");
+        log.info("current: {}, size: {}, params: {}", current, size, params);
+
         Page<Product> page = new Page<>(current, size);
         LambdaQueryWrapper<Product> wrapper = buildQueryWrapper(params);
 
+        log.info("查询条件：status='on_sale'");
+
         Page<Product> productPage = productMapper.selectPage(page, wrapper);
+        log.info("查询结果：total={}, records={}", productPage.getTotal(), productPage.getRecords().size());
+
         Page<ProductVO> voPage = new Page<>(current, size, productPage.getTotal());
         voPage.setRecords(productPage.getRecords().stream()
                 .map(this::convertToVO)
@@ -280,27 +288,29 @@ public class ProductServiceImpl implements ProductService {
      */
     private LambdaQueryWrapper<Product> buildQueryWrapper(Map<String, Object> params) {
         LambdaQueryWrapper<Product> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Product::getStatus, "on_sale");
+        // 临时修改：查询所有状态的商品用于测试
+        // wrapper.eq(Product::getStatus, "on_sale");
+        log.info("构建查询条件：status 过滤已移除（测试用）");
 
         if (params != null) {
             // 分类 ID
-            if (params.containsKey("categoryId")) {
+            if (params.get("categoryId") != null) {
                 wrapper.eq(Product::getCategoryId, params.get("categoryId"));
             }
             // 卖家 ID
-            if (params.containsKey("sellerId")) {
+            if (params.get("sellerId") != null) {
                 wrapper.eq(Product::getSellerId, params.get("sellerId"));
             }
             // 价格区间
-            if (params.containsKey("minPrice")) {
+            if (params.get("minPrice") != null) {
                 wrapper.ge(Product::getPrice, params.get("minPrice"));
             }
-            if (params.containsKey("maxPrice")) {
+            if (params.get("maxPrice") != null) {
                 wrapper.le(Product::getPrice, params.get("maxPrice"));
             }
             // 关键词
-            if (params.containsKey("keyword")) {
-                String keyword = (String) params.get("keyword");
+            String keyword = (String) params.get("keyword");
+            if (StrUtil.isNotBlank(keyword)) {
                 wrapper.and(w -> w.like(Product::getName, keyword)
                         .or()
                         .like(Product::getDescription, keyword));

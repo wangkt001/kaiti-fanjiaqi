@@ -202,6 +202,8 @@ export interface CartItem {
 
 // 通用响应
 export interface ApiResponse<T = any> {
+  total: number
+  records: Goods[] | { id: number; name: string; description: string; price: number; originalPrice?: number | undefined; stock: number; categoryId: number; categoryName?: string | undefined; sellerId: number; sellerName?: string | undefined; shopName?: string | undefined; status: "pending" | "on_sale" | "sold_out" | "offline"; salesCount: number; viewCount: number; favoriteCount: number; hasSku: boolean; giftPackaging: boolean; customization: boolean; packagingFee?: number | undefined; images?: { id: number; productId: number; imageUrl: string; type: "main" | "detail"; sortOrder: number }[] | undefined; tags?: { id: number; name: string; description?: string | undefined; category?: string | undefined; iconUrl?: string | undefined; sortOrder: number; isHot: boolean; isActive: boolean }[] | undefined; culturalInfo?: { id: number; productId: number; culturalBackground?: string | undefined; craftDescription?: string | undefined; designer?: string | undefined; originPlace?: string | undefined; material?: string | undefined; culturalIp?: string | undefined; storyContent?: string | undefined } | undefined; createdAt: string; publishedAt?: string | undefined }[]
   code: number
   message: string
   data: T
