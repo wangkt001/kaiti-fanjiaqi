@@ -19,7 +19,7 @@ import { ref, watch } from "vue";
 import { Star, StarFilled } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import {
-  favorite,
+  addFavorite as favorite,
   unfavorite,
   getFavoriteStatus,
 } from "@/api/modules/favorite";

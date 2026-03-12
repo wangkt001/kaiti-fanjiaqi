@@ -58,13 +58,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       outDir: 'dist',
       assetsDir: 'static',
       sourcemap: false,
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: env.VITE_DROP_CONSOLE === 'true',
-          drop_debugger: true,
-        },
-      },
+      minify: 'esbuild',
       rollupOptions: {
         output: {
           manualChunks: {

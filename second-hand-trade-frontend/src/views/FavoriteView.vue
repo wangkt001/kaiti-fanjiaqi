@@ -61,7 +61,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-import { getFavoriteList, removeFavorite } from "@/api/modules/favorite";
+import { getFavoriteList, unfavorite as removeFavorite } from "@/api/modules/favorite";
 import type { FavoriteProduct } from "@/api/modules/favorite";
 
 const router = useRouter();

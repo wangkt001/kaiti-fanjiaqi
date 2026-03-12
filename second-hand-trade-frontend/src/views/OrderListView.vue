@@ -149,7 +149,8 @@ import {
   deleteOrder,
 } from "@/api/modules/order";
 import type { Order } from "@/api/modules/order";
-import defaultImage from "@/assets/default-image.png";
+
+const defaultImage = "https://placeholder.co/100x100?text=No+Image";
 
 const router = useRouter();
 

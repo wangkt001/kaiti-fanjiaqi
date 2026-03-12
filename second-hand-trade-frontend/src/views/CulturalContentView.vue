@@ -32,15 +32,15 @@
                 <span>展览资讯</span>
               </el-menu-item>
               <el-menu-item index="activity">
-                <el-icon><Celebration /></el-icon>
+                <el-icon><Present /></el-icon>
                 <span>活动公告</span>
               </el-menu-item>
               <el-menu-item index="news">
-                <el-icon><News /></el-icon>
+                <el-icon><Document /></el-icon>
                 <span>文化新闻</span>
               </el-menu-item>
               <el-menu-item index="story">
-                <el-icon><Reading /></el-icon>
+                <el-icon><Notebook /></el-icon>
                 <span>文化故事</span>
               </el-menu-item>
             </el-menu>
@@ -165,9 +165,9 @@ import {
   List,
   Medal,
   Picture,
-  Celebration,
-  News,
-  Reading,
+  Present,
+  Document,
+  Notebook,
   Search,
   User,
   View,

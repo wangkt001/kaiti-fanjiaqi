@@ -47,7 +47,7 @@ export const toggleGoodsStatus = (id: number, status: string) => {
  * 获取卖家商品列表
  */
 export const getSellerGoodsList = (params: PageParams & { [key: string]: any }) => {
-  return http.get<ApiResponse<PageResult<Goods>>>('/products/seller', { params })
+  return http.get<PageResult<Goods>>('/products/seller', { params })
 }
 
 /**

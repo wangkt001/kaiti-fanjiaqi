@@ -106,7 +106,8 @@ import {
   createComment,
   type ContentComment,
 } from "@/api/modules/contentComment";
-import defaultAvatar from "@/assets/default-avatar.png";
+
+const defaultAvatar = "https://placeholder.co/100x100?text=Avatar";
 
 const props = defineProps<{
   contentId: number;

@@ -49,6 +49,16 @@
                 </template>
               </el-table-column>
             </el-table>
+
+            <div class="pagination-container">
+              <el-pagination
+                v-model:current-page="currentPage"
+                v-model:page-size="pageSize"
+                :total="total"
+                layout="total, prev, pager, next, jumper"
+                @current-change="handlePageChange"
+              />
+            </div>
           </div>
         </el-tab-pane>
 
@@ -315,9 +325,15 @@
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import NavBar from "@/components/NavBar.vue";
-import { createGoods } from "@/api/modules/goods";
+import {
+  createGoods,
+  getSellerGoodsList,
+  deleteGoods,
+  updateGoods,
+} from "@/api/modules/goods";
 import { getCurrentUser } from "@/api/modules/auth";
 import { useUserStore } from "@/store/user";
+import type { Goods } from "@/types";
 
 const userStore = useUserStore();
 
@@ -327,16 +343,35 @@ const submitting = ref(false);
 const showAddDialog = ref(false);
 
 // 商品列表
-const productList = ref([
-  {
-    id: 1,
-    name: "示例商品",
-    price: 99.0,
-    stock: 100,
-    salesCount: 10,
-    status: "on_sale",
-  },
-]);
+const productList = ref<Goods[]>([]);
+const currentPage = ref(1);
+const pageSize = ref(10);
+const total = ref(0);
+
+// 获取卖家商品列表
+const fetchSellerProducts = async () => {
+  loading.value = true;
+  try {
+    const res = await getSellerGoodsList({
+      current: currentPage.value,
+      size: pageSize.value,
+    });
+    if (res) {
+      productList.value = res.records;
+      total.value = res.total;
+    }
+  } catch (error) {
+    console.error("获取商品列表失败:", error);
+    ElMessage.error("获取商品列表失败");
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
+  fetchSellerProducts();
+};
 
 // 订单列表
 const orderList = ref([
@@ -429,8 +464,15 @@ const handleDelete = (row: any) => {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
-  }).then(() => {
-    ElMessage.success("删除成功");
+  }).then(async () => {
+    try {
+      await deleteGoods(row.id);
+      ElMessage.success("删除成功");
+      fetchSellerProducts();
+    } catch (error) {
+      console.error("删除商品失败:", error);
+      ElMessage.error("删除失败");
+    }
   });
 };
 
@@ -492,7 +534,8 @@ const handleSubmit = async () => {
 
     ElMessage.success("发布成功");
     showAddDialog.value = false;
-    // 这里可以刷新商品列表
+    // 刷新商品列表
+    fetchSellerProducts();
   } catch (error) {
     console.error("发布商品失败:", error);
     ElMessage.error("发布失败，请稍后重试");
@@ -547,6 +590,7 @@ const handlePublish = async () => {
       resetPublishForm();
       // 切换到商品管理标签页
       activeTab.value = "products";
+      fetchSellerProducts();
     } catch (error) {
       console.error("发布商品失败:", error);
       ElMessage.error("发布失败，请稍后重试");
@@ -569,11 +613,11 @@ const resetPublishForm = () => {
 };
 
 onMounted(() => {
-  // 简化版：使用模拟数据，不请求后端
   console.log("卖家中心已加载");
-
   // 刷新用户信息，确保角色是最新的
   refreshUserInfo();
+  // 获取商品列表
+  fetchSellerProducts();
 });
 
 // 刷新用户信息
@@ -629,6 +673,12 @@ const refreshUserInfo = async () => {
 
 .toolbar {
   margin-bottom: 20px;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .publish-form-container {

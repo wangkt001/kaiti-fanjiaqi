@@ -6,8 +6,8 @@
     @click="handleClick"
   >
     <el-icon>
-      <ThumbUp v-if="!liked" />
-      <ThumbUpFilled v-else />
+      <Star v-if="!liked" />
+      <StarFilled v-else />
     </el-icon>
     <span v-if="showCount" style="margin-left: 4px">{{ count }}</span>
     <slot></slot>
@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import { ThumbUp, ThumbUpFilled } from "@element-plus/icons-vue";
+import { Star, StarFilled } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { like, unlike, getLikeStatus } from "@/api/modules/like";
 import { useUserStore } from "@/store/user";
@@ -46,7 +46,7 @@ watch(
     if (val !== undefined) {
       count.value = val;
     }
-  },
+  }
 );
 
 watch(
@@ -55,7 +55,7 @@ watch(
     if (val !== undefined) {
       liked.value = val;
     }
-  },
+  }
 );
 
 // 加载点赞状态

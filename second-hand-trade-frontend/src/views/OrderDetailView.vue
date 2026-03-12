@@ -166,7 +166,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { CircleCheck, Clock, Truck, Finished } from "@element-plus/icons-vue";
+import { CircleCheck, Clock, Van, Finished } from "@element-plus/icons-vue";
 import type { Component } from "vue";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
@@ -177,7 +177,8 @@ import {
   deleteOrder,
 } from "@/api/modules/order";
 import type { Order } from "@/api/modules/order";
-import defaultImage from "@/assets/default-image.png";
+
+const defaultImage = "https://placeholder.co/100x100?text=No+Image";
 
 const route = useRoute();
 const router = useRouter();
@@ -202,7 +203,7 @@ const getStatusIcon = (status: number): Component => {
   const iconMap: Record<number, Component> = {
     0: Clock,
     1: CircleCheck,
-    2: Truck,
+    2: Van,
     3: Finished,
     4: CircleCheck,
   };

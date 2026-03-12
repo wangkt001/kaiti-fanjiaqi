@@ -81,7 +81,7 @@
               :type="review.isLiked ? 'primary' : 'default'"
               @click="handleLike(review)"
             >
-              <el-icon><ThumbUp /></el-icon>
+              <el-icon><Star /></el-icon>
               {{ review.likeCount }}
             </el-button>
           </div>
@@ -167,7 +167,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from "vue";
-import { ThumbUp, ChatDotRound } from "@element-plus/icons-vue";
+import { Star, ChatDotRound } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import {
   getProductReviews,
@@ -178,7 +178,8 @@ import {
 } from "@/api/modules/review";
 import { getLikeStatus } from "@/api/modules/like";
 import { useUserStore } from "@/store/user";
-import defaultAvatar from "@/assets/default-avatar.png";
+
+const defaultAvatar = "https://placeholder.co/100x100?text=Avatar";
 
 const props = defineProps<{
   productId: number;

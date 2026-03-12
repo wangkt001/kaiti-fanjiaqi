@@ -25,7 +25,7 @@
             <div class="method-item" :class="{ selected: paymentMethod === 1 }">
               <el-radio :label="1">
                 <div class="method-content">
-                  <el-icon :size="30"><Wechat /></el-icon>
+                  <el-icon :size="30"><ChatDotRound /></el-icon>
                   <div class="method-info">
                     <div class="method-name">微信支付</div>
                     <div class="method-desc">推荐使用</div>
@@ -49,7 +49,7 @@
             <div class="method-item" :class="{ selected: paymentMethod === 3 }">
               <el-radio :label="3">
                 <div class="method-content">
-                  <el-icon :size="30"><BankCard /></el-icon>
+                  <el-icon :size="30"><CreditCard /></el-icon>
                   <div class="method-info">
                     <div class="method-name">银行卡</div>
                     <div class="method-desc">支持各大银行</div>
@@ -125,7 +125,12 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-import { CircleCheck, Wechat, Wallet, BankCard } from "@element-plus/icons-vue";
+import {
+  CircleCheck,
+  ChatDotRound,
+  Wallet,
+  CreditCard,
+} from "@element-plus/icons-vue";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
 import { payOrder } from "@/api/modules/order";

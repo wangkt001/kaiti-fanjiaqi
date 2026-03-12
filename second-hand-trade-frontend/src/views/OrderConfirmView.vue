@@ -101,7 +101,7 @@
           <h2 class="section-title">支付方式</h2>
           <el-radio-group v-model="paymentType" class="payment-options">
             <el-radio :label="1">
-              <el-icon><Wechat /></el-icon>
+              <el-icon><ChatDotRound /></el-icon>
               微信支付
             </el-radio>
             <el-radio :label="2">
@@ -109,7 +109,7 @@
               支付宝
             </el-radio>
             <el-radio :label="3">
-              <el-icon><BankCard /></el-icon>
+              <el-icon><CreditCard /></el-icon>
               银行卡
             </el-radio>
           </el-radio-group>
@@ -172,13 +172,14 @@
 import { ref, reactive, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-import { Wechat, Wallet, BankCard } from "@element-plus/icons-vue";
+import { ChatDotRound, Wallet, CreditCard } from "@element-plus/icons-vue";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
 import { createOrder, getCheckoutInfo } from "@/api/modules/order";
 import { getCartItems } from "@/api/modules/cart";
 import type { OrderItem } from "@/api/modules/order";
-import defaultImage from "@/assets/default-image.png";
+
+const defaultImage = "https://placeholder.co/100x100?text=No+Image";
 
 const route = useRoute();
 const router = useRouter();

@@ -143,7 +143,8 @@ import {
   clearCart,
   type CartItem,
 } from "@/api/modules/cart";
-import defaultImage from "@/assets/default-image.png";
+
+const defaultImage = "https://placeholder.co/100x100?text=No+Image";
 
 const router = useRouter();
 
@@ -257,7 +258,7 @@ const handleDeleteSelected = async () => {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      },
+      }
     );
 
     for (const item of selectedItems) {

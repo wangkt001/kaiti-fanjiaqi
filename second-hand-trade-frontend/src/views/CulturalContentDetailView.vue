@@ -186,7 +186,8 @@ import {
   getRecommendContents,
 } from "@/api/modules/culturalContent";
 import type { CulturalContent } from "@/api/modules/culturalContent";
-import defaultAvatar from "@/assets/default-avatar.png";
+
+const defaultAvatar = "https://placeholder.co/100x100?text=Avatar";
 
 const route = useRoute();
 const router = useRouter();
