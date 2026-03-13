@@ -275,6 +275,47 @@ public class UserServiceImpl implements UserService {
         log.info("用户状态已更新 - userId: {}, status: {}", id, status);
     }
 
+    @Override
+    public Page<UserVO> listPendingSellers(Long current, Long size) {
+        Page<User> page = new Page<>(current, size);
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getSellerStatus, "pending")
+                .orderByDesc(User::getCreatedAt);
+
+        Page<User> userPage = userMapper.selectPage(page, wrapper);
+        Page<UserVO> voPage = new Page<>(current, size, userPage.getTotal());
+        voPage.setRecords(userPage.getRecords().stream()
+                .map(this::convertToVO)
+                .toList());
+        return voPage;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void auditSeller(Long userId, String status, String remark) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+
+        if (!"pending".equals(user.getSellerStatus())) {
+            throw new BusinessException("该用户已审核过");
+        }
+
+        // 更新卖家状态
+        user.setSellerStatus(status);
+        
+        // 如果审核通过，将用户角色升级为 seller
+        if ("approved".equals(status)) {
+            user.setRole("seller");
+            log.info("卖家审核通过 - userId: {}, 已升级为卖家角色", userId);
+        } else if ("rejected".equals(status)) {
+            log.info("卖家审核拒绝 - userId: {}, 审核意见：{}", userId, remark);
+        }
+
+        userMapper.updateById(user);
+    }
+
     /**
      * 转换为 VO
      */

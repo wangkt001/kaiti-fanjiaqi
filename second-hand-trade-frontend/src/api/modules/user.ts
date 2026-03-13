@@ -97,3 +97,21 @@ export const updateUserStatus = (id: number, status: number) => {
 export const getCartCount = () => {
   return http.get<ApiResponse<number>>('/cart/count')
 }
+
+/**
+ * 获取待审核卖家列表（管理员）
+ */
+export const listPendingSellers = (current: number, size: number) => {
+  return http.get<ApiResponse<PageResult<UserInfo>>>('/users/admin/pending-sellers', {
+    params: { current, size }
+  })
+}
+
+/**
+ * 审核卖家申请（管理员）
+ */
+export const auditSeller = (id: number, status: string, remark?: string) => {
+  return http.post<ApiResponse>(`/users/admin/audit-seller/${id}`, null, {
+    params: { status, remark }
+  })
+}

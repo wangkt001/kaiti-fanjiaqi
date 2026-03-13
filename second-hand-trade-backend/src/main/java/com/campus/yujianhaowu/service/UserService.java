@@ -138,4 +138,22 @@ public interface UserService {
      * @param status 状态（1-正常 0-禁用）
      */
     void updateUserStatus(Long id, Integer status);
+
+    /**
+     * 获取待审核卖家列表（管理员）
+     *
+     * @param current 当前页
+     * @param size    每页大小
+     * @return 待审核卖家分页数据
+     */
+    Page<UserVO> listPendingSellers(Long current, Long size);
+
+    /**
+     * 审核卖家申请（管理员）
+     *
+     * @param userId 用户 ID
+     * @param status 审核状态（approved/rejected）
+     * @param remark 审核意见
+     */
+    void auditSeller(Long userId, String status, String remark);
 }

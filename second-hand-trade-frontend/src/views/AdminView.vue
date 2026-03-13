@@ -108,6 +108,42 @@
             </el-table>
           </div>
         </el-tab-pane>
+
+        <!-- 卖家审核 -->
+        <el-tab-pane label="卖家审核" name="sellers">
+          <div class="tab-content">
+            <el-table :data="sellerAuditList" v-loading="loading" style="width: 100%">
+              <el-table-column prop="id" label="ID" width="80" />
+              <el-table-column prop="username" label="用户名" width="150" />
+              <el-table-column prop="nickname" label="昵称" width="120" />
+              <el-table-column prop="shopName" label="店铺名称" width="150" />
+              <el-table-column prop="sellerStatus" label="状态" width="100">
+                <template #default="{ row }">
+                  <el-tag type="warning">待审核</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="createdAt" label="申请时间" width="180" />
+              <el-table-column label="操作" width="150" fixed="right">
+                <template #default="{ row }">
+                  <el-button
+                    size="small"
+                    type="success"
+                    @click="handleApproveSeller(row)"
+                  >
+                    通过
+                  </el-button>
+                  <el-button
+                    size="small"
+                    type="danger"
+                    @click="handleRejectSeller(row)"
+                  >
+                    拒绝
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -118,7 +154,7 @@ import { ref, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import NavBar from "@/components/NavBar.vue";
 import { getPendingProducts, auditProduct } from "@/api/modules/goods";
-import { listUsers, updateUserStatus } from "@/api/modules/user";
+import { listUsers, updateUserStatus, listPendingSellers, auditSeller } from "@/api/modules/user";
 import { getAdminOrderList } from "@/api/modules/order";
 
 const activeTab = ref("products");
@@ -132,6 +168,9 @@ const userList = ref<any[]>([]);
 
 // 订单列表
 const orderList = ref<any[]>([]);
+
+// 待审核卖家列表
+const sellerAuditList = ref<any[]>([]);
 
 const getRoleType = (role: string) => {
   const typeMap: Record<string, any> = {
@@ -215,6 +254,20 @@ const loadOrderList = async () => {
   }
 };
 
+// 加载待审核卖家列表
+const loadPendingSellers = async () => {
+  loading.value = true;
+  try {
+    const response = await listPendingSellers(1, 50);
+    sellerAuditList.value = response.records || [];
+  } catch (error) {
+    console.error("获取待审核卖家列表失败:", error);
+    ElMessage.error("获取待审核卖家列表失败");
+  } finally {
+    loading.value = false;
+  }
+};
+
 // 审核通过
 const handleApprove = (row: any) => {
   ElMessageBox.confirm("确定要通过该商品审核吗？", "提示", {
@@ -246,6 +299,45 @@ const handleReject = (row: any) => {
       ElMessage.success("已拒绝");
       // 重新加载列表
       await loadPendingProducts();
+    } catch (error) {
+      console.error("审核失败:", error);
+      ElMessage.error("审核失败，请重试");
+    }
+  });
+};
+
+// 卖家审核通过
+const handleApproveSeller = (row: any) => {
+  ElMessageBox.confirm("确定要通过该卖家的申请吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(async () => {
+    try {
+      await auditSeller(row.id, "approved");
+      ElMessage.success("卖家审核通过");
+      // 重新加载列表
+      await loadPendingSellers();
+    } catch (error) {
+      console.error("审核失败:", error);
+      ElMessage.error("审核失败，请重试");
+    }
+  });
+};
+
+// 卖家审核拒绝
+const handleRejectSeller = (row: any) => {
+  ElMessageBox.prompt("请输入拒绝原因", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    inputPattern: /.+/,
+    inputErrorMessage: "请输入拒绝原因",
+  }).then(async ({ value }) => {
+    try {
+      await auditSeller(row.id, "rejected", value);
+      ElMessage.success("已拒绝卖家申请");
+      // 重新加载列表
+      await loadPendingSellers();
     } catch (error) {
       console.error("审核失败:", error);
       ElMessage.error("审核失败，请重试");
@@ -292,6 +384,8 @@ onMounted(() => {
   loadUserList();
   // 加载订单列表
   loadOrderList();
+  // 加载待审核卖家列表
+  loadPendingSellers();
   console.log("后台管理已加载");
 });
 </script>

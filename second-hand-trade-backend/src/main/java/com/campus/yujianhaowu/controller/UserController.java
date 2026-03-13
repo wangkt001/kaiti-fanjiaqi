@@ -141,4 +141,28 @@ public class UserController {
         userService.updateUserStatus(id, status);
         return Result.success();
     }
+
+    @GetMapping("/admin/pending-sellers")
+    @Operation(summary = "获取待审核卖家列表（管理员）")
+    public Result<com.campus.yujianhaowu.common.PageResult<UserVO>> listPendingSellers(
+            @RequestParam(defaultValue = "1") Long current,
+            @RequestParam(defaultValue = "10") Long size) {
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page<UserVO> page = userService.listPendingSellers(current, size);
+        com.campus.yujianhaowu.common.PageResult<UserVO> result = com.campus.yujianhaowu.common.PageResult.of(
+                page.getRecords(),
+                page.getTotal(),
+                page.getCurrent(),
+                page.getSize());
+        return Result.success(result);
+    }
+
+    @PostMapping("/admin/audit-seller/{id}")
+    @Operation(summary = "审核卖家申请（管理员）")
+    public Result<Void> auditSeller(
+            @PathVariable Long id,
+            @RequestParam String status,
+            @RequestParam(required = false) String remark) {
+        userService.auditSeller(id, status, remark);
+        return Result.success();
+    }
 }
