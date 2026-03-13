@@ -118,8 +118,9 @@ const loadCartCount = async () => {
 
   try {
     const res = await getCartCount();
-    if (res.data.code === 200 && res.data.data) {
-      cartCount.value = res.data.data;
+    console.log("购物车数量响应:", res);
+    if (res.code === 200 && res.data !== undefined) {
+      cartCount.value = res.data;
     }
   } catch (error) {
     console.error("加载购物车数量失败:", error);
@@ -149,7 +150,7 @@ const handleLogout = async () => {
 
     // 调用后端登出接口
     await logoutApi();
-    
+
     // 清理本地缓存
     userStore.logout();
     ElMessage.success("已退出登录");

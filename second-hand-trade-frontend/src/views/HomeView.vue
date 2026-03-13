@@ -266,8 +266,9 @@ const loadCulturalContents = async () => {
   contentLoading.value = true;
   try {
     const res = await getRecommendContents({ current: 1, size: 4 });
-    if (res.data.code === 200 && res.data.data) {
-      culturalContents.value = res.data.data.records;
+    console.log("文化资讯响应:", res);
+    if (res && res.records) {
+      culturalContents.value = res.records;
     }
   } catch (error) {
     console.error("加载文化资讯失败", error);

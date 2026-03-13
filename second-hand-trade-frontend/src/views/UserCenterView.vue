@@ -30,7 +30,7 @@
             <el-icon><ShoppingBag /></el-icon>
             <span>我的订单</span>
           </el-menu-item>
-          <el-menu-item index="seller-apply" v-if="!isSeller">
+          <el-menu-item index="seller-apply" v-if="isBuyer">
             <el-icon><Shop /></el-icon>
             <span>申请入驻</span>
           </el-menu-item>
@@ -196,6 +196,9 @@ const router = useRouter();
 // 计算属性：是否为卖家
 const isSeller = computed(() => userStore.userInfo?.role === "seller");
 
+// 计算属性：是否为买家
+const isBuyer = computed(() => userStore.userInfo?.role === "buyer");
+
 const activeTab = ref("profile");
 const loading = ref(false);
 
@@ -216,6 +219,10 @@ const userReviews = ref<any[]>([]);
 const loadUserInfo = () => {
   if (userStore.userInfo) {
     Object.assign(userInfo, userStore.userInfo);
+    console.log("用户中心加载的用户信息:", userStore.userInfo);
+    console.log("用户角色:", userStore.userInfo.role);
+    console.log("是否为买家:", isBuyer.value);
+    console.log("是否为卖家:", isSeller.value);
   }
 };
 
@@ -230,8 +237,9 @@ const loadFavorites = async () => {
       size: 12,
     });
 
-    if (res.data.code === 200 && res.data.data) {
-      favorites.value = res.data.data.records;
+    console.log("收藏列表响应:", res);
+    if (res && res.records) {
+      favorites.value = res.records;
     }
   } catch (error) {
     console.error("加载收藏失败:", error);

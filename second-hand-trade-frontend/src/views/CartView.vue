@@ -169,8 +169,9 @@ const loadCart = async () => {
   loading.value = true;
   try {
     const res = await getCartItems();
-    if (res.data.code === 200 && res.data.data) {
-      cartItems.value = res.data.data;
+    console.log("购物车响应:", res);
+    if (res) {
+      cartItems.value = res;
       updateAllSelected();
     }
   } catch (error) {

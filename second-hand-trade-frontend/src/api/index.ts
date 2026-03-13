@@ -77,7 +77,8 @@ service.interceptors.response.use(
       return Promise.reject(new Error(res.message || 'Error'))
     }
     
-    return res
+    // 返回实际的 data 字段
+    return res.data
   },
   (error) => {
     console.error('响应错误:', error)
@@ -125,19 +126,19 @@ service.interceptors.response.use(
 // 导出请求方法
 export const http = {
   get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return service.get(url, config).then((res) => res.data as T)
+    return service.get(url, config)
   },
 
   post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return service.post(url, data, config).then((res) => res.data as T)
+    return service.post(url, data, config)
   },
 
   put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return service.put(url, data, config).then((res) => res.data as T)
+    return service.put(url, data, config)
   },
 
   delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return service.delete(url, config).then((res) => res.data as T)
+    return service.delete(url, config)
   },
 
   upload<T = any>(url: string, data: FormData, config?: AxiosRequestConfig): Promise<T> {
@@ -146,14 +147,14 @@ export const http = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-    }).then((res) => res.data as T)
+    })
   },
 
   download(url: string, config?: AxiosRequestConfig): Promise<Blob> {
     return service.get(url, {
       ...config,
       responseType: 'blob',
-    }).then((res) => res.data as Blob)
+    })
   },
 }
 
