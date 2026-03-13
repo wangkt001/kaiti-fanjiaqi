@@ -215,7 +215,21 @@ const loadContents = async () => {
     console.log("res>>>>>>>>", res);
 
     if (res) {
-      contents.value = res.records;
+      contents.value = res.records.map((item: any) => {
+        let parsedTags: string[] = [];
+        try {
+          if (typeof item.tags) {
+            if (Array.isArray(item.tags)) {
+              parsedTags = item.tags;
+            } else if (typeof item.tags === "string") {
+              parsedTags = JSON.parse(item.tags);
+            }
+          }
+        } catch (e) {
+          console.error("解析标签失败:", e);
+        }
+        return { ...item, tags: parsedTags };
+      });
       total.value = res.total;
     }
   } catch (error) {
