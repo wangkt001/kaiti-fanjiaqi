@@ -254,6 +254,25 @@ public class UserServiceImpl implements UserService {
         return voPage;
     }
 
+    @Override
+    public Page<UserVO> listUsers(Long current, Long size) {
+        return listUsers(current, size, null);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUserStatus(Long id, Integer status) {
+        User user = userMapper.selectById(id);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+
+        user.setStatus(status);
+        userMapper.updateById(user);
+
+        log.info("用户状态已更新 - userId: {}, status: {}", id, status);
+    }
+
     /**
      * 转换为 VO
      */

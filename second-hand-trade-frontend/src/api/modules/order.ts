@@ -144,3 +144,18 @@ export function payOrder(orderNo: string, paymentType: number) {
     },
   })
 }
+
+/**
+ * 后台管理：获取订单列表
+ */
+export function getAdminOrderList(params: {
+  status?: number
+  current: number
+  size: number
+}) {
+  return request<ApiResponse<PageResult<Order>>>({
+    url: '/orders/admin/list',
+    method: 'get',
+    params,
+  })
+}

@@ -1,8 +1,6 @@
 package com.campus.yujianhaowu.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,12 +8,9 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @TableName("cultural_contents")
 public class CulturalContent extends BaseEntity {
-
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
 
     @TableField("title")
     private String title;
@@ -61,10 +56,4 @@ public class CulturalContent extends BaseEntity {
 
     @TableField("published_at")
     private LocalDateTime publishedAt;
-
-    @TableField("created_at")
-    private LocalDateTime createdAt;
-
-    @TableField("updated_at")
-    private LocalDateTime updatedAt;
 }

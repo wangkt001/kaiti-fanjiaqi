@@ -243,6 +243,25 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.updateById(order);
     }
 
+    @Override
+    public Page<OrderVO> listOrders(Integer status, Integer current, Integer size) {
+        Page<Order> page = new Page<>(current, size);
+        LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
+        if (status != null) {
+            wrapper.eq(Order::getStatus, status);
+        }
+        wrapper.orderByDesc(Order::getCreatedAt);
+
+        Page<Order> orderPage = orderMapper.selectPage(page, wrapper);
+        Page<OrderVO> voPage = new Page<>(current, size, orderPage.getTotal());
+        List<OrderVO> voList = orderPage.getRecords().stream()
+                .map(this::convertToVO)
+                .collect(Collectors.toList());
+        voPage.setRecords(voList);
+
+        return voPage;
+    }
+
     private List<OrderItem> getOrderItems(Long orderId) {
         LambdaQueryWrapper<OrderItem> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(OrderItem::getOrderId, orderId);

@@ -23,4 +23,14 @@ public interface OrderService {
     Page<OrderVO> getSellerOrders(Long sellerId, Integer status, Integer current, Integer size);
 
     void shipOrder(Long orderId, String deliveryNo, String deliveryType, Long sellerId);
+
+    /**
+     * 获取订单列表（管理员）
+     *
+     * @param status  订单状态
+     * @param current 页码
+     * @param size    每页数量
+     * @return 订单分页数据
+     */
+    Page<OrderVO> listOrders(Integer status, Integer current, Integer size);
 }

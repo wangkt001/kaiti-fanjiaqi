@@ -360,11 +360,6 @@ public class ProductServiceImpl implements ProductService {
         vo.setCreatedAt(product.getCreatedAt());
         vo.setPublishedAt(product.getPublishedAt());
 
-        // 设置图片信息（Base64 直接返回）
-        if (StrUtil.isNotBlank(product.getImageUrl())) {
-            vo.setImageUrl(product.getImageUrl());
-        }
-
         // TODO: 设置卖家信息、标签、文化信息等
 
         return vo;

@@ -15,7 +15,7 @@ import java.util.List;
  * 收藏控制器
  */
 @RestController
-@RequestMapping("/api/favorite")
+@RequestMapping("/favorite")
 public class FavoriteController {
 
     @Resource

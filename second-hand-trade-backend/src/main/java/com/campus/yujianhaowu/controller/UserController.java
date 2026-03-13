@@ -116,4 +116,29 @@ public class UserController {
         Long userId = Long.parseLong(userIdStr);
         return Result.success(userService.getSellerApplyInfo(userId));
     }
+
+    // ==================== 后台管理接口 ====================
+
+    @GetMapping("/admin/list")
+    @Operation(summary = "获取用户列表（管理员）")
+    public Result<com.campus.yujianhaowu.common.PageResult<UserVO>> listUsers(
+            @RequestParam(defaultValue = "1") Long current,
+            @RequestParam(defaultValue = "10") Long size) {
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page<UserVO> page = userService.listUsers(current, size);
+        com.campus.yujianhaowu.common.PageResult<UserVO> result = com.campus.yujianhaowu.common.PageResult.of(
+                page.getRecords(),
+                page.getTotal(),
+                page.getCurrent(),
+                page.getSize());
+        return Result.success(result);
+    }
+
+    @PutMapping("/admin/status/{id}")
+    @Operation(summary = "更新用户状态（管理员）")
+    public Result<Void> updateUserStatus(
+            @PathVariable Long id,
+            @RequestParam Integer status) {
+        userService.updateUserStatus(id, status);
+        return Result.success();
+    }
 }

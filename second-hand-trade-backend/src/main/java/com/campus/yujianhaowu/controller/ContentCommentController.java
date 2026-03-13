@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/content-comments")
+@RequestMapping("/content-comments")
 @RequiredArgsConstructor
 @Tag(name = "资讯评论管理", description = "文化资讯评论相关接口")
 public class ContentCommentController {

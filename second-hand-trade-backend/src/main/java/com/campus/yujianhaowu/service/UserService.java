@@ -121,4 +121,21 @@ public interface UserService {
      * @return 用户分页数据
      */
     Page<UserVO> listUsers(Long current, Long size, String keyword);
+
+    /**
+     * 分页查询用户（管理员）
+     *
+     * @param current 当前页
+     * @param size    每页大小
+     * @return 用户分页数据
+     */
+    Page<UserVO> listUsers(Long current, Long size);
+
+    /**
+     * 更新用户状态（管理员）
+     *
+     * @param id     用户 ID
+     * @param status 状态（1-正常 0-禁用）
+     */
+    void updateUserStatus(Long id, Integer status);
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/orders")
 @RequiredArgsConstructor
 @Tag(name = "订单管理", description = "订单相关接口")
 public class OrderController {
@@ -100,6 +100,23 @@ public class OrderController {
             HttpServletRequest httpRequest) {
         Long sellerId = (Long) httpRequest.getAttribute("userId");
         Page<OrderVO> page = orderService.getSellerOrders(sellerId, status, current, size);
+        PageResult<OrderVO> result = new PageResult<>(
+                page.getRecords(),
+                page.getTotal(),
+                page.getCurrent(),
+                page.getSize());
+        return Result.success(result);
+    }
+
+    // ==================== 后台管理接口 ====================
+
+    @GetMapping("/admin/list")
+    @Operation(summary = "获取订单列表（管理员）")
+    public Result<PageResult<OrderVO>> listOrders(
+            @Parameter(description = "订单状态") @RequestParam(required = false) Integer status,
+            @Parameter(description = "页码") @RequestParam(defaultValue = "1") Integer current,
+            @Parameter(description = "每页数量") @RequestParam(defaultValue = "10") Integer size) {
+        Page<OrderVO> page = orderService.listOrders(status, current, size);
         PageResult<OrderVO> result = new PageResult<>(
                 page.getRecords(),
                 page.getTotal(),

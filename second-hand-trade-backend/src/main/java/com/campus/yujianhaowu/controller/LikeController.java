@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/likes")
+@RequestMapping("/likes")
 @RequiredArgsConstructor
 @Tag(name = "点赞管理", description = "点赞相关接口")
 public class LikeController {

@@ -72,3 +72,21 @@ export const getSellerStatus = () => {
 export const getSellerApplyInfo = () => {
   return http.get<ApiResponse<any>>('/users/seller-apply-info')
 }
+
+/**
+ * 后台管理：获取用户列表
+ */
+export const listUsers = (current: number, size: number) => {
+  return http.get<ApiResponse<PageResult<UserInfo>>>('/users/admin/list', {
+    params: { current, size }
+  })
+}
+
+/**
+ * 后台管理：更新用户状态
+ */
+export const updateUserStatus = (id: number, status: number) => {
+  return http.put<ApiResponse>(`/users/admin/status/${id}`, null, {
+    params: { status }
+  })
+}

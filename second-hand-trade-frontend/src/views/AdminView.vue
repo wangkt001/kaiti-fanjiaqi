@@ -118,6 +118,8 @@ import { ref, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import NavBar from "@/components/NavBar.vue";
 import { getPendingProducts, auditProduct } from "@/api/modules/goods";
+import { listUsers, updateUserStatus } from "@/api/modules/user";
+import { getAdminOrderList } from "@/api/modules/order";
 
 const activeTab = ref("products");
 const loading = ref(false);
@@ -126,22 +128,10 @@ const loading = ref(false);
 const auditList = ref<any[]>([]);
 
 // 用户列表
-const userList = ref([
-  { id: 1, username: "user1", nickname: "用户 1", role: "buyer", status: 1 },
-  { id: 2, username: "seller1", nickname: "卖家 1", role: "seller", status: 1 },
-]);
+const userList = ref<any[]>([]);
 
 // 订单列表
-const orderList = ref([
-  {
-    id: 1,
-    orderNo: "ORD202603090001",
-    userName: "张三",
-    paymentAmount: 99.0,
-    status: 1,
-    createdAt: "2026-03-09 10:00:00",
-  },
-]);
+const orderList = ref<any[]>([]);
 
 const getRoleType = (role: string) => {
   const typeMap: Record<string, any> = {
@@ -197,6 +187,34 @@ const loadPendingProducts = async () => {
   }
 };
 
+// 加载用户列表
+const loadUserList = async () => {
+  loading.value = true;
+  try {
+    const response = await listUsers(1, 50);
+    userList.value = response.records || [];
+  } catch (error) {
+    console.error("获取用户列表失败:", error);
+    ElMessage.error("获取用户列表失败");
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 加载订单列表
+const loadOrderList = async () => {
+  loading.value = true;
+  try {
+    const response = await getAdminOrderList({ current: 1, size: 50 });
+    orderList.value = response.records || [];
+  } catch (error) {
+    console.error("获取订单列表失败:", error);
+    ElMessage.error("获取订单列表失败");
+  } finally {
+    loading.value = false;
+  }
+};
+
 // 审核通过
 const handleApprove = (row: any) => {
   ElMessageBox.confirm("确定要通过该商品审核吗？", "提示", {
@@ -241,18 +259,37 @@ const handleToggleStatus = (row: any) => {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
-  }).then(() => {
-    ElMessage.success(`${action}成功`);
+  }).then(async () => {
+    try {
+      await updateUserStatus(row.id, row.status === 1 ? 0 : 1);
+      ElMessage.success(`${action}成功`);
+      // 重新加载列表
+      await loadUserList();
+    } catch (error) {
+      console.error("操作失败:", error);
+      ElMessage.error("操作失败，请重试");
+    }
   });
 };
 
 const handleViewOrder = (row: any) => {
-  ElMessage.info("查看订单功能开发中");
+  ElMessageBox.alert(
+    `订单编号：${row.orderNo}<br>用户 ID: ${row.userId}<br>金额：¥${row.paymentAmount}<br>状态：${getOrderStatusText(row.status)}<br>下单时间：${row.createdAt}`,
+    "订单详情",
+    {
+      dangerouslyUseHTMLString: true,
+      confirmButtonText: "关闭",
+    },
+  );
 };
 
 onMounted(() => {
   // 加载待审核商品
   loadPendingProducts();
+  // 加载用户列表
+  loadUserList();
+  // 加载订单列表
+  loadOrderList();
   console.log("后台管理已加载");
 });
 </script>
