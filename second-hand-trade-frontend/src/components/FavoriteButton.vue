@@ -3,19 +3,23 @@
     :type="favorited ? 'primary' : 'default'"
     :loading="loading"
     :plain="!favorited"
+    :circle="circle"
+    :size="size"
     @click="handleClick"
   >
     <el-icon>
       <Star v-if="!favorited" />
       <StarFilled v-else />
     </el-icon>
-    <span v-if="showCount" style="margin-left: 4px">{{ count }}</span>
-    <slot>{{ favorited ? "已收藏" : "收藏" }}</slot>
+    <span v-if="showCount && !circle" style="margin-left: 4px">{{
+      count
+    }}</span>
+    <slot v-if="!circle">{{ favorited ? "已收藏" : "收藏" }}</slot>
   </el-button>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { Star, StarFilled } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import {
@@ -31,6 +35,8 @@ const props = defineProps<{
   showCount?: boolean;
   initialCount?: number;
   initialFavorited?: boolean;
+  circle?: boolean;
+  size?: "large" | "default" | "small";
 }>();
 
 const emit = defineEmits<{
@@ -68,9 +74,12 @@ const loadStatus = async () => {
 
   try {
     const res = await getFavoriteStatus(props.targetType, props.targetId);
-    if (res.data.code === 200) {
-      favorited.value = res.data.data.favorited;
-      count.value = res.data.data.count;
+    // 响应拦截器已经返回了 data，所以直接使用 res
+    if (res) {
+      favorited.value = res.favorited;
+      if (res.count > 0) {
+        count.value = res.count;
+      }
     }
   } catch (error) {
     console.error("加载收藏状态失败:", error);
@@ -104,6 +113,11 @@ const handleClick = async () => {
     loading.value = false;
   }
 };
+
+// 组件挂载时加载收藏状态
+onMounted(() => {
+  loadStatus();
+});
 
 // 暴露刷新方法
 defineExpose({

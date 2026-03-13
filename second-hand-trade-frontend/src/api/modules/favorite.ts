@@ -24,7 +24,7 @@ export interface FavoriteStatus {
  * 添加收藏
  */
 export function addFavorite(targetType: string, targetId: number) {
-  return http.post('/favorite', {
+  return http.post('/api/favorite', {
     targetType,
     targetId,
   });
@@ -34,21 +34,21 @@ export function addFavorite(targetType: string, targetId: number) {
  * 取消收藏
  */
 export function unfavorite(targetType: string, targetId: number) {
-  return http.delete(`/favorite/${targetId}`);
+  return http.delete(`/api/favorite/${targetType}/${targetId}`);
 }
 
 /**
  * 获取收藏列表
  */
 export function getFavoriteList() {
-  return http.get<FavoriteProduct[]>('/favorite/list');
+  return http.get<FavoriteProduct[]>('/api/favorite/list');
 }
 
 /**
  * 获取收藏状态
  */
 export function getFavoriteStatus(targetType: string, targetId: number) {
-  return http.get<FavoriteStatus>('/favorite/status', {
+  return http.get<FavoriteStatus>('/api/favorite/status', {
     params: {
       targetType,
       targetId,
@@ -59,8 +59,8 @@ export function getFavoriteStatus(targetType: string, targetId: number) {
 /**
  * 检查是否已收藏（简化版）
  */
-export function checkFavorite(targetId: number) {
-  return http.get<boolean>(`/favorite/check/${targetId}`);
+export function checkFavorite(targetType: string, targetId: number) {
+  return http.get<boolean>(`/api/favorite/check/${targetType}/${targetId}`);
 }
 
 /**
@@ -70,7 +70,7 @@ export function getUserFavoriteProducts(params: {
   current: number
   size: number
 }) {
-  return http.get<any>('/favorite/products', {
+  return http.get<any>('/api/favorite/products', {
     params,
   });
 }

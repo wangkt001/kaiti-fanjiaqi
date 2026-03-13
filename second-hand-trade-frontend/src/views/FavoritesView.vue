@@ -6,7 +6,7 @@
       <div class="content">
         <!-- 收藏列表 -->
         <div v-loading="loading" class="goods-list">
-          <div v-if="favorites.length === 0" class="empty-state">
+          <div v-if="!loading && favorites.length === 0" class="empty-state">
             <el-empty description="暂无收藏商品">
               <el-button type="primary" @click="$router.push('/goods')">
                 去逛逛
@@ -15,13 +15,27 @@
           </div>
 
           <div v-else class="goods-grid">
-            <GoodsCard
+            <div
               v-for="goods in favorites"
               :key="goods.id"
-              :goods="goods"
-              show-delete
-              @delete="handleRemoveFavorite"
-            />
+              class="favorite-item"
+            >
+              <div class="item-wrapper">
+                <!-- 删除按钮 -->
+                <el-button
+                  class="delete-btn"
+                  circle
+                  size="small"
+                  type="danger"
+                  @click="handleRemoveFavorite(goods.id)"
+                >
+                  <el-icon><Close /></el-icon>
+                </el-button>
+
+                <!-- 商品卡片 -->
+                <GoodsCard :goods="goods" @click="handleClickGoods(goods.id)" />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -44,13 +58,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { Close } from "@element-plus/icons-vue";
 import GoodsCard from "@/components/GoodsCard.vue";
 import { getUserFavoriteProducts, unfavorite } from "@/api/modules/favorite";
-import type { Product } from "@/types";
+import type { Goods } from "@/types";
 
+const router = useRouter();
 const loading = ref(false);
-const favorites = ref<Product[]>([]);
+const favorites = ref<Goods[]>([]);
 const total = ref(0);
 const currentPage = ref(1);
 const pageSize = ref(12);
@@ -64,9 +81,10 @@ const loadFavorites = async () => {
       size: pageSize.value,
     });
 
-    if (res.data.code === 200 && res.data.data) {
-      favorites.value = res.data.data.records;
-      total.value = res.data.data.total;
+    // 响应拦截器已经返回了 data，所以直接使用 res
+    if (res) {
+      favorites.value = res.records || [];
+      total.value = res.total || 0;
     }
   } catch (error) {
     console.error("加载收藏失败:", error);
@@ -79,13 +97,26 @@ const loadFavorites = async () => {
 // 移除收藏
 const handleRemoveFavorite = async (productId: number) => {
   try {
+    await ElMessageBox.confirm("确定要取消收藏吗？", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    });
+
     await unfavorite("product", productId);
     ElMessage.success("已取消收藏");
     loadFavorites();
-  } catch (error) {
-    console.error("取消收藏失败:", error);
-    ElMessage.error("操作失败");
+  } catch (error: any) {
+    if (error !== "cancel") {
+      console.error("取消收藏失败:", error);
+      ElMessage.error("操作失败");
+    }
   }
+};
+
+// 点击商品
+const handleClickGoods = (productId: number) => {
+  router.push(`/goods/${productId}`);
 };
 
 // 分页处理
@@ -137,6 +168,25 @@ onMounted(() => {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           gap: 20px;
+
+          .favorite-item {
+            .item-wrapper {
+              position: relative;
+
+              .delete-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                z-index: 10;
+                opacity: 0;
+                transition: opacity 0.3s;
+              }
+
+              &:hover .delete-btn {
+                opacity: 1;
+              }
+            }
+          }
 
           @media (max-width: 1200px) {
             grid-template-columns: repeat(3, 1fr);

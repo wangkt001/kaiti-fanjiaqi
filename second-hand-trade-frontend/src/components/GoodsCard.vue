@@ -3,7 +3,7 @@
     <!-- 商品图片 -->
     <div class="goods-image-wrapper">
       <el-image
-        :src="goods.imageUrl || '/placeholder.png'"
+        :src="goods.imageUrl || goods.images?.[0]?.imageUrl || '/placeholder.png'"
         :alt="goods.name"
         class="goods-image"
         fit="cover"
@@ -30,9 +30,15 @@
 
       <!-- 操作按钮 -->
       <div class="goods-actions">
-        <el-button circle size="small" @click.stop="handleFavorite">
-          <el-icon><Star /></el-icon>
-        </el-button>
+        <div @click.stop>
+          <FavoriteButton
+            targetType="product"
+            :targetId="goods.id"
+            :initialCount="goods.favoriteCount"
+            circle
+            size="small"
+          />
+        </div>
         <el-button circle size="small" @click.stop="handleAddCart">
           <el-icon><ShoppingCart /></el-icon>
         </el-button>
@@ -58,7 +64,7 @@
             <el-icon><ShoppingBag /></el-icon>
             {{ goods.salesCount }}
           </span>
-          <span class="stat-item">
+          <span v-if="goods.viewCount" class="stat-item">
             <el-icon><View /></el-icon>
             {{ goods.viewCount }}
           </span>
@@ -71,7 +77,7 @@
 
       <div class="goods-seller">
         <el-avatar :size="20" :src="goods.shopLogo">
-          {{ goods.shopName?.charAt(0) }}
+          {{ (goods.shopName || goods.sellerName)?.charAt(0) }}
         </el-avatar>
         <span class="seller-name">{{
           goods.shopName || goods.sellerName
@@ -91,6 +97,7 @@ import {
   ShoppingBag,
   View,
 } from "@element-plus/icons-vue";
+import FavoriteButton from "@/components/FavoriteButton.vue";
 import type { Goods } from "@/types";
 
 interface Props {
@@ -103,12 +110,6 @@ const router = useRouter();
 // 点击商品卡片
 const handleClick = () => {
   router.push(`/goods/${props.goods.id}`);
-};
-
-// 收藏商品
-const handleFavorite = () => {
-  ElMessage.success("已添加到收藏");
-  // TODO: 调用收藏 API
 };
 
 // 加入购物车
