@@ -276,10 +276,10 @@
       </el-tabs>
     </div>
 
-    <!-- 发布商品对话框（简化版） -->
+    <!-- 发布/编辑商品对话框 -->
     <el-dialog
       v-model="showAddDialog"
-      title="发布商品"
+      :title="isEditMode ? '编辑商品' : '发布商品'"
       width="600px"
       @close="resetForm"
     >
@@ -300,13 +300,22 @@
             v-model="productForm.price"
             :min="0"
             :precision="2"
+            style="width: 100%"
           />
         </el-form-item>
         <el-form-item label="库存" required>
-          <el-input-number v-model="productForm.stock" :min="0" />
+          <el-input-number
+            v-model="productForm.stock"
+            :min="0"
+            style="width: 100%"
+          />
         </el-form-item>
         <el-form-item label="分类" required>
-          <el-select v-model="productForm.categoryId" placeholder="请选择分类">
+          <el-select
+            v-model="productForm.categoryId"
+            placeholder="请选择分类"
+            style="width: 100%"
+          >
             <el-option label="传统工艺品" :value="1" />
             <el-option label="文化创意产品" :value="2" />
             <el-option label="非遗传承" :value="3" />
@@ -314,11 +323,28 @@
             <el-option label="地方特色" :value="5" />
           </el-select>
         </el-form-item>
+        <el-form-item label="商品图片">
+          <el-upload
+            action="#"
+            list-type="picture-card"
+            :auto-upload="false"
+            :limit="1"
+            :file-list="dialogImageFileList"
+            :on-change="handleDialogImageChange"
+            :on-remove="handleDialogImageRemove"
+            accept="image/png, image/jpeg, image/jpg"
+          >
+            <el-icon><Plus /></el-icon>
+          </el-upload>
+          <div class="form-tip">
+            请上传图片，支持 jpg/png 格式，大小不超过 2MB
+          </div>
+        </el-form-item>
       </el-form>
       <template #footer>
         <el-button @click="showAddDialog = false">取消</el-button>
         <el-button type="primary" :loading="submitting" @click="handleSubmit">
-          发布
+          {{ isEditMode ? "保存" : "发布" }}
         </el-button>
       </template>
     </el-dialog>
@@ -328,6 +354,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { Plus } from "@element-plus/icons-vue";
 import NavBar from "@/components/NavBar.vue";
 import {
   createGoods,
@@ -345,6 +372,8 @@ const activeTab = ref("products");
 const loading = ref(false);
 const submitting = ref(false);
 const showAddDialog = ref(false);
+const isEditMode = ref(false);
+const editingProductId = ref<number | null>(null);
 
 // 商品列表
 const productList = ref<Goods[]>([]);
@@ -402,7 +431,11 @@ const productForm = reactive({
   price: 0,
   stock: 0,
   categoryId: 1,
+  imageUrl: "",
 });
+
+// 对话框图片文件列表
+const dialogImageFileList = ref<any[]>([]);
 
 // 发布商品表单
 const publishForm = reactive({
@@ -464,7 +497,45 @@ const getOrderStatusText = (status: number) => {
 };
 
 const handleEdit = (row: any) => {
-  ElMessage.info("编辑功能开发中");
+  isEditMode.value = true;
+  editingProductId.value = row.id;
+  productForm.name = row.name;
+  productForm.description = row.description;
+  productForm.price = row.price;
+  productForm.stock = row.stock;
+  productForm.categoryId = row.categoryId;
+  productForm.imageUrl = row.imageUrl || "";
+  if (row.imageUrl) {
+    dialogImageFileList.value = [
+      {
+        name: "product-image",
+        url: row.imageUrl,
+      },
+    ];
+  } else {
+    dialogImageFileList.value = [];
+  }
+  showAddDialog.value = true;
+};
+
+// 处理对话框图片变化
+const handleDialogImageChange = (file: any) => {
+  const maxSize = 2 * 1024 * 1024;
+  if (file.size > maxSize) {
+    ElMessage.error("图片大小不能超过 2MB");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+    productForm.imageUrl = e.target.result;
+  };
+  reader.readAsDataURL(file.raw);
+};
+
+// 处理对话框图片移除
+const handleDialogImageRemove = () => {
+  productForm.imageUrl = "";
 };
 
 const handleDelete = (row: any) => {
@@ -536,28 +607,40 @@ const handleSubmit = async () => {
       price: productForm.price,
       stock: productForm.stock,
       categoryId: productForm.categoryId,
+      imageUrl: productForm.imageUrl,
     };
 
-    await createGoods(submitData);
+    if (isEditMode.value && editingProductId.value) {
+      await updateGoods(editingProductId.value, submitData);
+      ElMessage.success("更新成功");
+    } else {
+      await createGoods(submitData);
+      ElMessage.success("发布成功");
+    }
 
-    ElMessage.success("发布成功");
     showAddDialog.value = false;
     // 刷新商品列表
     fetchSellerProducts();
   } catch (error) {
-    console.error("发布商品失败:", error);
-    ElMessage.error("发布失败，请稍后重试");
+    console.error(isEditMode.value ? "更新商品失败:" : "发布商品失败:", error);
+    ElMessage.error(
+      isEditMode.value ? "更新失败，请稍后重试" : "发布失败，请稍后重试",
+    );
   } finally {
     submitting.value = false;
   }
 };
 
 const resetForm = () => {
+  isEditMode.value = false;
+  editingProductId.value = null;
   productForm.name = "";
   productForm.description = "";
   productForm.price = 0;
   productForm.stock = 0;
   productForm.categoryId = 1;
+  productForm.imageUrl = "";
+  dialogImageFileList.value = [];
 };
 
 // 处理发布商品
@@ -722,5 +805,11 @@ const refreshUserInfo = async () => {
     color: #999;
     margin-top: 8px;
   }
+}
+
+.form-tip {
+  font-size: 12px;
+  color: #999;
+  margin-top: 8px;
 }
 </style>

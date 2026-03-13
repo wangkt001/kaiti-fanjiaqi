@@ -131,8 +131,23 @@ public class ProductServiceImpl implements ProductService {
         if (product.getCategoryId() != null) {
             existProduct.setCategoryId(product.getCategoryId());
         }
+        
+        // 处理图片更新 - 支持空字符串清除图片
+        if (product.getImageUrl() != null) {
+            if (StrUtil.isNotBlank(product.getImageUrl())) {
+                // 如果是 Base64 格式，直接存储
+                if (product.getImageUrl().startsWith("data:image")) {
+                    log.info("更新商品图片 - 检测到 Base64 格式");
+                }
+                existProduct.setImageUrl(product.getImageUrl());
+            } else {
+                // 空字符串表示清除图片
+                existProduct.setImageUrl(null);
+            }
+        }
 
         productMapper.updateById(existProduct);
+        log.info("商品更新成功，productId: {}", id);
     }
 
     @Override
@@ -359,6 +374,7 @@ public class ProductServiceImpl implements ProductService {
         vo.setCustomization(product.getCustomization());
         vo.setCreatedAt(product.getCreatedAt());
         vo.setPublishedAt(product.getPublishedAt());
+        vo.setImageUrl(product.getImageUrl());
 
         // TODO: 设置卖家信息、标签、文化信息等
 

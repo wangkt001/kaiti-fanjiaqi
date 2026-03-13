@@ -77,6 +77,9 @@ public class ProductVO {
     @Schema(description = "是否支持定制", example = "false")
     private Boolean customization;
 
+    @Schema(description = "商品主图 URL")
+    private String imageUrl;
+
     @Schema(description = "商品图片列表")
     private List<ProductImageVO> images;
 
