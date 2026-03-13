@@ -280,7 +280,7 @@ public class UserServiceImpl implements UserService {
         Page<User> page = new Page<>(current, size);
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getSellerStatus, "pending")
-                .orderByDesc(User::getCreatedAt);
+                .orderByDesc(User::getId); // 使用 ID 排序，避免使用 created_at
 
         Page<User> userPage = userMapper.selectPage(page, wrapper);
         Page<UserVO> voPage = new Page<>(current, size, userPage.getTotal());
@@ -337,6 +337,7 @@ public class UserServiceImpl implements UserService {
         vo.setStatus(user.getStatus());
         vo.setCreatedAt(user.getCreatedAt());
         vo.setLastLoginAt(user.getLastLoginAt());
+        vo.setRealName(user.getNickname()); // 真实姓名使用 nickname
         return vo;
     }
 }

@@ -19,6 +19,7 @@
               v-model="applyForm.realName"
               placeholder="请输入您的真实姓名"
               clearable
+              disabled
             />
           </el-form-item>
 
@@ -37,6 +38,7 @@
               placeholder="请输入联系电话"
               clearable
               maxlength="11"
+              disabled
             />
           </el-form-item>
 
@@ -222,6 +224,7 @@ import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
 import { applySeller, getSellerApplyInfo } from "@/api/modules/user";
+import { getCurrentUser } from "@/api/modules/user";
 
 const router = useRouter();
 
@@ -443,8 +446,31 @@ const loadSellerApplyInfo = async () => {
   }
 };
 
+// 加载当前用户信息
+const loadUserInfo = async () => {
+  try {
+    const response = await getCurrentUser();
+    console.log("加载用户信息响应:", response);
+    
+    const userInfo = response;
+    if (userInfo) {
+      // 填充真实姓名（使用 nickname）和联系电话
+      applyForm.realName = userInfo.nickname || "";
+      applyForm.phone = userInfo.phone || "";
+      
+      console.log("用户信息已加载:", userInfo);
+    }
+  } catch (error) {
+    console.error("加载用户信息失败:", error);
+    ElMessage.error("加载用户信息失败，请重新登录");
+  }
+};
+
 // 组件加载时获取申请信息
 onMounted(() => {
+  // 先加载用户信息
+  loadUserInfo();
+  // 再加载申请信息（如果有已保存的申请）
   loadSellerApplyInfo();
 });
 </script>

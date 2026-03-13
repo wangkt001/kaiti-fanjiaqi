@@ -59,6 +59,12 @@ public class UserVO {
     @Schema(description = "用户状态（1-正常 0-禁用）", example = "1")
     private Integer status;
 
+    @Schema(description = "真实姓名")
+    private String realName;
+
+    @Schema(description = "身份证号")
+    private String idCard;
+
     @Schema(description = "创建时间")
     private LocalDateTime createdAt;
 
