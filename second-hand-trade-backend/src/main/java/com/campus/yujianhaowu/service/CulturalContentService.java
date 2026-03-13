@@ -18,9 +18,10 @@ public interface CulturalContentService {
      * @param current  当前页
      * @param size     每页大小
      * @param category 分类（可选）
+     * @param keyword  搜索关键词（可选）
      * @return 分页数据
      */
-    Page<CulturalContentVO> page(Long current, Long size, String category);
+    Page<CulturalContentVO> page(Long current, Long size, String category, String keyword);
 
     /**
      * 获取推荐的文化资讯

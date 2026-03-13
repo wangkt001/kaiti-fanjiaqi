@@ -28,8 +28,9 @@ public class CulturalContentController {
     public Result<Page<CulturalContentVO>> page(
             @RequestParam(defaultValue = "1") Long current,
             @RequestParam(defaultValue = "10") Long size,
-            @RequestParam(required = false) String category) {
-        Page<CulturalContentVO> page = culturalContentService.page(current, size, category);
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String keyword) {
+        Page<CulturalContentVO> page = culturalContentService.page(current, size, category, keyword);
         return Result.success(page);
     }
 

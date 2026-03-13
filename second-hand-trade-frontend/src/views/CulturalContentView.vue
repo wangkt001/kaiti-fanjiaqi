@@ -71,8 +71,10 @@
               v-model="searchKeyword"
               placeholder="搜索资讯..."
               clearable
-              style="width: 300px"
+              style="width: 400px"
               @keyup.enter="handleSearch"
+              @clear="handleClear"
+              @focus="showSearchHistory = true"
             >
               <template #append>
                 <el-button @click="handleSearch">
@@ -82,10 +84,76 @@
             </el-input>
           </div>
 
+          <!-- 搜索历史和热门搜索 -->
+          <div v-if="showSearchHistory" class="search-history-section">
+            <div v-if="searchHistory.length > 0" class="history-section">
+              <div class="history-header">
+                <span class="history-title">搜索历史</span>
+                <el-button
+                  link
+                  type="danger"
+                  size="small"
+                  @click="clearHistory"
+                >
+                  <el-icon><Delete /></el-icon>
+                  清空
+                </el-button>
+              </div>
+              <div class="history-tags">
+                <el-tag
+                  v-for="(item, index) in searchHistory"
+                  :key="index"
+                  effect="plain"
+                  class="history-tag"
+                  @click="searchFromHistory(item)"
+                >
+                  {{ item }}
+                </el-tag>
+              </div>
+            </div>
+            <div class="hot-section">
+              <div class="hot-header">
+                <span class="hot-title">热门搜索</span>
+              </div>
+              <div class="hot-tags">
+                <el-tag
+                  v-for="(item, index) in hotSearchKeywords"
+                  :key="index"
+                  :type="index < 3 ? 'danger' : ''"
+                  effect="plain"
+                  class="hot-tag"
+                  @click="searchFromHistory(item)"
+                >
+                  {{ index + 1 }} {{ item }}
+                </el-tag>
+              </div>
+            </div>
+          </div>
+
+          <!-- 搜索结果提示 -->
+          <div
+            v-if="searchKeyword && contents.length > 0"
+            class="search-result-tip"
+          >
+            找到 <strong>{{ total }}</strong> 条与「{{
+              searchKeyword
+            }}」相关的资讯
+          </div>
+
           <!-- 资讯列表 -->
           <div v-loading="loading" class="content-list">
-            <div v-if="contents.length === 0" class="empty-state">
-              <el-empty description="暂无资讯" />
+            <div v-if="contents.length === 0 && !loading" class="empty-state">
+              <el-empty
+                :description="searchKeyword ? '没有找到相关资讯' : '暂无资讯'"
+              >
+                <el-button
+                  v-if="searchKeyword"
+                  type="primary"
+                  @click="handleClear"
+                >
+                  清除搜索
+                </el-button>
+              </el-empty>
             </div>
 
             <div v-else class="content-items">
@@ -159,7 +227,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import {
   List,
@@ -173,6 +241,7 @@ import {
   View,
   ChatDotRound,
   Clock,
+  Delete,
 } from "@element-plus/icons-vue";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
@@ -188,6 +257,18 @@ const currentPage = ref(1);
 const pageSize = ref(10);
 const activeCategory = ref("");
 const searchKeyword = ref("");
+const showSearchHistory = ref(false);
+const searchHistory = ref<string[]>([]);
+const hotSearchKeywords = [
+  "豫剧",
+  "少林",
+  "牡丹",
+  "青铜器",
+  "陶瓷",
+  "剪纸",
+  "年画",
+  "河南博物院",
+];
 
 const hotTags = [
   "豫剧",
@@ -253,10 +334,59 @@ const handleTagClick = (tag: string) => {
   loadContents();
 };
 
+// 保存搜索历史
+const saveSearchHistory = (keyword: string) => {
+  if (!keyword.trim()) return;
+  const history = new Set(searchHistory.value);
+  history.delete(keyword);
+  history.add(keyword);
+  searchHistory.value = Array.from(history).slice(0, 10);
+  localStorage.setItem(
+    "culturalContentSearchHistory",
+    JSON.stringify(searchHistory.value),
+  );
+};
+
+// 加载搜索历史
+const loadSearchHistory = () => {
+  const saved = localStorage.getItem("culturalContentSearchHistory");
+  if (saved) {
+    try {
+      searchHistory.value = JSON.parse(saved);
+    } catch (e) {
+      console.error("加载搜索历史失败:", e);
+    }
+  }
+};
+
 // 搜索
 const handleSearch = () => {
+  if (searchKeyword.value.trim()) {
+    saveSearchHistory(searchKeyword.value.trim());
+  }
+  showSearchHistory.value = false;
   currentPage.value = 1;
   loadContents();
+};
+
+// 从历史/热门搜索
+const searchFromHistory = (keyword: string) => {
+  searchKeyword.value = keyword;
+  handleSearch();
+};
+
+// 清空搜索
+const handleClear = () => {
+  searchKeyword.value = "";
+  showSearchHistory.value = false;
+  currentPage.value = 1;
+  loadContents();
+};
+
+// 清空搜索历史
+const clearHistory = () => {
+  searchHistory.value = [];
+  localStorage.removeItem("culturalContentSearchHistory");
 };
 
 // 分页处理
@@ -280,8 +410,24 @@ const goToDetail = (id: number) => {
   router.push(`/cultural-content/${id}`);
 };
 
+const handleClickOutside = (event: MouseEvent) => {
+  const target = event.target as HTMLElement;
+  if (
+    !target.closest(".search-bar") &&
+    !target.closest(".search-history-section")
+  ) {
+    showSearchHistory.value = false;
+  }
+};
+
 onMounted(() => {
+  loadSearchHistory();
   loadContents();
+  document.addEventListener("click", handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleClickOutside);
 });
 </script>
 
@@ -360,9 +506,66 @@ onMounted(() => {
         padding: 20px;
 
         .search-bar {
-          margin-bottom: 20px;
+          margin-bottom: 15px;
           display: flex;
           justify-content: flex-end;
+        }
+
+        .search-history-section {
+          background: #f9f9f9;
+          border-radius: 8px;
+          padding: 15px;
+          margin-bottom: 20px;
+
+          .history-section,
+          .hot-section {
+            margin-bottom: 15px;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+
+            .history-header,
+            .hot-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 10px;
+
+              .history-title,
+              .hot-title {
+                font-size: 14px;
+                font-weight: 600;
+                color: #333;
+              }
+            }
+
+            .history-tags,
+            .hot-tags {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 8px;
+
+              .history-tag,
+              .hot-tag {
+                cursor: pointer;
+                transition: all 0.3s;
+
+                &:hover {
+                  transform: scale(1.05);
+                }
+              }
+            }
+          }
+        }
+
+        .search-result-tip {
+          padding: 10px 15px;
+          background: #ecf5ff;
+          border-radius: 4px;
+          margin-bottom: 15px;
+          color: #409eff;
+          font-size: 14px;
         }
 
         .content-list {

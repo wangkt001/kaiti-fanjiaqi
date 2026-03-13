@@ -34,11 +34,17 @@ public class CulturalContentServiceImpl implements CulturalContentService {
     private final UserService userService;
 
     @Override
-    public Page<CulturalContentVO> page(Long current, Long size, String category) {
+    public Page<CulturalContentVO> page(Long current, Long size, String category, String keyword) {
         Page<CulturalContent> page = new Page<>(current, size);
         LambdaQueryWrapper<CulturalContent> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(CulturalContent::getIsPublished, true)
                 .eq(StrUtil.isNotBlank(category), CulturalContent::getCategory, category)
+                .and(StrUtil.isNotBlank(keyword), w -> w
+                        .like(CulturalContent::getTitle, keyword)
+                        .or()
+                        .like(CulturalContent::getSummary, keyword)
+                        .or()
+                        .like(CulturalContent::getTags, keyword))
                 .orderByDesc(CulturalContent::getIsTop)
                 .orderByDesc(CulturalContent::getPublishedAt);
 
