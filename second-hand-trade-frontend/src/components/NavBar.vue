@@ -101,7 +101,7 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { Search, ShoppingCart, Bell } from "@element-plus/icons-vue";
-import { getCartCount } from "@/api/modules/cart";
+import { getCartCount, logout as logoutApi } from "@/api/modules/user";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -147,6 +147,10 @@ const handleLogout = async () => {
       type: "warning",
     });
 
+    // 调用后端登出接口
+    await logoutApi();
+    
+    // 清理本地缓存
     userStore.logout();
     ElMessage.success("已退出登录");
     router.push("/");

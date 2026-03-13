@@ -30,6 +30,8 @@ export const useUserStore = defineStore('user', () => {
   const logout = () => {
     userInfo.value = null
     localStorage.removeItem('userInfo')
+    localStorage.removeItem('token')
+    sessionStorage.clear()
   }
   
   // 从本地存储恢复用户信息

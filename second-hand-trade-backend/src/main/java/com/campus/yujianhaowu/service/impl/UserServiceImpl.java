@@ -93,7 +93,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(Long userId) {
-        log.info("用户登出成功，userId: {}", userId);
+        log.info("用户登出，userId: {}", userId);
+        // 简化版本，无需清理 Redis 缓存
+        // TODO: 后续添加 Redis 缓存功能时，在此清理用户缓存
     }
 
     @Override

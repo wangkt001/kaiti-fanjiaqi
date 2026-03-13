@@ -44,7 +44,16 @@ public class AuthController {
     @PostMapping("/logout")
     @Operation(summary = "用户登出")
     public Result<Void> logout(HttpServletRequest request) {
-        // 简化认证，无需特殊处理
+        // 从请求头获取 userId
+        String userIdStr = request.getHeader("X-User-Id");
+        if (userIdStr != null && !userIdStr.isEmpty()) {
+            try {
+                Long userId = Long.parseLong(userIdStr);
+                userService.logout(userId);
+            } catch (NumberFormatException e) {
+                // 忽略，继续执行登出
+            }
+        }
         return Result.success();
     }
 }
