@@ -254,14 +254,16 @@ const handleReject = (row: any) => {
 };
 
 const handleToggleStatus = (row: any) => {
-  const action = row.status === 1 ? "禁用" : "启用";
+  const newStatus = row.status === 1 ? 0 : 1;
+  const action = newStatus === 1 ? "启用" : "禁用";
   ElMessageBox.confirm(`确定要${action}该用户吗？`, "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
   }).then(async () => {
     try {
-      await updateUserStatus(row.id, row.status === 1 ? 0 : 1);
+      console.log("更新用户状态:", { userId: row.id, newStatus });
+      await updateUserStatus(row.id, newStatus);
       ElMessage.success(`${action}成功`);
       // 重新加载列表
       await loadUserList();

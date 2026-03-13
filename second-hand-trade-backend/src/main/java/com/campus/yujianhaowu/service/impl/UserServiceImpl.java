@@ -293,6 +293,7 @@ public class UserServiceImpl implements UserService {
         vo.setShopLogo(user.getShopLogo());
         vo.setFansCount(user.getFansCount());
         vo.setFollowCount(user.getFollowCount());
+        vo.setStatus(user.getStatus());
         vo.setCreatedAt(user.getCreatedAt());
         vo.setLastLoginAt(user.getLastLoginAt());
         return vo;

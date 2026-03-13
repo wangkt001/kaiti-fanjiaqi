@@ -56,6 +56,9 @@ public class UserVO {
     @Schema(description = "关注数量", example = "50")
     private Integer followCount;
 
+    @Schema(description = "用户状态（1-正常 0-禁用）", example = "1")
+    private Integer status;
+
     @Schema(description = "创建时间")
     private LocalDateTime createdAt;
 
