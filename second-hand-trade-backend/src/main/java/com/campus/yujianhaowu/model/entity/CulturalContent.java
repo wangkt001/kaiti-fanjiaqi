@@ -35,9 +35,6 @@ public class CulturalContent extends BaseEntity {
     @Schema(description = "封面图 URL")
     private String coverImage;
 
-    @Schema(description = "封面图 Base64 编码")
-    private String coverImageBase64;
-
     @Schema(description = "分类（intangible_heritage/exhibition/activity/news/story）", example = "intangible_heritage")
     private String category;
 

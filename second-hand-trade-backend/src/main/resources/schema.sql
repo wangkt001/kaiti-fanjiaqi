@@ -324,7 +324,6 @@ CREATE TABLE `cultural_contents` (
   `summary` VARCHAR(500) DEFAULT NULL COMMENT '摘要',
   `content` LONGTEXT NOT NULL COMMENT '资讯内容',
   `cover_image` VARCHAR(255) DEFAULT NULL COMMENT '封面图 URL',
-  `cover_image_base64` LONGTEXT DEFAULT NULL COMMENT '封面图 Base64 编码',
   `category` VARCHAR(50) DEFAULT NULL COMMENT '分类（intangible_heritage/exhibition/activity/news/story）',
   `tags` JSON DEFAULT NULL COMMENT '标签（JSON 数组）',
   `author_id` BIGINT DEFAULT NULL COMMENT '作者 ID（管理员）',
