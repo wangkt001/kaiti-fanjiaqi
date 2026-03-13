@@ -147,7 +147,8 @@ public class UserController {
     public Result<com.campus.yujianhaowu.common.PageResult<UserVO>> listPendingSellers(
             @RequestParam(defaultValue = "1") Long current,
             @RequestParam(defaultValue = "10") Long size) {
-        com.baomidou.mybatisplus.extension.plugins.pagination.Page<UserVO> page = userService.listPendingSellers(current, size);
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page<UserVO> page = userService
+                .listPendingSellers(current, size);
         com.campus.yujianhaowu.common.PageResult<UserVO> result = com.campus.yujianhaowu.common.PageResult.of(
                 page.getRecords(),
                 page.getTotal(),

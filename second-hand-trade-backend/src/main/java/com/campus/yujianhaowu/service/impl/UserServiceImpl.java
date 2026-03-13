@@ -304,7 +304,7 @@ public class UserServiceImpl implements UserService {
 
         // 更新卖家状态
         user.setSellerStatus(status);
-        
+
         // 如果审核通过，将用户角色升级为 seller
         if ("approved".equals(status)) {
             user.setRole("seller");

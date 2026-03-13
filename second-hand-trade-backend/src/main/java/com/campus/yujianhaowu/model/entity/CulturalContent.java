@@ -1,59 +1,73 @@
 package com.campus.yujianhaowu.model.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
+/**
+ * 文化资讯实体
+ *
+ * @author yujianhaowu
+ * @since 2026-03-09
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("cultural_contents")
+@Schema(description = "文化资讯")
 public class CulturalContent extends BaseEntity {
 
-    @TableField("title")
+    private static final long serialVersionUID = 1L;
+
+    @Schema(description = "资讯标题")
     private String title;
 
-    @TableField("summary")
+    @Schema(description = "摘要")
     private String summary;
 
-    @TableField("content")
+    @Schema(description = "资讯内容")
     private String content;
 
-    @TableField("cover_image")
+    @Schema(description = "封面图 URL")
     private String coverImage;
 
-    @TableField("category")
+    @Schema(description = "封面图 Base64 编码")
+    private String coverImageBase64;
+
+    @Schema(description = "分类（intangible_heritage/exhibition/activity/news/story）", example = "intangible_heritage")
     private String category;
 
-    @TableField("tags")
+    @Schema(description = "标签（JSON 数组）")
     private String tags;
 
-    @TableField("author_id")
+    @Schema(description = "作者 ID（管理员）", example = "1")
     private Long authorId;
 
-    @TableField("view_count")
+    @Schema(description = "浏览量", example = "100")
     private Integer viewCount;
 
-    @TableField("like_count")
+    @Schema(description = "点赞数", example = "50")
     private Integer likeCount;
 
-    @TableField("comment_count")
+    @Schema(description = "评论数", example = "20")
     private Integer commentCount;
 
-    @TableField("favorite_count")
+    @Schema(description = "收藏数", example = "30")
     private Integer favoriteCount;
 
-    @TableField("is_top")
+    @Schema(description = "是否置顶", example = "false")
     private Boolean isTop;
 
-    @TableField("is_recommend")
+    @Schema(description = "是否推荐", example = "false")
     private Boolean isRecommend;
 
-    @TableField("is_published")
+    @Schema(description = "是否发布", example = "true")
     private Boolean isPublished;
 
-    @TableField("published_at")
+    @Schema(description = "发布时间")
     private LocalDateTime publishedAt;
 }

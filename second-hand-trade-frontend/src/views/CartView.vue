@@ -259,7 +259,7 @@ const handleDeleteSelected = async () => {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      }
+      },
     );
 
     for (const item of selectedItems) {

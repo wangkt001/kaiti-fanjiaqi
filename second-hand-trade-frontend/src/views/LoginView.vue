@@ -147,14 +147,14 @@ const handleLogin = async () => {
 
       // res 已经是解包后的数据，直接使用
       const { token, userInfo } = res;
-      
+
       console.log("登录响应:", res);
       console.log("用户信息:", userInfo);
       console.log("用户角色:", userInfo.role);
-      
+
       // 保存 token 到 localStorage
-      localStorage.setItem('token', token);
-      
+      localStorage.setItem("token", token);
+
       // 保存用户信息到 store
       userStore.login(userInfo);
 

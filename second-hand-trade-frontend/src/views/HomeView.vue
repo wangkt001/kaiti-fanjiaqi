@@ -173,7 +173,7 @@ import GoodsCard from "@/components/GoodsCard.vue";
 import { getRecommendGoods } from "@/api/modules/goods";
 import { getCategoryTree } from "@/api/modules/category";
 import { getHotTags } from "@/api/modules/tag";
-import { getRecommendContents } from "@/api/modules/culturalContent";
+import { getRecommendContents } from "@/api/modules/content";
 import type { Goods, Category, CulturalTag, CulturalContent } from "@/types";
 
 const router = useRouter();
