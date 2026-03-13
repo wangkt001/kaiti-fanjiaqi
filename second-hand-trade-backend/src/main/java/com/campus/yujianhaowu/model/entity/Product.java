@@ -1,5 +1,6 @@
 package com.campus.yujianhaowu.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -71,6 +72,7 @@ public class Product extends BaseEntity {
     private Long freightTemplateId;
 
     @Schema(description = "商品主图（Base64 编码或图片 ID）")
+    @TableField(value = "image_url")
     private String imageUrl;
 
     @Schema(description = "上架时间", accessMode = io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY)

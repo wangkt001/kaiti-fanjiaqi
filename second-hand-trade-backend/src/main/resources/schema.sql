@@ -81,7 +81,7 @@ CREATE TABLE `products` (
   `customization` BOOLEAN DEFAULT FALSE COMMENT '是否支持定制',
   `packaging_fee` DECIMAL(10,2) DEFAULT 0 COMMENT '包装费用',
   `freight_template_id` BIGINT DEFAULT NULL COMMENT '运费模板 ID',
-  `image_url` TEXT DEFAULT NULL COMMENT '商品主图（Base64 编码）',
+  `image_url` LONGTEXT DEFAULT NULL COMMENT '商品主图（Base64 编码）',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `published_at` DATETIME DEFAULT NULL COMMENT '上架时间',
