@@ -212,10 +212,11 @@ const loadContents = async () => {
       current: currentPage.value,
       size: pageSize.value,
     });
+    console.log("res>>>>>>>>", res);
 
-    if (res.data.code === 200 && res.data.data) {
-      contents.value = res.data.data.records;
-      total.value = res.data.data.total;
+    if (res) {
+      contents.value = res.records;
+      total.value = res.total;
     }
   } catch (error) {
     console.error("加载资讯失败:", error);
