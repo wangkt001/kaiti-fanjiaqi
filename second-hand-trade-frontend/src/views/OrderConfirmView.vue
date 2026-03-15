@@ -221,9 +221,9 @@ const loadCheckoutInfo = async () => {
     const cartItemIds = route.query.cartItemIds as string;
     if (cartItemIds) {
       // 根据 cartItemIds 获取结算信息
-      const res = await getCheckoutInfo(cartItemIds.split(',').map(Number))
-      if (res.data.code === 200 && res.data.data) {
-        const items = res.data.data.items;
+      const res = await getCheckoutInfo(cartItemIds.split(",").map(Number));
+      if (res && res.items) {
+        const items = res.items;
         orderItems.value = items.map((item: any) => ({
           id: item.id,
           productId: item.productId,
@@ -237,8 +237,8 @@ const loadCheckoutInfo = async () => {
     } else {
       // 如果没有传入 cartItemIds，获取所有选中的购物车项
       const res = await getCartItems();
-      if (res.data.code === 200 && res.data.data) {
-        const selectedItems = res.data.data.filter((item: any) => item.selected);
+      if (res) {
+        const selectedItems = res.filter((item: any) => item.selected);
         orderItems.value = selectedItems.map((item: any) => ({
           id: item.id,
           productId: item.productId,
@@ -296,12 +296,12 @@ const handleSubmit = async () => {
     });
 
     ElMessage.success("订单创建成功");
-    const orderNo = res.data.data;
+    const orderNo = res;
     router.push({
       path: "/order/pay",
-      query: { 
+      query: {
         orderNo: orderNo,
-        amount: paymentAmount.value.toFixed(2)
+        amount: paymentAmount.value.toFixed(2),
       },
     });
   } catch (error) {
