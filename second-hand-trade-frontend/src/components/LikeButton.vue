@@ -46,7 +46,7 @@ watch(
     if (val !== undefined) {
       count.value = val;
     }
-  }
+  },
 );
 
 watch(
@@ -55,7 +55,7 @@ watch(
     if (val !== undefined) {
       liked.value = val;
     }
-  }
+  },
 );
 
 // 加载点赞状态

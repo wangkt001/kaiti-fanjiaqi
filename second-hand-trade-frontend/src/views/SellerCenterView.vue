@@ -208,6 +208,20 @@
         <!-- 订单管理 -->
         <el-tab-pane label="订单管理" name="orders">
           <div class="tab-content">
+            <div class="toolbar">
+              <el-select
+                v-model="orderStatusFilter"
+                placeholder="订单状态"
+                style="width: 150px"
+              >
+                <el-option label="全部" :value="undefined" />
+                <el-option label="待付款" :value="0" />
+                <el-option label="待发货" :value="1" />
+                <el-option label="待收货" :value="2" />
+                <el-option label="已完成" :value="3" />
+                <el-option label="已取消" :value="4" />
+              </el-select>
+            </div>
             <el-table :data="orderList" v-loading="loading" style="width: 100%">
               <el-table-column prop="orderNo" label="订单编号" width="180" />
               <el-table-column prop="receiverName" label="收货人" width="100" />
@@ -224,7 +238,7 @@
                 </template>
               </el-table-column>
               <el-table-column prop="createdAt" label="下单时间" width="180" />
-              <el-table-column label="操作" width="150" fixed="right">
+              <el-table-column label="操作" width="200" fixed="right">
                 <template #default="{ row }">
                   <el-button size="small" @click="handleViewOrder(row)">
                     查看
@@ -240,6 +254,15 @@
                 </template>
               </el-table-column>
             </el-table>
+            <div class="pagination-container">
+              <el-pagination
+                v-model:current-page="orderCurrentPage"
+                v-model:page-size="orderPageSize"
+                :total="orderTotal"
+                layout="total, prev, pager, next, jumper"
+                @current-change="handleOrderPageChange"
+              />
+            </div>
           </div>
         </el-tab-pane>
 
@@ -348,11 +371,42 @@
         </el-button>
       </template>
     </el-dialog>
+    <!-- 发货对话框 -->
+    <el-dialog v-model="showDeliverDialog" title="发货" width="500px">
+      <el-form :model="deliverForm" label-width="100px">
+        <el-form-item label="配送方式" required>
+          <el-select
+            v-model="deliverForm.deliveryType"
+            placeholder="请选择配送方式"
+          >
+            <el-option label="快递配送" value="express" />
+            <el-option label="门店自提" value="pickup" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="物流单号" required>
+          <el-input
+            v-model="deliverForm.deliveryNo"
+            placeholder="请输入物流单号"
+            maxlength="50"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="showDeliverDialog = false">取消</el-button>
+        <el-button
+          type="primary"
+          :loading="delivering"
+          @click="handleSubmitDeliver"
+        >
+          确认发货
+        </el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
 import NavBar from "@/components/NavBar.vue";
@@ -362,9 +416,11 @@ import {
   deleteGoods,
   updateGoods,
 } from "@/api/modules/goods";
+import { getSellerOrderList, shipOrder } from "@/api/modules/order";
 import { getCurrentUser } from "@/api/modules/auth";
 import { useUserStore } from "@/store/user";
 import type { Goods } from "@/types";
+import type { Order } from "@/api/modules/order";
 
 const userStore = useUserStore();
 
@@ -407,16 +463,61 @@ const handlePageChange = (page: number) => {
 };
 
 // 订单列表
-const orderList = ref([
-  {
-    id: 1,
-    orderNo: "ORD202603090001",
-    receiverName: "张三",
-    paymentAmount: 99.0,
-    status: 1,
-    createdAt: "2026-03-09 10:00:00",
-  },
-]);
+const orderList = ref<Order[]>([]);
+const orderCurrentPage = ref(1);
+const orderPageSize = ref(10);
+const orderTotal = ref(0);
+const orderStatusFilter = ref<number | undefined>(undefined);
+
+// 发货相关
+const showDeliverDialog = ref(false);
+const delivering = ref(false);
+const deliveringOrderId = ref<number | null>(null);
+const deliverForm = reactive({
+  deliveryType: "express",
+  deliveryNo: "",
+});
+
+// 获取卖家订单列表
+const fetchSellerOrders = async () => {
+  loading.value = true;
+  try {
+    const res = await getSellerOrderList({
+      status: orderStatusFilter.value,
+      current: orderCurrentPage.value,
+      size: orderPageSize.value,
+    });
+    if (res) {
+      orderList.value = res.records;
+      orderTotal.value = res.total;
+    }
+  } catch (error) {
+    console.error("获取订单列表失败:", error);
+    ElMessage.error("获取订单列表失败");
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleOrderPageChange = (page: number) => {
+  orderCurrentPage.value = page;
+  fetchSellerOrders();
+};
+
+// 监听订单状态筛选变化
+watch(orderStatusFilter, () => {
+  orderCurrentPage.value = 1;
+  fetchSellerOrders();
+});
+
+// 监听标签切换
+watch(activeTab, (newTab) => {
+  if (newTab === "orders") {
+    fetchSellerOrders();
+  } else if (newTab === "products") {
+    fetchSellerProducts();
+  }
+});
 
 // 店铺信息
 const shopForm = reactive({
@@ -560,13 +661,36 @@ const handleViewOrder = (row: any) => {
 };
 
 const handleDeliver = (row: any) => {
-  ElMessageBox.confirm("确定要发货吗？", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(() => {
-    ElMessage.success("发货成功");
-  });
+  deliveringOrderId.value = row.id;
+  deliverForm.deliveryType = "express";
+  deliverForm.deliveryNo = "";
+  showDeliverDialog.value = true;
+};
+
+const handleSubmitDeliver = async () => {
+  if (!deliverForm.deliveryType || !deliverForm.deliveryNo) {
+    ElMessage.warning("请填写完整的发货信息");
+    return;
+  }
+
+  delivering.value = true;
+  try {
+    if (deliveringOrderId.value) {
+      await shipOrder(
+        deliveringOrderId.value,
+        deliverForm.deliveryNo,
+        deliverForm.deliveryType,
+      );
+      ElMessage.success("发货成功");
+      showDeliverDialog.value = false;
+      fetchSellerOrders();
+    }
+  } catch (error) {
+    console.error("发货失败:", error);
+    ElMessage.error("发货失败，请重试");
+  } finally {
+    delivering.value = false;
+  }
 };
 
 const handleSaveShop = () => {
@@ -734,6 +858,8 @@ onMounted(() => {
   refreshUserInfo();
   // 获取商品列表
   fetchSellerProducts();
+  // 获取订单列表
+  fetchSellerOrders();
 });
 
 // 刷新用户信息

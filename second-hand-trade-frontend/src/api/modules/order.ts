@@ -159,3 +159,32 @@ export function getAdminOrderList(params: {
     params,
   })
 }
+
+/**
+ * 卖家：获取订单列表
+ */
+export function getSellerOrderList(params: {
+  status?: number
+  current: number
+  size: number
+}) {
+  return request<ApiResponse<PageResult<Order>>>({
+    url: '/orders/seller/list',
+    method: 'get',
+    params,
+  })
+}
+
+/**
+ * 卖家：发货
+ */
+export function shipOrder(id: number, deliveryNo: string, deliveryType: string) {
+  return request<ApiResponse<void>>({
+    url: `/orders/seller/${id}/ship`,
+    method: 'put',
+    params: {
+      deliveryNo,
+      deliveryType,
+    },
+  })
+}

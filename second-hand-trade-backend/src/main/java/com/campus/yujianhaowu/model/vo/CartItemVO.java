@@ -28,5 +28,6 @@ public class CartItemVO {
         private String mainImage;
         private Integer stock;
         private String status;
+        private Long sellerId;
     }
 }

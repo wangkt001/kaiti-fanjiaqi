@@ -58,11 +58,17 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // 3. 创建订单
+        // 注意：这里我们假设购物车中选中的商品都属于同一个卖家
+        // 在实际业务中，如果包含多个卖家的商品，应该拆分为多个子订单
+        // 这里为了简化，我们取第一个商品的卖家 ID 作为订单的卖家 ID
+        // 如果需要支持多卖家结算，前端应该限制只能结算同一个卖家的商品，或者后端进行拆单
+        Long sellerId = selectedItems.get(0).getProduct().getSellerId();
+
         String orderNo = IdUtil.fastSimpleUUID();
         Order order = new Order();
         order.setOrderNo(orderNo);
         order.setUserId(userId);
-        order.setSellerId(selectedItems.get(0).getProduct().getId()); // 简化：假设第一个商品的卖家
+        order.setSellerId(sellerId);
         order.setTotalAmount(totalAmount);
         order.setPaymentAmount(totalAmount); // 简化：无运费和优惠
         order.setFreightAmount(BigDecimal.ZERO);

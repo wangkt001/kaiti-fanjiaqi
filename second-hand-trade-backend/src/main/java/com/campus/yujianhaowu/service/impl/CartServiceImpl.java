@@ -74,8 +74,21 @@ public class CartServiceImpl implements CartService {
             item.setProductId(productId);
             item.setQuantity(quantity);
             item.setSelected(true);
-            cartItemMapper.insert(item);
-            return convertToVO(item);
+            try {
+                cartItemMapper.insert(item);
+                return convertToVO(item);
+            } catch (Exception e) {
+                // 如果是唯一约束冲突（可能是并发导致，也可能是之前逻辑删除导致），尝试更新
+                // 由于现在 CartItem 不再使用逻辑删除，这里主要是防并发
+                CartItem retryItem = cartItemMapper.selectOne(wrapper);
+                if (retryItem != null) {
+                    retryItem.setQuantity(retryItem.getQuantity() + quantity);
+                    retryItem.setSelected(true);
+                    cartItemMapper.updateById(retryItem);
+                    return convertToVO(retryItem);
+                }
+                throw e;
+            }
         }
     }
 
@@ -162,8 +175,7 @@ public class CartServiceImpl implements CartService {
                 CartItemVO vo = convertToVO(cartItem);
                 checkoutItems.add(vo);
                 totalAmount = totalAmount.add(
-                    vo.getProduct().getPrice().multiply(BigDecimal.valueOf(vo.getQuantity()))
-                );
+                        vo.getProduct().getPrice().multiply(BigDecimal.valueOf(vo.getQuantity())));
             }
         }
 
@@ -196,6 +208,7 @@ public class CartServiceImpl implements CartService {
             productInfo.setMainImage(null); // 简化：暂不处理商品图片
             productInfo.setStock(product.getStock());
             productInfo.setStatus(product.getStatus());
+            productInfo.setSellerId(product.getSellerId());
             vo.setProduct(productInfo);
         }
 
