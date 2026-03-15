@@ -3,120 +3,131 @@
     <NavBar />
 
     <div class="page-container">
-      <h1 class="page-title">我的购物车</h1>
+      <div v-if="isSeller" class="seller-notice">
+        <el-empty description="卖家账号无法使用购物车功能">
+          <el-button type="primary" @click="$router.push('/seller')"
+            >前往卖家中心</el-button
+          >
+        </el-empty>
+      </div>
+      <div v-else>
+        <h1 class="page-title">我的购物车</h1>
 
-      <div v-loading="loading" class="cart-content">
-        <!-- 空购物车 -->
-        <div v-if="cartItems.length === 0" class="empty-cart">
-          <el-empty description="购物车是空的">
-            <el-button type="primary" @click="$router.push('/goods')"
-              >去逛逛</el-button
-            >
-          </el-empty>
-        </div>
-
-        <!-- 购物车列表 -->
-        <div v-else class="cart-list">
-          <!-- 操作栏 -->
-          <div class="cart-header">
-            <div class="select-all">
-              <el-checkbox v-model="allSelected" @change="handleSelectAll">
-                全选
-              </el-checkbox>
-            </div>
-            <div class="header-info">
-              <span class="goods-count">共 {{ cartItems.length }} 件商品</span>
-              <el-button text type="danger" @click="handleClearCart">
-                清空购物车
-              </el-button>
-            </div>
+        <div v-loading="loading" class="cart-content">
+          <!-- 空购物车 -->
+          <div v-if="cartItems.length === 0" class="empty-cart">
+            <el-empty description="购物车是空的">
+              <el-button type="primary" @click="$router.push('/goods')"
+                >去逛逛</el-button
+              >
+            </el-empty>
           </div>
 
-          <!-- 商品列表 -->
-          <div class="goods-list">
-            <div
-              v-for="item in cartItems"
-              :key="item.productId"
-              class="goods-item"
-              :class="{ selected: item.selected }"
-            >
-              <div class="item-checkbox">
-                <el-checkbox
-                  v-model="item.selected"
-                  @change="handleSelectItem(item)"
-                />
+          <!-- 购物车列表 -->
+          <div v-else class="cart-list">
+            <!-- 操作栏 -->
+            <div class="cart-header">
+              <div class="select-all">
+                <el-checkbox v-model="allSelected" @change="handleSelectAll">
+                  全选
+                </el-checkbox>
               </div>
-              <div class="item-image">
-                <el-image
-                  :src="item.product.mainImage || defaultImage"
-                  fit="cover"
-                  style="width: 100px; height: 100px"
-                />
-              </div>
-              <div class="item-info">
-                <div class="goods-name">{{ item.product.name }}</div>
-                <div class="goods-spec">
-                  <span v-if="item.product.description">{{
-                    item.product.description
-                  }}</span>
-                </div>
-                <div class="goods-price">
-                  <span class="price-label">单价：</span>
-                  <span class="price-value"
-                    >¥{{ item.product.price.toFixed(2) }}</span
-                  >
-                </div>
-              </div>
-              <div class="item-quantity">
-                <el-input-number
-                  v-model="item.quantity"
-                  :min="1"
-                  :max="item.product.stock"
-                  size="small"
-                  @change="handleQuantityChange(item)"
-                />
-                <div class="stock-tip">库存：{{ item.product.stock }}</div>
-              </div>
-              <div class="item-subtotal">
-                <div class="subtotal-label">小计：</div>
-                <div class="subtotal-value">
-                  ¥{{ (item.product.price * item.quantity).toFixed(2) }}
-                </div>
-              </div>
-              <div class="item-action">
-                <el-button text type="danger" @click="handleDeleteItem(item)">
-                  删除
+              <div class="header-info">
+                <span class="goods-count"
+                  >共 {{ cartItems.length }} 件商品</span
+                >
+                <el-button text type="danger" @click="handleClearCart">
+                  清空购物车
                 </el-button>
               </div>
             </div>
-          </div>
 
-          <!-- 结算栏 -->
-          <div class="cart-footer">
-            <div class="footer-left">
-              <el-checkbox v-model="allSelected" @change="handleSelectAll">
-                全选
-              </el-checkbox>
-              <el-button text @click="handleDeleteSelected">
-                删除选中
-              </el-button>
-            </div>
-            <div class="footer-right">
-              <div class="selected-count">
-                已选 <span class="count">{{ selectedCount }}</span> 件商品
-              </div>
-              <div class="total-info">
-                <span class="total-label">合计：</span>
-                <span class="total-value">¥{{ totalPrice.toFixed(2) }}</span>
-              </div>
-              <el-button
-                type="primary"
-                size="large"
-                @click="handleCheckout"
-                :disabled="selectedCount === 0"
+            <!-- 商品列表 -->
+            <div class="goods-list">
+              <div
+                v-for="item in cartItems"
+                :key="item.productId"
+                class="goods-item"
+                :class="{ selected: item.selected }"
               >
-                去结算
-              </el-button>
+                <div class="item-checkbox">
+                  <el-checkbox
+                    v-model="item.selected"
+                    @change="handleSelectItem(item)"
+                  />
+                </div>
+                <div class="item-image">
+                  <el-image
+                    :src="item.product.mainImage || defaultImage"
+                    fit="cover"
+                    style="width: 100px; height: 100px"
+                  />
+                </div>
+                <div class="item-info">
+                  <div class="goods-name">{{ item.product.name }}</div>
+                  <div class="goods-spec">
+                    <span v-if="item.product.description">{{
+                      item.product.description
+                    }}</span>
+                  </div>
+                  <div class="goods-price">
+                    <span class="price-label">单价：</span>
+                    <span class="price-value"
+                      >¥{{ item.product.price.toFixed(2) }}</span
+                    >
+                  </div>
+                </div>
+                <div class="item-quantity">
+                  <el-input-number
+                    v-model="item.quantity"
+                    :min="1"
+                    :max="item.product.stock"
+                    size="small"
+                    @change="handleQuantityChange(item)"
+                  />
+                  <div class="stock-tip">库存：{{ item.product.stock }}</div>
+                </div>
+                <div class="item-subtotal">
+                  <div class="subtotal-label">小计：</div>
+                  <div class="subtotal-value">
+                    ¥{{ (item.product.price * item.quantity).toFixed(2) }}
+                  </div>
+                </div>
+                <div class="item-action">
+                  <el-button text type="danger" @click="handleDeleteItem(item)">
+                    删除
+                  </el-button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 结算栏 -->
+            <div class="cart-footer">
+              <div class="footer-left">
+                <el-checkbox v-model="allSelected" @change="handleSelectAll">
+                  全选
+                </el-checkbox>
+                <el-button text @click="handleDeleteSelected">
+                  删除选中
+                </el-button>
+              </div>
+              <div class="footer-right">
+                <div class="selected-count">
+                  已选 <span class="count">{{ selectedCount }}</span> 件商品
+                </div>
+                <div class="total-info">
+                  <span class="total-label">合计：</span>
+                  <span class="total-value">¥{{ totalPrice.toFixed(2) }}</span>
+                </div>
+                <el-button
+                  type="primary"
+                  size="large"
+                  @click="handleCheckout"
+                  :disabled="selectedCount === 0"
+                >
+                  去结算
+                </el-button>
+              </div>
             </div>
           </div>
         </div>
@@ -133,6 +144,7 @@ import { useRouter } from "vue-router";
 import { ElMessage, ElMessageBox } from "element-plus";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
+import { useUserStore } from "@/store/user";
 import {
   getCartItems,
   addToCart,
@@ -147,6 +159,9 @@ import {
 const defaultImage = "https://placeholder.co/100x100?text=No+Image";
 
 const router = useRouter();
+const userStore = useUserStore();
+
+const isSeller = computed(() => userStore.userInfo?.role === "seller");
 
 const loading = ref(false);
 const cartItems = ref<CartItem[]>([]);
@@ -327,6 +342,13 @@ onMounted(() => {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+
+    .seller-notice {
+      background: #fff;
+      border-radius: 8px;
+      padding: 60px 20px;
+      text-align: center;
+    }
 
     .page-title {
       font-size: 24px;

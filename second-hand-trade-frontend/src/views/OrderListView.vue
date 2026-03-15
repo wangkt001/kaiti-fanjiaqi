@@ -3,131 +3,140 @@
     <NavBar />
 
     <div class="page-container">
-      <h1 class="page-title">我的订单</h1>
+      <div v-if="isSeller" class="seller-notice">
+        <el-empty description="卖家账号无法查看买家订单">
+          <el-button type="primary" @click="$router.push('/seller')"
+            >前往卖家中心</el-button
+          >
+        </el-empty>
+      </div>
+      <div v-else>
+        <h1 class="page-title">我的订单</h1>
 
-      <div class="order-content">
-        <!-- 订单状态筛选 -->
-        <div class="filter-tabs">
-          <el-tabs v-model="currentStatus" @tab-change="handleStatusChange">
-            <el-tab-pane label="全部订单" :name="-1" />
-            <el-tab-pane label="待付款" :name="0" />
-            <el-tab-pane label="待发货" :name="1" />
-            <el-tab-pane label="待收货" :name="2" />
-            <el-tab-pane label="已完成" :name="3" />
-          </el-tabs>
-        </div>
-
-        <!-- 订单列表 -->
-        <div v-loading="loading" class="orders">
-          <div v-if="orders.length === 0" class="empty-orders">
-            <el-empty description="暂无订单">
-              <el-button type="primary" @click="$router.push('/goods')"
-                >去购物</el-button
-              >
-            </el-empty>
+        <div class="order-content">
+          <!-- 订单状态筛选 -->
+          <div class="filter-tabs">
+            <el-tabs v-model="currentStatus" @tab-change="handleStatusChange">
+              <el-tab-pane label="全部订单" :name="-1" />
+              <el-tab-pane label="待付款" :name="0" />
+              <el-tab-pane label="待发货" :name="1" />
+              <el-tab-pane label="待收货" :name="2" />
+              <el-tab-pane label="已完成" :name="3" />
+            </el-tabs>
           </div>
 
-          <div v-else class="order-list">
-            <div v-for="order in orders" :key="order.id" class="order-item">
-              <!-- 订单头部 -->
-              <div class="order-header">
-                <span class="order-no">订单编号：{{ order.orderNo }}</span>
-                <span class="order-status" :class="`status-${order.status}`">
-                  {{ getStatusText(order.status) }}
-                </span>
-                <span class="order-time">{{
-                  formatTime(order.createdAt)
-                }}</span>
-              </div>
-
-              <!-- 订单商品 -->
-              <div class="order-goods">
-                <div
-                  v-for="item in order.items"
-                  :key="item.id"
-                  class="goods-item"
+          <!-- 订单列表 -->
+          <div v-loading="loading" class="orders">
+            <div v-if="orders.length === 0" class="empty-orders">
+              <el-empty description="暂无订单">
+                <el-button type="primary" @click="$router.push('/goods')"
+                  >去购物</el-button
                 >
-                  <div class="goods-image">
-                    <el-image
-                      :src="item.productImage || defaultImage"
-                      fit="cover"
-                      style="width: 80px; height: 80px; border-radius: 4px"
-                    />
-                  </div>
-                  <div class="goods-info">
-                    <div class="goods-name">{{ item.productName }}</div>
-                    <div class="goods-spec">数量：{{ item.quantity }}</div>
-                  </div>
-                  <div class="goods-price">¥{{ item.price.toFixed(2) }}</div>
-                  <div class="goods-total">
-                    ¥{{ item.totalPrice.toFixed(2) }}
-                  </div>
-                </div>
-              </div>
+              </el-empty>
+            </div>
 
-              <!-- 订单金额 -->
-              <div class="order-footer">
-                <div class="order-amount">
-                  <span class="amount-label">订单总额：</span>
-                  <span class="amount-value"
-                    >¥{{ order.paymentAmount.toFixed(2) }}</span
-                  >
+            <div v-else class="order-list">
+              <div v-for="order in orders" :key="order.id" class="order-item">
+                <!-- 订单头部 -->
+                <div class="order-header">
+                  <span class="order-no">订单编号：{{ order.orderNo }}</span>
+                  <span class="order-status" :class="`status-${order.status}`">
+                    {{ getStatusText(order.status) }}
+                  </span>
+                  <span class="order-time">{{
+                    formatTime(order.createdAt)
+                  }}</span>
                 </div>
-                <div class="order-actions">
-                  <template v-if="order.status === 0">
-                    <el-button
-                      size="small"
-                      @click="handleCancelOrder(order.id)"
-                    >
-                      取消订单
-                    </el-button>
-                    <el-button
-                      size="small"
-                      type="primary"
-                      @click="handlePayOrder(order)"
-                    >
-                      立即付款
-                    </el-button>
-                  </template>
-                  <template v-else-if="order.status === 2">
-                    <el-button
-                      size="small"
-                      type="primary"
-                      @click="handleConfirmOrder(order.id)"
-                    >
-                      确认收货
-                    </el-button>
-                  </template>
-                  <template
-                    v-else-if="order.status === 3 || order.status === 4"
+
+                <!-- 订单商品 -->
+                <div class="order-goods">
+                  <div
+                    v-for="item in order.items"
+                    :key="item.id"
+                    class="goods-item"
                   >
-                    <el-button
-                      size="small"
-                      @click="handleDeleteOrder(order.id)"
+                    <div class="goods-image">
+                      <el-image
+                        :src="item.productImage || defaultImage"
+                        fit="cover"
+                        style="width: 80px; height: 80px; border-radius: 4px"
+                      />
+                    </div>
+                    <div class="goods-info">
+                      <div class="goods-name">{{ item.productName }}</div>
+                      <div class="goods-spec">数量：{{ item.quantity }}</div>
+                    </div>
+                    <div class="goods-price">¥{{ item.price.toFixed(2) }}</div>
+                    <div class="goods-total">
+                      ¥{{ item.totalPrice.toFixed(2) }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 订单金额 -->
+                <div class="order-footer">
+                  <div class="order-amount">
+                    <span class="amount-label">订单总额：</span>
+                    <span class="amount-value"
+                      >¥{{ order.paymentAmount.toFixed(2) }}</span
                     >
-                      删除订单
+                  </div>
+                  <div class="order-actions">
+                    <template v-if="order.status === 0">
+                      <el-button
+                        size="small"
+                        @click="handleCancelOrder(order.id)"
+                      >
+                        取消订单
+                      </el-button>
+                      <el-button
+                        size="small"
+                        type="primary"
+                        @click="handlePayOrder(order)"
+                      >
+                        立即付款
+                      </el-button>
+                    </template>
+                    <template v-else-if="order.status === 2">
+                      <el-button
+                        size="small"
+                        type="primary"
+                        @click="handleConfirmOrder(order.id)"
+                      >
+                        确认收货
+                      </el-button>
+                    </template>
+                    <template
+                      v-else-if="order.status === 3 || order.status === 4"
+                    >
+                      <el-button
+                        size="small"
+                        @click="handleDeleteOrder(order.id)"
+                      >
+                        删除订单
+                      </el-button>
+                    </template>
+                    <el-button size="small" @click="handleViewDetail(order.id)">
+                      订单详情
                     </el-button>
-                  </template>
-                  <el-button size="small" @click="handleViewDetail(order.id)">
-                    订单详情
-                  </el-button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- 分页 -->
-        <div v-if="total > pageSize" class="pagination">
-          <el-pagination
-            v-model:current-page="currentPage"
-            v-model:page-size="pageSize"
-            :page-sizes="[10, 20, 50]"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
+          <!-- 分页 -->
+          <div v-if="total > pageSize" class="pagination">
+            <el-pagination
+              v-model:current-page="currentPage"
+              v-model:page-size="pageSize"
+              :page-sizes="[10, 20, 50]"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -137,9 +146,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { useUserStore } from "@/store/user";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
 import {
@@ -153,6 +163,9 @@ import type { Order } from "@/api/modules/order";
 const defaultImage = "https://placeholder.co/100x100?text=No+Image";
 
 const router = useRouter();
+const userStore = useUserStore();
+
+const isSeller = computed(() => userStore.userInfo?.role === "seller");
 
 const loading = ref(false);
 const orders = ref<Order[]>([]);
@@ -307,6 +320,13 @@ onMounted(() => {
     max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
+
+    .seller-notice {
+      background: #fff;
+      border-radius: 8px;
+      padding: 60px 20px;
+      text-align: center;
+    }
 
     .page-title {
       font-size: 24px;

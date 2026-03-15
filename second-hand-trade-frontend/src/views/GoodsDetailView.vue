@@ -112,13 +112,15 @@
 
             <!-- 操作按钮 -->
             <div class="action-buttons">
-              <el-button size="large" @click="handleAddCart">
-                <el-icon><ShoppingCart /></el-icon>
-                加入购物车
-              </el-button>
-              <el-button type="primary" size="large" @click="handleBuyNow">
-                立即购买
-              </el-button>
+              <template v-if="!isSeller">
+                <el-button size="large" @click="handleAddCart">
+                  <el-icon><ShoppingCart /></el-icon>
+                  加入购物车
+                </el-button>
+                <el-button type="primary" size="large" @click="handleBuyNow">
+                  立即购买
+                </el-button>
+              </template>
               <FavoriteButton
                 targetType="product"
                 :targetId="goods.id"
@@ -264,6 +266,7 @@ const currentImage = ref("");
 const showReviewForm = ref(false);
 
 const isLoggedIn = computed(() => userStore.isLoggedIn);
+const isSeller = computed(() => userStore.userInfo?.role === "seller");
 
 const imageList = computed(() => {
   return goods.value.images?.map((img) => img.imageUrl) || [];

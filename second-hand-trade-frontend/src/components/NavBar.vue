@@ -34,8 +34,9 @@
       <!-- 用户操作区 -->
       <div class="navbar-actions">
         <template v-if="userStore.isLoggedIn">
-          <!-- 购物车 -->
+          <!-- 购物车（仅买家可见） -->
           <el-badge
+            v-if="!userStore.isSeller"
             :value="cartCount"
             :hidden="cartCount === 0"
             class="action-item"

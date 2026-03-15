@@ -26,7 +26,7 @@
             <el-icon><ChatDotRound /></el-icon>
             <span>我的评价</span>
           </el-menu-item>
-          <el-menu-item index="orders">
+          <el-menu-item index="orders" v-if="isBuyer">
             <el-icon><ShoppingBag /></el-icon>
             <span>我的订单</span>
           </el-menu-item>
