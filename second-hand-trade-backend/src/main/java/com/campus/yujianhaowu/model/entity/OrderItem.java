@@ -1,16 +1,32 @@
 package com.campus.yujianhaowu.model.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
+/**
+ * 订单商品实体
+ * <p>
+ * 注意：不继承 BaseEntity，因为 order_items 表没有 updated_at 字段
+ * </p>
+ *
+ * @author yujianhaowu
+ * @since 2026-03-09
+ */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("order_items")
-public class OrderItem extends BaseEntity {
+public class OrderItem implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Schema(description = "ID", accessMode = Schema.AccessMode.READ_ONLY)
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     @TableField("order_id")
     private Long orderId;
@@ -32,4 +48,13 @@ public class OrderItem extends BaseEntity {
 
     @TableField("total_price")
     private BigDecimal totalPrice;
+
+    @Schema(description = "创建时间", accessMode = Schema.AccessMode.READ_ONLY)
+    @TableField(value = "created_at", fill = FieldFill.INSERT)
+    private LocalDateTime createdAt;
+
+    @Schema(description = "逻辑删除标识", accessMode = Schema.AccessMode.READ_ONLY)
+    @JsonIgnore
+    @TableLogic
+    private Integer deleted;
 }
