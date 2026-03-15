@@ -64,9 +64,9 @@ const loadStatus = async () => {
 
   try {
     const res = await getLikeStatus(props.targetType, props.targetId);
-    if (res.data.code === 200) {
-      liked.value = res.data.data.liked;
-      count.value = res.data.data.count;
+    if (res) {
+      liked.value = res.liked;
+      count.value = res.count;
     }
   } catch (error) {
     console.error("加载点赞状态失败:", error);

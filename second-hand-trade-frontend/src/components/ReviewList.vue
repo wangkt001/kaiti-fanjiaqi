@@ -215,21 +215,21 @@ const loadReviews = async () => {
       rating: currentRating.value,
     });
 
-    if (res.data.code === 200 && res.data.data) {
-      reviews.value = res.data.data.records.map((review) => ({
+    if (res) {
+      reviews.value = res.records.map((review) => ({
         ...review,
         showReply: false,
         isLiked: false,
         replies: [],
       }));
-      total.value = res.data.data.total;
+      total.value = res.total;
 
       // 加载每个评价的点赞状态
       if (userStore.isLoggedIn) {
         reviews.value.forEach(async (review) => {
           const statusRes = await getLikeStatus("review", review.id);
-          if (statusRes.data.code === 200) {
-            review.isLiked = statusRes.data.data.liked;
+          if (statusRes) {
+            review.isLiked = statusRes.liked;
           }
         });
       }
@@ -291,7 +291,7 @@ const loadReplies = async (review: Review) => {
       size: 50,
     });
 
-    if (res.data.code === 200 && res.data.data) {
+    if (res) {
       // 这里简化处理，实际应该调用专门的回复接口
       review.replies = [];
     }

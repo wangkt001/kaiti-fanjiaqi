@@ -206,8 +206,8 @@ const loadContentDetail = async () => {
     const id = Number(route.params.id);
     const res = await getContentDetail(id);
 
-    if (res.data.code === 200 && res.data.data) {
-      content.value = res.data.data;
+    if (res) {
+      content.value = res;
     }
   } catch (error) {
     console.error("加载详情失败:", error);
@@ -225,8 +225,8 @@ const loadRecommendContents = async () => {
       size: 4,
     });
 
-    if (res.data.code === 200 && res.data.data) {
-      recommendContents.value = res.data.data.records;
+    if (res) {
+      recommendContents.value = res.records;
     }
   } catch (error) {
     console.error("加载推荐失败:", error);
@@ -241,8 +241,8 @@ const loadHotContents = async () => {
       size: 10,
     });
 
-    if (res.data.code === 200 && res.data.data) {
-      hotContents.value = res.data.data.records.slice(0, 10);
+    if (res) {
+      hotContents.value = res.records.slice(0, 10);
     }
   } catch (error) {
     console.error("加载热门失败:", error);

@@ -217,8 +217,8 @@ const loadOrderDetail = async () => {
     const orderId = Number(route.params.id);
     const res = await getOrderDetail(orderId);
 
-    if (res.data.code === 200 && res.data.data) {
-      order.value = res.data.data;
+    if (res) {
+      order.value = res;
     }
   } catch (error) {
     console.error("加载订单详情失败:", error);

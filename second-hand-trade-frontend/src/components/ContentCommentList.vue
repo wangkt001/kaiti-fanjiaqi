@@ -132,12 +132,12 @@ const loadComments = async () => {
       size: pageSize.value,
     });
 
-    if (res.data.code === 200 && res.data.data) {
-      comments.value = res.data.data.records.map((comment) => ({
+    if (res) {
+      comments.value = res.records.map((comment) => ({
         ...comment,
         showReply: false,
       }));
-      total.value = res.data.data.total;
+      total.value = res.total;
     }
   } catch (error) {
     console.error("加载评论失败:", error);

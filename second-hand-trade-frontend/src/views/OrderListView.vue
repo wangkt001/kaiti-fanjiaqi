@@ -183,9 +183,9 @@ const loadOrders = async () => {
       size: pageSize.value,
     });
 
-    if (res.data.code === 200 && res.data.data) {
-      orders.value = res.data.data.records;
-      total.value = res.data.data.total;
+    if (res) {
+      orders.value = res.records;
+      total.value = res.total;
     }
   } catch (error) {
     console.error("加载订单失败:", error);
