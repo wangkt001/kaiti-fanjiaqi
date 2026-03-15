@@ -38,20 +38,20 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/api/**")
+                .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/api/auth/login",
-                        "/api/auth/register",
-                        "/api/auth/logout",
-                        "/api/doc.html",
-                        "/api/webjars/**",
-                        "/api/v3/**",
-                        "/api/swagger-resources/**",
-                        "/api/files/**",
-                        "/api/categories/**",
-                        "/api/tags/**",
+                        "/auth/login",
+                        "/auth/register",
+                        "/auth/logout",
+                        "/doc.html",
+                        "/webjars/**",
+                        "/v3/**",
+                        "/swagger-resources/**",
+                        "/files/**",
+                        "/categories/**",
+                        "/tags/**",
                         // 以下接口不需要认证
-                        "/api/cultural-contents/**",
-                        "/api/content-comments/**");
+                        "/cultural-contents/**",
+                        "/content-comments/**");
     }
 }

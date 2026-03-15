@@ -11,9 +11,12 @@ import com.campus.yujianhaowu.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +51,7 @@ public class CartServiceImpl implements CartService {
         }
 
         // 检查商品状态
-        if (!"on_sale".equals(product.getStatus())) {
+        if ("offline".equals(product.getStatus())) {
             throw new BusinessException("商品已下架");
         }
 
@@ -62,7 +65,6 @@ public class CartServiceImpl implements CartService {
             // 更新数量
             existingItem.setQuantity(existingItem.getQuantity() + quantity);
             existingItem.setSelected(true);
-            existingItem.setUpdatedAt(LocalDateTime.now());
             cartItemMapper.updateById(existingItem);
             return convertToVO(existingItem);
         } else {
@@ -72,8 +74,6 @@ public class CartServiceImpl implements CartService {
             item.setProductId(productId);
             item.setQuantity(quantity);
             item.setSelected(true);
-            item.setCreatedAt(LocalDateTime.now());
-            item.setUpdatedAt(LocalDateTime.now());
             cartItemMapper.insert(item);
             return convertToVO(item);
         }
@@ -95,7 +95,6 @@ public class CartServiceImpl implements CartService {
         }
 
         item.setQuantity(quantity);
-        item.setUpdatedAt(LocalDateTime.now());
         cartItemMapper.updateById(item);
     }
 
@@ -111,7 +110,6 @@ public class CartServiceImpl implements CartService {
         }
 
         item.setSelected(selected);
-        item.setUpdatedAt(LocalDateTime.now());
         cartItemMapper.updateById(item);
     }
 
@@ -123,7 +121,6 @@ public class CartServiceImpl implements CartService {
         List<CartItem> items = cartItemMapper.selectList(wrapper);
         for (CartItem item : items) {
             item.setSelected(selected);
-            item.setUpdatedAt(LocalDateTime.now());
             cartItemMapper.updateById(item);
         }
     }
@@ -151,6 +148,33 @@ public class CartServiceImpl implements CartService {
         wrapper.eq(CartItem::getUserId, userId);
         Long count = cartItemMapper.selectCount(wrapper);
         return count.intValue();
+    }
+
+    @Override
+    public Map<String, Object> getCheckoutInfo(Long userId, List<Long> cartItemIds) {
+        List<CartItemVO> checkoutItems = new ArrayList<>();
+        BigDecimal totalAmount = BigDecimal.ZERO;
+
+        for (Object cartItemIdObj : cartItemIds) {
+            Long cartItemId = ((Number) cartItemIdObj).longValue();
+            CartItem cartItem = cartItemMapper.selectById(cartItemId);
+            if (cartItem != null && cartItem.getUserId().equals(userId)) {
+                CartItemVO vo = convertToVO(cartItem);
+                checkoutItems.add(vo);
+                totalAmount = totalAmount.add(
+                    vo.getProduct().getPrice().multiply(BigDecimal.valueOf(vo.getQuantity()))
+                );
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("items", checkoutItems);
+        result.put("totalAmount", totalAmount);
+        result.put("freightAmount", BigDecimal.ZERO);
+        result.put("discountAmount", BigDecimal.ZERO);
+        result.put("paymentAmount", totalAmount);
+
+        return result;
     }
 
     private CartItemVO convertToVO(CartItem item) {

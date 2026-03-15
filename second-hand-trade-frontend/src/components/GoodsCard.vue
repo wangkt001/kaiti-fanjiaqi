@@ -3,7 +3,9 @@
     <!-- 商品图片 -->
     <div class="goods-image-wrapper">
       <el-image
-        :src="goods.imageUrl || goods.images?.[0]?.imageUrl || '/placeholder.png'"
+        :src="
+          goods.imageUrl || goods.images?.[0]?.imageUrl || '/placeholder.png'
+        "
         :alt="goods.name"
         class="goods-image"
         fit="cover"
@@ -98,6 +100,7 @@ import {
   View,
 } from "@element-plus/icons-vue";
 import FavoriteButton from "@/components/FavoriteButton.vue";
+import { addToCart } from "@/api/modules/cart";
 import type { Goods } from "@/types";
 
 interface Props {
@@ -113,9 +116,14 @@ const handleClick = () => {
 };
 
 // 加入购物车
-const handleAddCart = () => {
-  ElMessage.success("已添加到购物车");
-  // TODO: 调用购物车 API
+const handleAddCart = async () => {
+  try {
+    await addToCart(props.goods.id, 1);
+    ElMessage.success("已添加到购物车");
+  } catch (error) {
+    console.error("添加到购物车失败:", error);
+    ElMessage.error("添加到购物车失败");
+  }
 };
 </script>
 

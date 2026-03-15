@@ -219,12 +219,12 @@ const loadCheckoutInfo = async () => {
   loading.value = true;
   try {
     const cartItemIds = route.query.cartItemIds as string;
-    if (!cartItemIds) {
-      // 如果没有传入 cartItemIds，获取所有选中的购物车项
-      const res = await getCartItems();
+    if (cartItemIds) {
+      // 根据 cartItemIds 获取结算信息
+      const res = await getCheckoutInfo(cartItemIds.split(',').map(Number))
       if (res.data.code === 200 && res.data.data) {
-        const selectedItems = res.data.data.filter((item) => item.selected);
-        orderItems.value = selectedItems.map((item) => ({
+        const items = res.data.data.items;
+        orderItems.value = items.map((item: any) => ({
           id: item.id,
           productId: item.productId,
           productName: item.product.name,
@@ -235,9 +235,20 @@ const loadCheckoutInfo = async () => {
         }));
       }
     } else {
-      // TODO: 根据 cartItemIds 获取结算信息
-      // const res = await getCheckoutInfo(cartItemIds.split(',').map(Number))
-      // orderItems.value = res.data.data.items
+      // 如果没有传入 cartItemIds，获取所有选中的购物车项
+      const res = await getCartItems();
+      if (res.data.code === 200 && res.data.data) {
+        const selectedItems = res.data.data.filter((item: any) => item.selected);
+        orderItems.value = selectedItems.map((item: any) => ({
+          id: item.id,
+          productId: item.productId,
+          productName: item.product.name,
+          productImage: item.product.mainImage,
+          price: item.product.price,
+          quantity: item.quantity,
+          totalPrice: item.product.price * item.quantity,
+        }));
+      }
     }
   } catch (error) {
     console.error("加载结算信息失败:", error);
@@ -275,7 +286,7 @@ const handleSubmit = async () => {
   try {
     const cartItemIds = orderItems.value.map((item) => item.id);
 
-    await createOrder({
+    const res = await createOrder({
       cartItemIds,
       receiverName: addressForm.receiverName,
       receiverPhone: addressForm.receiverPhone,
@@ -285,9 +296,13 @@ const handleSubmit = async () => {
     });
 
     ElMessage.success("订单创建成功");
+    const orderNo = res.data.data;
     router.push({
-      path: "/order/detail",
-      query: { orderNo: "" }, // 这里应该传入订单号
+      path: "/order/pay",
+      query: { 
+        orderNo: orderNo,
+        amount: paymentAmount.value.toFixed(2)
+      },
     });
   } catch (error) {
     console.error("创建订单失败:", error);

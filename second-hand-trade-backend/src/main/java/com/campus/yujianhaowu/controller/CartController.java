@@ -102,14 +102,12 @@ public class CartController {
     @PostMapping("/checkout")
     @Operation(summary = "获取结算信息")
     public Result<Map<String, Object>> checkout(
-            @Parameter(description = "购物车项 ID 列表") @RequestParam List<Long> cartItemIds,
+            @RequestBody Map<String, Object> requestBody,
             HttpServletRequest httpRequest) {
         Long userId = (Long) httpRequest.getAttribute("userId");
-        // TODO: 实现结算逻辑
-        Map<String, Object> result = new HashMap<>();
-        result.put("totalAmount", 0);
-        result.put("freightAmount", 0);
-        result.put("paymentAmount", 0);
+        @SuppressWarnings("unchecked")
+        List<Long> cartItemIds = (List<Long>) requestBody.get("cartItemIds");
+        Map<String, Object> result = cartService.getCheckoutInfo(userId, cartItemIds);
         return Result.success(result);
     }
 }

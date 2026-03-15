@@ -4,6 +4,7 @@ import com.campus.yujianhaowu.model.entity.CartItem;
 import com.campus.yujianhaowu.model.vo.CartItemVO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CartService {
 
@@ -22,4 +23,6 @@ public interface CartService {
     void clearCart(Long userId);
 
     Integer getCartCount(Long userId);
+
+    Map<String, Object> getCheckoutInfo(Long userId, List<Long> cartItemIds);
 }

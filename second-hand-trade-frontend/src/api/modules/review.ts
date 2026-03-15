@@ -49,7 +49,8 @@ export interface ReviewCreateParams {
  * 获取商品评价列表
  */
 export const getProductReviews = (params: PageParams & { productId: number; rating?: number }) => {
-  return http.get<ApiResponse<PageResult<Review>>>('/reviews/product', { params })
+  const { productId, ...queryParams } = params
+  return http.get<ApiResponse<PageResult<Review>>>(`/reviews/product/${productId}`, { params: queryParams })
 }
 
 /**

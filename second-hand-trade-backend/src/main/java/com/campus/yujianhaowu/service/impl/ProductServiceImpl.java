@@ -97,7 +97,8 @@ public class ProductServiceImpl implements ProductService {
         }
 
         product.setSellerId(sellerId);
-        product.setStatus("pending"); // 待审核
+        product.setStatus("on_sale"); // 直接上架
+        product.setPublishedAt(LocalDateTime.now());
         productMapper.insert(product);
 
         log.info("商品创建成功，productId: {}", product.getId());

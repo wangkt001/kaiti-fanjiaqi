@@ -262,6 +262,29 @@ public class OrderServiceImpl implements OrderService {
         return voPage;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void payOrder(String orderNo, Integer paymentType, Long userId) {
+        LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Order::getOrderNo, orderNo);
+        Order order = orderMapper.selectOne(wrapper);
+
+        if (order == null) {
+            throw new BusinessException("订单不存在");
+        }
+        if (!order.getUserId().equals(userId)) {
+            throw new BusinessException("无权操作该订单");
+        }
+        if (order.getStatus() != 0) {
+            throw new BusinessException("订单状态不正确，无法支付");
+        }
+
+        order.setStatus(1);
+        order.setPaymentType(paymentType);
+        order.setPaymentTime(LocalDateTime.now());
+        orderMapper.updateById(order);
+    }
+
     private List<OrderItem> getOrderItems(Long orderId) {
         LambdaQueryWrapper<OrderItem> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(OrderItem::getOrderId, orderId);

@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/orders")
@@ -32,6 +33,18 @@ public class OrderController {
         Long userId = (Long) httpRequest.getAttribute("userId");
         String orderNo = orderService.createOrder(userId, request);
         return Result.success(orderNo);
+    }
+
+    @PostMapping("/pay")
+    @Operation(summary = "支付订单（模拟）")
+    public Result<Void> payOrder(
+            @RequestBody Map<String, Object> request,
+            HttpServletRequest httpRequest) {
+        Long userId = (Long) httpRequest.getAttribute("userId");
+        String orderNo = (String) request.get("orderNo");
+        Integer paymentType = (Integer) request.get("paymentType");
+        orderService.payOrder(orderNo, paymentType, userId);
+        return Result.success(null);
     }
 
     @GetMapping

@@ -103,7 +103,7 @@ export function cancelOrder(id: number) {
  */
 export function confirmOrder(id: number) {
   return request<ApiResponse<void>>({
-    url: `/api/orders/${id}/confirm`,
+    url: `/orders/${id}/confirm`,
     method: 'put',
   })
 }
@@ -113,7 +113,7 @@ export function confirmOrder(id: number) {
  */
 export function deleteOrder(id: number) {
   return request<ApiResponse<void>>({
-    url: `/api/orders/${id}`,
+    url: `/orders/${id}`,
     method: 'delete',
   })
 }
@@ -125,7 +125,7 @@ export function getCheckoutInfo(cartItemIds: number[]) {
   return request<ApiResponse<OrderCheckoutInfo>>({
     url: '/cart/checkout',
     method: 'post',
-    params: {
+    data: {
       cartItemIds,
     },
   })

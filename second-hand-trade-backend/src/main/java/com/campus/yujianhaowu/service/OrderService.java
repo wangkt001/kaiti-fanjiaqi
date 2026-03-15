@@ -33,4 +33,13 @@ public interface OrderService {
      * @return 订单分页数据
      */
     Page<OrderVO> listOrders(Integer status, Integer current, Integer size);
+
+    /**
+     * 支付订单（模拟）
+     *
+     * @param orderNo     订单编号
+     * @param paymentType 支付方式
+     * @param userId      用户ID
+     */
+    void payOrder(String orderNo, Integer paymentType, Long userId);
 }

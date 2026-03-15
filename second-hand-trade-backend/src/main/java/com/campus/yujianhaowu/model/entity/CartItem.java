@@ -10,15 +10,11 @@ import lombok.EqualsAndHashCode;
 @TableName("cart_items")
 public class CartItem extends BaseEntity {
 
-    @TableField("user_id")
     private Long userId;
 
-    @TableField("product_id")
     private Long productId;
 
-    @TableField("quantity")
     private Integer quantity;
 
-    @TableField("selected")
     private Boolean selected;
 }
