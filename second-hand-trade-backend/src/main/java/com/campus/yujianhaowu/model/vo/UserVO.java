@@ -23,7 +23,7 @@ public class UserVO {
     @Schema(description = "用户名", example = "zhangsan")
     private String username;
 
-    @Schema(description = "昵称", example = "张三")
+    @Schema(description = "真实姓名")
     private String nickname;
 
     @Schema(description = "头像 URL")

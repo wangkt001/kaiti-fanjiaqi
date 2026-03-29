@@ -2,6 +2,7 @@ import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse 
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useUserStore } from '@/store/user'
 import type { ApiResponse } from '@/types'
+import router from '@/router'
 
 // 创建 axios 实例
 const service: AxiosInstance = axios.create({
@@ -67,7 +68,10 @@ service.interceptors.response.use(
         }).then(() => {
           const userStore = useUserStore()
           userStore.logout()
-          location.reload()
+          // 重新登录跳转到登录页
+          router.push('/login')
+        }).catch(() => {
+          // 用户点击取消，也清理一下状态比较好，或者根据需求不处理
         })
         return Promise.reject(new Error(res.message || 'Error'))
       }

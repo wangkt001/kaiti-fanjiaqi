@@ -24,7 +24,7 @@
           <el-form-item prop="username">
             <el-input
               v-model="loginForm.username"
-              placeholder="请输入用户名/手机号/邮箱"
+              placeholder="请输入登录账号/手机号/邮箱"
               size="large"
               clearable
             >
@@ -72,12 +72,6 @@
           <div class="login-divider">
             <span>其他登录方式</span>
           </div>
-
-          <div class="social-login">
-            <el-button circle class="social-btn">
-              <el-icon><ChatDotRound /></el-icon>
-            </el-button>
-          </div>
         </el-form>
 
         <div class="login-footer">
@@ -116,13 +110,8 @@ const loginForm = reactive<LoginParams & { remember?: boolean }>({
 
 const loginRules: FormRules = {
   username: [
-    { required: true, message: "请输入用户名", trigger: "blur" },
-    {
-      min: 3,
-      max: 50,
-      message: "用户名长度在 3 到 50 个字符",
-      trigger: "blur",
-    },
+    { required: true, message: "请输入登录账号/手机号/邮箱", trigger: "blur" },
+    { min: 3, max: 50, message: "长度在 3 到 50 个字符", trigger: "blur" },
   ],
   password: [
     { required: true, message: "请输入密码", trigger: "blur" },

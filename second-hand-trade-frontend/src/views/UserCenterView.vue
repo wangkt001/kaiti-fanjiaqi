@@ -1,11 +1,12 @@
 <template>
   <div class="user-center-page">
+    <NavBar />
     <div class="page-container">
       <!-- 侧边栏 -->
       <aside class="sidebar">
         <div class="user-profile">
           <el-avatar :size="80" :src="userInfo.avatar" />
-          <h3 class="nickname">{{ userInfo.nickname }}</h3>
+          <h3 class="nickname">{{ userInfo.nickname || "未设置" }}</h3>
           <p class="username">{{ userInfo.username }}</p>
         </div>
 
@@ -47,11 +48,11 @@
         <div v-if="activeTab === 'profile'" class="profile-section">
           <h2 class="section-title">个人信息</h2>
           <el-form :model="userInfo" label-width="100px" class="profile-form">
-            <el-form-item label="用户名">
+            <el-form-item label="登录账号">
               <el-input v-model="userInfo.username" disabled />
             </el-form-item>
-            <el-form-item label="昵称">
-              <el-input v-model="userInfo.nickname" />
+            <el-form-item label="真实姓名">
+              <el-input v-model="userInfo.nickname" placeholder="未设置" />
             </el-form-item>
             <el-form-item label="手机号">
               <el-input v-model="userInfo.phone" />
@@ -186,6 +187,7 @@ import {
 } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import GoodsCard from "@/components/GoodsCard.vue";
+import NavBar from "@/components/NavBar.vue";
 import { useUserStore } from "@/store/user";
 import { getUserFavoriteProducts } from "@/api/modules/favorite";
 import type { Product } from "@/types";
@@ -334,11 +336,11 @@ onMounted(() => {
 .user-center-page {
   min-height: calc(100vh - 120px);
   background: #f5f5f5;
-  padding: 20px;
+  padding-bottom: 20px;
 
   .page-container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 20px auto 0;
     display: grid;
     grid-template-columns: 280px 1fr;
     gap: 20px;

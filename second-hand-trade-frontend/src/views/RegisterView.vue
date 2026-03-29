@@ -10,10 +10,10 @@
         label-width="80px"
         class="register-form"
       >
-        <el-form-item label="用户名" prop="username">
+        <el-form-item label="登录账号" prop="username">
           <el-input
             v-model="registerForm.username"
-            placeholder="请输入用户名"
+            placeholder="请输入登录账号"
             clearable
           />
         </el-form-item>
@@ -36,8 +36,11 @@
           />
         </el-form-item>
 
-        <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="registerForm.nickname" placeholder="请输入昵称" />
+        <el-form-item label="真实姓名" prop="nickname">
+          <el-input
+            v-model="registerForm.nickname"
+            placeholder="请输入真实姓名"
+          />
         </el-form-item>
 
         <el-form-item label="手机号" prop="phone">
@@ -89,8 +92,8 @@ const validateConfirmPassword = (rule: any, value: string, callback: any) => {
 
 const rules = reactive<FormRules>({
   username: [
-    { required: true, message: "请输入用户名", trigger: "blur" },
-    { min: 3, max: 20, message: "用户名长度在 3-20 个字符", trigger: "blur" },
+    { required: true, message: "请输入登录账号", trigger: "blur" },
+    { min: 3, max: 20, message: "长度在 3 到 20 个字符", trigger: "blur" },
   ],
   password: [
     { required: true, message: "请输入密码", trigger: "blur" },
@@ -100,7 +103,10 @@ const rules = reactive<FormRules>({
     { required: true, message: "请确认密码", trigger: "blur" },
     { validator: validateConfirmPassword, trigger: "blur" },
   ],
-  nickname: [{ required: true, message: "请输入昵称", trigger: "blur" }],
+  nickname: [
+    { required: true, message: "请输入真实姓名", trigger: "blur" },
+    { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" },
+  ],
   phone: [
     {
       pattern: /^1[3-9]\d{9}$/,

@@ -10,7 +10,7 @@ CREATE TABLE `users` (
   `username` VARCHAR(50) NOT NULL COMMENT '用户名',
   `password` VARCHAR(100) NOT NULL COMMENT '密码（BCrypt 加密）',
   `role` VARCHAR(20) NOT NULL DEFAULT 'buyer' COMMENT '角色（buyer/seller/admin）',
-  `nickname` VARCHAR(50) NOT NULL COMMENT '昵称',
+  `nickname` VARCHAR(50) NOT NULL COMMENT '真实姓名',
   `phone` VARCHAR(20) DEFAULT NULL COMMENT '手机号',
   `email` VARCHAR(100) DEFAULT NULL COMMENT '邮箱',
   `avatar` VARCHAR(255) DEFAULT NULL COMMENT '头像 URL',

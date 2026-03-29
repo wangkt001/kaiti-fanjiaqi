@@ -32,7 +32,7 @@ public class User extends BaseEntity {
     @Schema(description = "角色（buyer/seller/admin）", example = "buyer")
     private String role;
 
-    @Schema(description = "昵称")
+    @Schema(description = "真实姓名")
     private String nickname;
 
     @Schema(description = "手机号")

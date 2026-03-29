@@ -35,7 +35,8 @@ public class RegisterRequest {
     @Schema(description = "邮箱", example = "zhangsan@example.com")
     private String email;
 
-    @Size(max = 50, message = "昵称长度不能超过 50 个字符")
-    @Schema(description = "昵称", example = "张三")
+    @NotBlank(message = "真实姓名不能为空")
+    @Size(min = 2, max = 50, message = "真实姓名长度在2-50个字符之间")
+    @Schema(description = "真实姓名", example = "张三")
     private String nickname;
 }

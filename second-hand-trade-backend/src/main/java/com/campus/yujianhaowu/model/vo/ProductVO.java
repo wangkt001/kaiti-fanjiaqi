@@ -47,7 +47,7 @@ public class ProductVO {
     @Schema(description = "卖家 ID", example = "1")
     private Long sellerId;
 
-    @Schema(description = "卖家昵称", example = "河南博物院旗舰店")
+    @Schema(description = "卖家真实姓名", example = "河南博物院旗舰店")
     private String sellerName;
 
     @Schema(description = "店铺名称", example = "河南博物院旗舰店")

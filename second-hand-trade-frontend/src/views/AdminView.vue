@@ -48,8 +48,8 @@
           <div class="tab-content">
             <el-table :data="userList" v-loading="loading" style="width: 100%">
               <el-table-column prop="id" label="ID" width="80" />
-              <el-table-column prop="username" label="用户名" width="150" />
-              <el-table-column prop="nickname" label="昵称" width="120" />
+              <el-table-column prop="username" label="登录账号" width="150" />
+              <el-table-column prop="nickname" label="真实姓名" width="120" />
               <el-table-column prop="role" label="角色" width="100">
                 <template #default="{ row }">
                   <el-tag :type="getRoleType(row.role)">

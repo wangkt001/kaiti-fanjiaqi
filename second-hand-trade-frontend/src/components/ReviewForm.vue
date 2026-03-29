@@ -45,7 +45,7 @@
       <el-form-item label="匿名评价">
         <el-switch v-model="form.isAnonymous" />
         <span style="margin-left: 10px; font-size: 12px; color: #999">
-          匿名后您的昵称将显示为"匿名用户"
+          匿名后您的真实姓名将显示为"匿名用户"
         </span>
       </el-form-item>
     </el-form>
