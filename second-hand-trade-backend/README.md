@@ -66,11 +66,13 @@ cd second-hand-trade-backend
 2. **创建数据库**
 
 ```sql
-CREATE DATABASE yujianhaowu DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE employment_fanjiaqi DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
+启动项目之前，请先在 MySQL 中手动执行上面的 SQL，创建 `employment_fanjiaqi` 数据库。
+
 3. **初始化数据库**
-   执行 `src/main/resources/schema.sql` 脚本
+   项目启动时会自动执行 `src/main/resources/schema.sql` 来创建表和初始化基础数据
 
 4. **修改配置**
    编辑 `src/main/resources/application-dev.yml`，配置数据库和 Redis 连接信息

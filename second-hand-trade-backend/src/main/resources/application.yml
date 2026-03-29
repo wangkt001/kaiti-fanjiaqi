@@ -18,7 +18,7 @@ spring:
     active: dev
 
   datasource:
-    url: jdbc:mysql://localhost:3306/employment_fanjiaqi?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/employment_fanjiaqi?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -35,7 +35,7 @@ spring:
 
   sql:
     init:
-      mode: never
+      mode: always
       schema-locations: classpath:schema.sql
       encoding: UTF-8
 

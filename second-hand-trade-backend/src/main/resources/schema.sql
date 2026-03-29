@@ -1,11 +1,9 @@
--- 创建数据库
-CREATE DATABASE IF NOT EXISTS `employment_fanjiaqi` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-USE `employment_fanjiaqi`;
+-- 创建数据库 (注释掉，Spring Boot init mode 可能不支持 USE 等多语句)
+-- CREATE DATABASE IF NOT EXISTS `employment_fanjiaqi` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE `employment_fanjiaqi`;
 
 -- 用户表
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户 ID',
   `username` VARCHAR(50) NOT NULL COMMENT '用户名',
   `password` VARCHAR(100) NOT NULL COMMENT '密码（BCrypt 加密）',
@@ -38,12 +36,11 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户表';
 
 -- 初始化管理员账号（密码：123456）
-INSERT INTO `users` (`username`, `password`, `role`, `nickname`, `status`) 
+INSERT IGNORE INTO `users` (`username`, `password`, `role`, `nickname`, `status`) 
 VALUES ('admin', '$2a$10$nTJ3W6UNPStBDsarsI9ZbeQKKZvc8YKQwMKt3k65ndrCYL.qcV4d2', 'admin', '系统管理员', 1);
 
 -- 商品分类表
-DROP TABLE IF EXISTS `categories`;
-CREATE TABLE `categories` (
+CREATE TABLE IF NOT EXISTS `categories` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '分类 ID',
   `name` VARCHAR(50) NOT NULL COMMENT '分类名称',
   `parent_id` INT DEFAULT NULL COMMENT '父分类 ID',
@@ -62,8 +59,7 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品分类表';
 
 -- 商品表
-DROP TABLE IF EXISTS `products`;
-CREATE TABLE `products` (
+CREATE TABLE IF NOT EXISTS `products` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '商品 ID',
   `name` VARCHAR(200) NOT NULL COMMENT '商品名称',
   `description` TEXT NOT NULL COMMENT '商品描述',
@@ -97,8 +93,7 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品表';
 
 -- 商品图片表
-DROP TABLE IF EXISTS `product_images`;
-CREATE TABLE `product_images` (
+CREATE TABLE IF NOT EXISTS `product_images` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '图片 ID',
   `product_id` BIGINT NOT NULL COMMENT '商品 ID',
   `image_data` TEXT NOT NULL COMMENT '图片 Base64 编码数据',
@@ -111,8 +106,7 @@ CREATE TABLE `product_images` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品图片表';
 
 -- 文化标签表
-DROP TABLE IF EXISTS `cultural_tags`;
-CREATE TABLE `cultural_tags` (
+CREATE TABLE IF NOT EXISTS `cultural_tags` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '标签 ID',
   `name` VARCHAR(50) NOT NULL COMMENT '标签名称',
   `description` VARCHAR(255) DEFAULT NULL COMMENT '标签描述',
@@ -132,8 +126,7 @@ CREATE TABLE `cultural_tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文化标签表';
 
 -- 商品 - 标签关联表
-DROP TABLE IF EXISTS `product_tags`;
-CREATE TABLE `product_tags` (
+CREATE TABLE IF NOT EXISTS `product_tags` (
   `product_id` BIGINT NOT NULL COMMENT '商品 ID',
   `tag_id` BIGINT NOT NULL COMMENT '标签 ID',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -142,8 +135,7 @@ CREATE TABLE `product_tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品 - 标签关联表';
 
 -- 商品文化信息扩展表
-DROP TABLE IF EXISTS `product_cultural_info`;
-CREATE TABLE `product_cultural_info` (
+CREATE TABLE IF NOT EXISTS `product_cultural_info` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '记录 ID',
   `product_id` BIGINT NOT NULL COMMENT '商品 ID',
   `cultural_background` TEXT DEFAULT NULL COMMENT '文化背景',
@@ -163,8 +155,7 @@ CREATE TABLE `product_cultural_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品文化信息扩展表';
 
 -- 管理员表
-DROP TABLE IF EXISTS `admin_users`;
-CREATE TABLE `admin_users` (
+CREATE TABLE IF NOT EXISTS `admin_users` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '管理员 ID',
   `username` VARCHAR(50) NOT NULL COMMENT '用户名',
   `password` VARCHAR(100) NOT NULL COMMENT '密码（BCrypt 加密）',
@@ -185,11 +176,11 @@ CREATE TABLE `admin_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员表';
 
 -- 初始化管理员账号（密码：admin123，BCrypt 加密）
-INSERT INTO `admin_users` (`username`, `password`, `real_name`, `role`, `status`) 
+INSERT IGNORE INTO `admin_users` (`username`, `password`, `real_name`, `role`, `status`) 
 VALUES ('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', '系统管理员', 'super_admin', 1);
 
 -- 初始化商品分类
-INSERT INTO `categories` (`name`, `description`, `sort_order`, `level`, `is_active`) VALUES
+INSERT IGNORE INTO `categories` (`name`, `description`, `sort_order`, `level`, `is_active`) VALUES
 ('传统工艺品', '包括陶瓷、刺绣、木雕等传统工艺制品', 1, 1, TRUE),
 ('文化创意产品', '融合现代设计的文创产品', 2, 1, TRUE),
 ('非遗传承', '非物质文化遗产相关制品', 3, 1, TRUE),
@@ -197,7 +188,7 @@ INSERT INTO `categories` (`name`, `description`, `sort_order`, `level`, `is_acti
 ('地方特色', '具有河南地方特色的产品', 5, 1, TRUE);
 
 -- 初始化二级分类
-INSERT INTO `categories` (`name`, `parent_id`, `description`, `sort_order`, `level`, `is_active`) VALUES
+INSERT IGNORE INTO `categories` (`name`, `parent_id`, `description`, `sort_order`, `level`, `is_active`) VALUES
 ('陶瓷', 1, '陶瓷制品', 1, 2, TRUE),
 ('刺绣', 1, '刺绣工艺品', 2, 2, TRUE),
 ('木雕', 1, '木雕工艺品', 3, 2, TRUE),
@@ -208,7 +199,7 @@ INSERT INTO `categories` (`name`, `parent_id`, `description`, `sort_order`, `lev
 ('数码周边', 2, '数码产品周边', 4, 2, TRUE);
 
 -- 初始化文化标签
-INSERT INTO `cultural_tags` (`name`, `description`, `category`, `is_hot`, `sort_order`) VALUES
+INSERT IGNORE INTO `cultural_tags` (`name`, `description`, `category`, `is_hot`, `sort_order`) VALUES
 ('豫剧', '河南豫剧文化相关', '文化', TRUE, 1),
 ('少林', '少林文化相关', '文化', TRUE, 2),
 ('牡丹', '洛阳牡丹文化相关', '文化', TRUE, 3),
@@ -228,8 +219,7 @@ INSERT INTO `cultural_tags` (`name`, `description`, `category`, `is_hot`, `sort_
 -- ==================== 互动模块表结构 ====================
 
 -- 商品评价表
-DROP TABLE IF EXISTS `reviews`;
-CREATE TABLE `reviews` (
+CREATE TABLE IF NOT EXISTS `reviews` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '评价 ID',
   `product_id` BIGINT NOT NULL COMMENT '商品 ID',
   `order_id` BIGINT NOT NULL COMMENT '订单 ID',
@@ -254,8 +244,7 @@ CREATE TABLE `reviews` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品评价表';
 
 -- 评价回复表
-DROP TABLE IF EXISTS `review_replies`;
-CREATE TABLE `review_replies` (
+CREATE TABLE IF NOT EXISTS `review_replies` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '回复 ID',
   `review_id` BIGINT NOT NULL COMMENT '评价 ID',
   `user_id` BIGINT NOT NULL COMMENT '回复用户 ID',
@@ -273,8 +262,7 @@ CREATE TABLE `review_replies` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='评价回复表';
 
 -- 点赞表
-DROP TABLE IF EXISTS `likes`;
-CREATE TABLE `likes` (
+CREATE TABLE IF NOT EXISTS `likes` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '点赞 ID',
   `user_id` BIGINT NOT NULL COMMENT '用户 ID',
   `target_type` VARCHAR(50) NOT NULL COMMENT '目标类型（review/reply/product/content/comment）',
@@ -288,8 +276,7 @@ CREATE TABLE `likes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='点赞表';
 
 -- 收藏表
-DROP TABLE IF EXISTS `favorites`;
-CREATE TABLE `favorites` (
+CREATE TABLE IF NOT EXISTS `favorites` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '收藏 ID',
   `user_id` BIGINT NOT NULL COMMENT '用户 ID',
   `target_type` VARCHAR(50) NOT NULL COMMENT '目标类型（product/content）',
@@ -303,8 +290,7 @@ CREATE TABLE `favorites` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='收藏表';
 
 -- 用户关注表
-DROP TABLE IF EXISTS `user_follows`;
-CREATE TABLE `user_follows` (
+CREATE TABLE IF NOT EXISTS `user_follows` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '关注 ID',
   `follower_id` BIGINT NOT NULL COMMENT '关注者 ID',
   `following_id` BIGINT NOT NULL COMMENT '被关注者 ID',
@@ -317,8 +303,7 @@ CREATE TABLE `user_follows` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户关注表';
 
 -- 文化资讯表
-DROP TABLE IF EXISTS `cultural_contents`;
-CREATE TABLE `cultural_contents` (
+CREATE TABLE IF NOT EXISTS `cultural_contents` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '资讯 ID',
   `title` VARCHAR(255) NOT NULL COMMENT '资讯标题',
   `summary` VARCHAR(500) DEFAULT NULL COMMENT '摘要',
@@ -348,8 +333,7 @@ CREATE TABLE `cultural_contents` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文化资讯表';
 
 -- 资讯评论表
-DROP TABLE IF EXISTS `content_comments`;
-CREATE TABLE `content_comments` (
+CREATE TABLE IF NOT EXISTS `content_comments` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '评论 ID',
   `content_id` BIGINT NOT NULL COMMENT '资讯 ID',
   `user_id` BIGINT NOT NULL COMMENT '评论用户 ID',
@@ -370,8 +354,7 @@ CREATE TABLE `content_comments` (
 -- ==================== 购物车和订单模块表结构 ====================
 
 -- 购物车表
-DROP TABLE IF EXISTS `cart_items`;
-CREATE TABLE `cart_items` (
+CREATE TABLE IF NOT EXISTS `cart_items` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '购物车项 ID',
   `user_id` BIGINT NOT NULL COMMENT '用户 ID',
   `product_id` BIGINT NOT NULL COMMENT '商品 ID',
@@ -386,8 +369,7 @@ CREATE TABLE `cart_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='购物车表';
 
 -- 订单表
-DROP TABLE IF EXISTS `orders`;
-CREATE TABLE `orders` (
+CREATE TABLE IF NOT EXISTS `orders` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '订单 ID',
   `order_no` VARCHAR(64) NOT NULL COMMENT '订单编号',
   `user_id` BIGINT NOT NULL COMMENT '用户 ID',
@@ -419,8 +401,7 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单表';
 
 -- 订单商品表
-DROP TABLE IF EXISTS `order_items`;
-CREATE TABLE `order_items` (
+CREATE TABLE IF NOT EXISTS `order_items` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '订单商品 ID',
   `order_id` BIGINT NOT NULL COMMENT '订单 ID',
   `product_id` BIGINT NOT NULL COMMENT '商品 ID',
@@ -437,8 +418,7 @@ CREATE TABLE `order_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单商品表';
 
 -- 订单操作日志表
-DROP TABLE IF EXISTS `order_logs`;
-CREATE TABLE `order_logs` (
+CREATE TABLE IF NOT EXISTS `order_logs` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '日志 ID',
   `order_id` BIGINT NOT NULL COMMENT '订单 ID',
   `operator_id` BIGINT DEFAULT NULL COMMENT '操作人 ID',
@@ -450,8 +430,7 @@ CREATE TABLE `order_logs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单操作日志表';
 
 -- 收货地址表
-DROP TABLE IF EXISTS `user_addresses`;
-CREATE TABLE `user_addresses` (
+CREATE TABLE IF NOT EXISTS `user_addresses` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '地址 ID',
   `user_id` BIGINT NOT NULL COMMENT '用户 ID',
   `receiver_name` VARCHAR(100) NOT NULL COMMENT '收货人姓名',
@@ -469,8 +448,7 @@ CREATE TABLE `user_addresses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='收货地址表';
 
 -- 商品评价表（简化版）
-DROP TABLE IF EXISTS `product_reviews`;
-CREATE TABLE `product_reviews` (
+CREATE TABLE IF NOT EXISTS `product_reviews` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '评价 ID',
   `order_id` BIGINT NOT NULL COMMENT '订单 ID',
   `product_id` BIGINT NOT NULL COMMENT '商品 ID',
