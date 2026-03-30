@@ -50,6 +50,9 @@ public class UserVO {
     @Schema(description = "店铺 Logo URL")
     private String shopLogo;
 
+    @Schema(description = "店铺描述")
+    private String shopDescription;
+
     @Schema(description = "粉丝数量", example = "100")
     private Integer fansCount;
 

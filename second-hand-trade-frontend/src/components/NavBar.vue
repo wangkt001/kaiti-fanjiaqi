@@ -119,10 +119,7 @@ const loadCartCount = async () => {
 
   try {
     const res = await getCartCount();
-    console.log("购物车数量响应:", res);
-    if (res.code === 200 && res.data !== undefined) {
-      cartCount.value = res.data;
-    }
+    cartCount.value = typeof res === "number" ? res : 0;
   } catch (error) {
     console.error("加载购物车数量失败:", error);
   }

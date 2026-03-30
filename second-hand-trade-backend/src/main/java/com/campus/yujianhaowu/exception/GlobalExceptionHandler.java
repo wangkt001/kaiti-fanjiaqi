@@ -7,10 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.stream.Collectors;
 
@@ -57,6 +59,28 @@ public class GlobalExceptionHandler {
                 .map(FieldError::getDefaultMessage)
                 .collect(Collectors.joining("; "));
         log.warn("参数绑定异常：{}", message);
+        return Result.error(ResultCode.VALIDATION_ERROR.getCode(), message);
+    }
+
+    /**
+     * 处理缺少请求参数异常
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result<Void> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        String message = "缺少请求参数：" + e.getParameterName();
+        log.warn("请求参数缺失：{}", message);
+        return Result.error(ResultCode.VALIDATION_ERROR.getCode(), message);
+    }
+
+    /**
+     * 处理请求参数类型不匹配异常
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result<Void> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        String message = "请求参数格式错误：" + e.getName();
+        log.warn("请求参数类型不匹配：{}", message);
         return Result.error(ResultCode.VALIDATION_ERROR.getCode(), message);
     }
 

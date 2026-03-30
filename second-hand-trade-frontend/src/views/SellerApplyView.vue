@@ -420,23 +420,35 @@ const loadSellerApplyInfo = async () => {
     const response = await getSellerApplyInfo();
     console.log("加载申请信息响应:", response);
 
-    // response.data 是 ApiResponse 对象，response.data.data 才是实际数据
+    // 直接使用 response，因为在 axios 拦截器中已经提取了 data.data
     const applyData = response;
     console.log("申请数据:", applyData);
 
-    if (applyData && applyData.status) {
+    if (applyData && Object.keys(applyData).length > 1) {
+      // 除了 status 还有其他字段
       // 回显表单数据
-      applyForm.realName = applyData.realName || "";
+      applyForm.realName = applyData.realName || applyForm.realName;
       applyForm.idCard = applyData.idCard || "";
-      applyForm.phone = applyData.phone || "";
+      applyForm.phone = applyData.phone || applyForm.phone;
       applyForm.wechat = applyData.wechat || "";
       applyForm.shopName = applyData.shopName || "";
-      applyForm.shopType = applyData.shopType || "";
-      applyForm.mainCategory = applyData.mainCategory || "";
+      applyForm.shopType = applyData.shopType || "personal";
+      applyForm.mainCategory = applyData.mainCategory || "traditional_crafts";
       applyForm.shopDescription = applyData.shopDescription || "";
       applyForm.shopLogo = applyData.shopLogo || "";
       applyForm.certificates = applyData.certificates || [];
       applyForm.remark = applyData.remark || "";
+
+      // 如果有证书数据，需要同步到图片展示列表
+      if (applyForm.certificates.length > 0) {
+        certificateList.value = applyForm.certificates.map(
+          (url: string, index: number) => ({
+            name: `证书${index + 1}`,
+            url: url,
+            uid: Date.now() + index, // 生成一个唯一的 uid
+          }),
+        );
+      }
 
       console.log("表单已回显:", applyForm);
     }
@@ -451,13 +463,13 @@ const loadUserInfo = async () => {
   try {
     const response = await getCurrentUser();
     console.log("加载用户信息响应:", response);
-    
+
     const userInfo = response;
     if (userInfo) {
       // 填充真实姓名（使用 nickname）和联系电话
       applyForm.realName = userInfo.nickname || "";
       applyForm.phone = userInfo.phone || "";
-      
+
       console.log("用户信息已加载:", userInfo);
     }
   } catch (error) {
@@ -467,11 +479,11 @@ const loadUserInfo = async () => {
 };
 
 // 组件加载时获取申请信息
-onMounted(() => {
-  // 先加载用户信息
-  loadUserInfo();
-  // 再加载申请信息（如果有已保存的申请）
-  loadSellerApplyInfo();
+onMounted(async () => {
+  // 必须先等待加载用户信息完成，然后再加载申请信息
+  // 这样如果之前有申请信息，才能正确覆盖默认的用户信息
+  await loadUserInfo();
+  await loadSellerApplyInfo();
 });
 </script>
 

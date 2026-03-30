@@ -872,6 +872,10 @@ const refreshUserInfo = async () => {
       userStore.setUserInfo(userData);
       console.log("用户信息已刷新:", userData);
 
+      // 回显店铺设置表单
+      shopForm.shopName = userData.shopName || "";
+      shopForm.shopDescription = userData.shopDescription || "";
+
       // 检查角色是否为卖家
       if (userData.role !== "seller") {
         ElMessage.warning("您的账号还不是卖家，请先申请入驻");

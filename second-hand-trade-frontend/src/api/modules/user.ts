@@ -95,7 +95,7 @@ export const updateUserStatus = (id: number, status: number) => {
  * 获取购物车数量
  */
 export const getCartCount = () => {
-  return http.get<ApiResponse<number>>('/cart/count')
+  return http.get<number>('/cart/count')
 }
 
 /**

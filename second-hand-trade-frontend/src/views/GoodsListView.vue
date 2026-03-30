@@ -202,9 +202,10 @@ const loadGoodsList = async () => {
 const loadCategories = async () => {
   try {
     const res = await getCategoryTree();
-    categories.value = res.data;
+    categories.value = Array.isArray(res) ? res : [];
   } catch (error) {
     console.error("加载分类失败", error);
+    categories.value = [];
   }
 };
 
@@ -212,9 +213,10 @@ const loadCategories = async () => {
 const loadHotTags = async () => {
   try {
     const res = await getHotTags(20);
-    hotTags.value = res.data;
+    hotTags.value = Array.isArray(res) ? res : [];
   } catch (error) {
     console.error("加载标签失败", error);
+    hotTags.value = [];
   }
 };
 

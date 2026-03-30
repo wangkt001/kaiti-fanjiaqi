@@ -11,10 +11,10 @@
           <div class="goods-gallery">
             <div class="main-image">
               <el-image
-                :src="currentImage"
+                :src="mainImageSrc"
                 class="image"
                 fit="cover"
-                :preview-src-list="imageList"
+                :preview-src-list="previewImages"
               />
             </div>
             <div
@@ -185,7 +185,7 @@
         </div>
 
         <!-- 用户评价 -->
-        <div class="review-section">
+        <!-- <div class="review-section">
           <div class="review-header">
             <h2 class="section-title">用户评价</h2>
             <div class="review-summary">
@@ -199,19 +199,20 @@
               </el-button>
             </div>
           </div>
-          <ReviewList :productId="goods.id" />
-        </div>
+          <ReviewList v-if="currentProductId" :productId="currentProductId" />
+        </div> -->
 
         <!-- 评价表单 -->
-        <ReviewForm
+        <!-- <ReviewForm
+          v-if="currentProductId"
           v-model="showReviewForm"
-          :productId="goods.id"
+          :productId="currentProductId"
           :orderId="0"
           @success="loadGoodsDetail"
-        />
+        /> -->
 
         <!-- 相关推荐 -->
-        <div class="recommend-section">
+        <!-- <div class="recommend-section">
           <h2 class="section-title">相关推荐</h2>
           <div class="recommend-list">
             <GoodsCard
@@ -220,7 +221,7 @@
               :goods="item"
             />
           </div>
-        </div>
+        </div> -->
       </div>
     </main>
 
@@ -267,9 +268,26 @@ const showReviewForm = ref(false);
 
 const isLoggedIn = computed(() => userStore.isLoggedIn);
 const isSeller = computed(() => userStore.userInfo?.role === "seller");
+const currentProductId = computed(() => {
+  const id = Number(route.params.id);
+  return Number.isFinite(id) && id > 0 ? id : 0;
+});
 
-const imageList = computed(() => {
-  return goods.value.images?.map((img) => img.imageUrl) || [];
+const previewImages = computed(() => {
+  const list =
+    goods.value.images?.map((img) => img.imageUrl).filter(Boolean) || [];
+  if (list.length > 0) return list;
+  if (goods.value.imageUrl) return [goods.value.imageUrl];
+  return [];
+});
+
+const mainImageSrc = computed(() => {
+  return (
+    currentImage.value ||
+    goods.value.images?.[0]?.imageUrl ||
+    goods.value.imageUrl ||
+    "/placeholder.png"
+  );
 });
 
 // 加载商品详情
@@ -277,10 +295,12 @@ const loadGoodsDetail = async () => {
   loading.value = true;
   try {
     const res = await getGoodsDetail(Number(route.params.id));
-    goods.value = res.data;
+    goods.value = res;
 
     if (goods.value.images && goods.value.images.length > 0) {
       currentImage.value = goods.value.images[0].imageUrl;
+    } else if (goods.value.imageUrl) {
+      currentImage.value = goods.value.imageUrl;
     }
 
     // TODO: 加载 SKU 信息
@@ -300,7 +320,7 @@ const loadGoodsDetail = async () => {
 const loadRecommendGoods = async () => {
   try {
     const res = await getRecommendGoods(4);
-    recommendGoods.value = res.data;
+    recommendGoods.value = res;
   } catch (error) {
     console.error("加载推荐商品失败", error);
   }

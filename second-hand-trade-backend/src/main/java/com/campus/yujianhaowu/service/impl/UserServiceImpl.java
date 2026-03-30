@@ -175,10 +175,11 @@ public class UserServiceImpl implements UserService {
         user.setSellerStatus("pending");
         user.setSellerInfo(JSONUtil.toJsonStr(sellerInfo));
 
-        // 直接将角色从 buyer 改为 seller
-        if ("buyer".equals(user.getRole())) {
-            user.setRole("seller");
-        }
+        // 申请入驻时保持买家身份，由管理员审核通过后再修改为 seller
+        // 注释掉原本直接修改角色的代码
+        // if ("buyer".equals(user.getRole())) {
+        // user.setRole("seller");
+        // }
 
         userMapper.updateById(user);
     }
@@ -305,9 +306,29 @@ public class UserServiceImpl implements UserService {
         // 更新卖家状态
         user.setSellerStatus(status);
 
-        // 如果审核通过，将用户角色升级为 seller
+        // 如果审核通过，将用户角色升级为 seller，并从 seller_info 中提取店铺信息保存
         if ("approved".equals(status)) {
             user.setRole("seller");
+
+            // 解析并保存店铺信息
+            if (user.getSellerInfo() != null) {
+                try {
+                    Map<String, Object> info = JSONUtil.toBean(user.getSellerInfo(), Map.class);
+                    if (info.containsKey("shopName") && info.get("shopName") != null) {
+                        user.setShopName(info.get("shopName").toString());
+                    }
+                    if (info.containsKey("shopDescription") && info.get("shopDescription") != null) {
+                        // 如果有 shopDescription 字段，需要保存，这里先暂存到 seller_info，如果数据库有对应字段建议加上
+                        // 注意：当前 User 实体可能没有 shopDescription 字段，前端如果有需要，我们可以在获取用户信息时从 sellerInfo 里拿
+                    }
+                    if (info.containsKey("shopLogo") && info.get("shopLogo") != null) {
+                        user.setShopLogo(info.get("shopLogo").toString());
+                    }
+                } catch (Exception e) {
+                    log.error("解析卖家信息失败", e);
+                }
+            }
+
             log.info("卖家审核通过 - userId: {}, 已升级为卖家角色", userId);
         } else if ("rejected".equals(status)) {
             log.info("卖家审核拒绝 - userId: {}, 审核意见：{}", userId, remark);
@@ -338,6 +359,22 @@ public class UserServiceImpl implements UserService {
         vo.setCreatedAt(user.getCreatedAt());
         vo.setLastLoginAt(user.getLastLoginAt());
         vo.setRealName(user.getNickname()); // 真实姓名使用 nickname
+
+        // 尝试从 seller_info 中提取 shopName 和 shopDescription (特别是当直接字段为空或需要额外信息时)
+        if (user.getSellerInfo() != null) {
+            try {
+                Map<String, Object> info = JSONUtil.toBean(user.getSellerInfo(), Map.class);
+                if (vo.getShopName() == null && info.containsKey("shopName") && info.get("shopName") != null) {
+                    vo.setShopName(info.get("shopName").toString());
+                }
+                if (info.containsKey("shopDescription") && info.get("shopDescription") != null) {
+                    vo.setShopDescription(info.get("shopDescription").toString());
+                }
+            } catch (Exception e) {
+                // 忽略解析错误
+            }
+        }
+
         return vo;
     }
 }

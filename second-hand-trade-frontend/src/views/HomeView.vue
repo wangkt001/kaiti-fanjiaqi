@@ -240,7 +240,7 @@ const loadRecommendGoods = async () => {
   recommendLoading.value = true;
   try {
     const res = await getRecommendGoods(8);
-    recommendGoods.value = res.data;
+    recommendGoods.value = res;
   } catch (error) {
     console.error("加载推荐商品失败", error);
   } finally {
@@ -253,9 +253,10 @@ const loadHotTags = async () => {
   tagsLoading.value = true;
   try {
     const res = await getHotTags(15);
-    hotTags.value = res.data;
+    hotTags.value = Array.isArray(res) ? res : [];
   } catch (error) {
     console.error("加载标签失败", error);
+    hotTags.value = [];
   } finally {
     tagsLoading.value = false;
   }

@@ -22,12 +22,14 @@ export interface Goods {
   description: string
   price: number
   originalPrice?: number
+  imageUrl?: string | null
   stock: number
   categoryId: number
   categoryName?: string
   sellerId: number
   sellerName?: string
   shopName?: string
+  shopLogo?: string
   status: 'pending' | 'on_sale' | 'sold_out' | 'offline'
   salesCount: number
   viewCount: number

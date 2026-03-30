@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
+import { ref, watch } from "vue";
 import { Star, StarFilled } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import {
@@ -71,6 +71,7 @@ watch(
 // 加载收藏状态
 const loadStatus = async () => {
   if (!userStore.isLoggedIn) return;
+  if (!Number.isFinite(props.targetId) || props.targetId <= 0) return;
 
   try {
     const res = await getFavoriteStatus(props.targetType, props.targetId);
@@ -85,6 +86,16 @@ const loadStatus = async () => {
     console.error("加载收藏状态失败:", error);
   }
 };
+
+watch(
+  [() => userStore.isLoggedIn, () => props.targetType, () => props.targetId],
+  ([isLoggedIn, _targetType, targetId]) => {
+    if (!isLoggedIn) return;
+    if (!Number.isFinite(targetId) || targetId <= 0) return;
+    loadStatus();
+  },
+  { immediate: true },
+);
 
 const handleClick = async () => {
   if (!userStore.isLoggedIn) {
@@ -113,11 +124,6 @@ const handleClick = async () => {
     loading.value = false;
   }
 };
-
-// 组件挂载时加载收藏状态
-onMounted(() => {
-  loadStatus();
-});
 
 // 暴露刷新方法
 defineExpose({

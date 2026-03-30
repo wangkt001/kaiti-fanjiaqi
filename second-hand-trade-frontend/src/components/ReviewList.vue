@@ -166,7 +166,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, watch } from "vue";
 import { Star, ChatDotRound } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import {
@@ -206,6 +206,12 @@ const replyContents = ref<Record<number, string>>({});
 
 // 加载评价列表
 const loadReviews = async () => {
+  if (!Number.isFinite(props.productId) || props.productId <= 0) {
+    reviews.value = [];
+    total.value = 0;
+    return;
+  }
+
   loading.value = true;
   try {
     const res = await getProductReviews({
@@ -336,6 +342,20 @@ const handleCurrentChange = () => {
   loadReviews();
 };
 
+watch(
+  () => props.productId,
+  (productId) => {
+    if (!Number.isFinite(productId) || productId <= 0) {
+      reviews.value = [];
+      total.value = 0;
+      return;
+    }
+    currentPage.value = 1;
+    loadReviews();
+  },
+  { immediate: true },
+);
+
 // 格式化时间
 const formatTime = (timeStr: string) => {
   const date = new Date(timeStr);
@@ -358,10 +378,6 @@ const formatTime = (timeStr: string) => {
     return date.toLocaleDateString("zh-CN");
   }
 };
-
-onMounted(() => {
-  loadReviews();
-});
 </script>
 
 <style lang="scss" scoped>

@@ -5,14 +5,14 @@ import type { Goods, PageParams, PageResult, ApiResponse } from '@/types'
  * 获取商品列表
  */
 export const getGoodsList = (params: PageParams & { [key: string]: any }) => {
-  return http.get<ApiResponse<PageResult<Goods>>>('/products', { params })
+  return http.get<PageResult<Goods>>('/products', { params })
 }
 
 /**
  * 获取商品详情
  */
 export const getGoodsDetail = (id: number) => {
-  return http.get<ApiResponse<Goods>>(`/products/${id}`)
+  return http.get<Goods>(`/products/${id}`)
 }
 
 /**
@@ -63,21 +63,21 @@ export const searchGoods = (keyword: string, params?: PageParams) => {
  * 获取推荐商品
  */
 export const getRecommendGoods = (limit?: number) => {
-  return http.get<ApiResponse<Goods[]>>('/products/recommend', { params: { limit } })
+  return http.get<Goods[]>('/products/recommend', { params: { limit } })
 }
 
 /**
  * 获取热门商品
  */
 export const getHotGoods = (limit?: number) => {
-  return http.get<ApiResponse<Goods[]>>('/products/hot', { params: { limit } })
+  return http.get<Goods[]>('/products/hot', { params: { limit } })
 }
 
 /**
  * 获取最新发布商品
  */
 export const getNewGoods = (limit?: number) => {
-  return http.get<ApiResponse<Goods[]>>('/products/new', { params: { limit } })
+  return http.get<Goods[]>('/products/new', { params: { limit } })
 }
 
 /**
