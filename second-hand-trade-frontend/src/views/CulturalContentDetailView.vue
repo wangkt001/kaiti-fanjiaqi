@@ -187,7 +187,7 @@ import {
 } from "@/api/modules/culturalContent";
 import type { CulturalContent } from "@/api/modules/culturalContent";
 
-const defaultAvatar = "https://placeholder.co/100x100?text=Avatar";
+const defaultAvatar = "https://placehold.co/100x100?text=Avatar";
 
 const route = useRoute();
 const router = useRouter();
@@ -197,7 +197,7 @@ const content = ref<CulturalContent>({} as CulturalContent);
 const recommendContents = ref<CulturalContent[]>([]);
 const hotContents = ref<CulturalContent[]>([]);
 
-const defaultCover = "https://via.placeholder.com/300x200?text=Culture";
+const defaultCover = "https://placehold.co/300x200?text=Culture";
 
 // 加载资讯详情
 const loadContentDetail = async () => {

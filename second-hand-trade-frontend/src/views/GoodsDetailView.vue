@@ -104,8 +104,9 @@
               <el-input-number
                 v-model="quantity"
                 :min="1"
-                :max="goods.stock"
+                :max="maxPurchaseQuantity"
                 :step="1"
+                :disabled="isOutOfStock"
               />
               <span class="stock-info">库存：{{ goods.stock }}</span>
             </div>
@@ -290,6 +291,13 @@ const mainImageSrc = computed(() => {
   );
 });
 
+const maxPurchaseQuantity = computed(() => {
+  const stock = Number(goods.value.stock ?? 0);
+  return stock > 0 ? stock : 1;
+});
+
+const isOutOfStock = computed(() => Number(goods.value.stock ?? 0) <= 0);
+
 // 加载商品详情
 const loadGoodsDetail = async () => {
   loading.value = true;
@@ -307,6 +315,10 @@ const loadGoodsDetail = async () => {
     // if (goods.value.hasSku) {
     //   await loadSkus()
     // }
+    quantity.value = Math.min(
+      Math.max(1, quantity.value),
+      maxPurchaseQuantity.value,
+    );
   } catch (error) {
     console.error("加载商品详情失败", error);
     ElMessage.error("商品不存在或已下架");
@@ -336,6 +348,11 @@ const handleAddCart = async () => {
   if (!userStore.isLoggedIn) {
     ElMessage.warning("请先登录");
     router.push("/login");
+    return;
+  }
+
+  if (isOutOfStock.value) {
+    ElMessage.warning("该商品库存不足");
     return;
   }
 

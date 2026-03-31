@@ -179,7 +179,7 @@ import { createOrder, getCheckoutInfo } from "@/api/modules/order";
 import { getCartItems } from "@/api/modules/cart";
 import type { OrderItem } from "@/api/modules/order";
 
-const defaultImage = "https://placeholder.co/100x100?text=No+Image";
+const defaultImage = "https://placehold.co/100x100?text=No+Image";
 
 const route = useRoute();
 const router = useRouter();

@@ -179,7 +179,7 @@ import {
 import { getLikeStatus } from "@/api/modules/like";
 import { useUserStore } from "@/store/user";
 
-const defaultAvatar = "https://placeholder.co/100x100?text=Avatar";
+const defaultAvatar = "https://placehold.co/100x100?text=Avatar";
 
 const props = defineProps<{
   productId: number;

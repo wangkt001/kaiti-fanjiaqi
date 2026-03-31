@@ -281,7 +281,7 @@ const hotTags = [
   "河南博物院",
 ];
 
-const defaultCover = "https://via.placeholder.com/300x200?text=Culture";
+const defaultCover = "https://placehold.co/300x200?text=Culture";
 
 // 加载资讯列表
 const loadContents = async () => {

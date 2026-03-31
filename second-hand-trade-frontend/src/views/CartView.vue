@@ -53,6 +53,7 @@
                 <div class="item-checkbox">
                   <el-checkbox
                     v-model="item.selected"
+                    :disabled="item.product.stock <= 0"
                     @change="handleSelectItem(item)"
                   />
                 </div>
@@ -81,8 +82,9 @@
                   <el-input-number
                     v-model="item.quantity"
                     :min="1"
-                    :max="item.product.stock"
+                    :max="getCartItemMax(item)"
                     size="small"
+                    :disabled="item.product.stock <= 0"
                     @change="handleQuantityChange(item)"
                   />
                   <div class="stock-tip">库存：{{ item.product.stock }}</div>
@@ -156,7 +158,7 @@ import {
   type CartItem,
 } from "@/api/modules/cart";
 
-const defaultImage = "https://placeholder.co/100x100?text=No+Image";
+const defaultImage = "https://placehold.co/100x100?text=No+Image";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -166,6 +168,19 @@ const isSeller = computed(() => userStore.userInfo?.role === "seller");
 const loading = ref(false);
 const cartItems = ref<CartItem[]>([]);
 const allSelected = ref(false);
+
+const getCartItemMax = (item: CartItem) => {
+  const stock = Number(item.product?.stock ?? 0);
+  return stock > 0 ? stock : 1;
+};
+
+const normalizeCartItem = (item: CartItem) => {
+  const max = getCartItemMax(item);
+  const qty = Number(item.quantity ?? 1);
+  item.quantity = Number.isFinite(qty) ? Math.min(Math.max(1, qty), max) : 1;
+  if (Number(item.product?.stock ?? 0) <= 0) item.selected = false;
+  return item;
+};
 
 // 计算选中商品数量
 const selectedCount = computed(() => {
@@ -185,8 +200,8 @@ const loadCart = async () => {
   try {
     const res = await getCartItems();
     console.log("购物车响应:", res);
-    if (res) {
-      cartItems.value = res;
+    if (Array.isArray(res)) {
+      cartItems.value = res.map(normalizeCartItem);
       updateAllSelected();
     }
   } catch (error) {
@@ -230,6 +245,7 @@ const handleSelectItem = async (item: CartItem) => {
 
 // 数量变化
 const handleQuantityChange = async (item: CartItem) => {
+  item.quantity = Math.min(Math.max(1, item.quantity), getCartItemMax(item));
   try {
     await updateQuantity(item.productId, item.quantity);
   } catch (error) {

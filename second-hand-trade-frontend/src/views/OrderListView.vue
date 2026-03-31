@@ -160,7 +160,7 @@ import {
 } from "@/api/modules/order";
 import type { Order } from "@/api/modules/order";
 
-const defaultImage = "https://placeholder.co/100x100?text=No+Image";
+const defaultImage = "https://placehold.co/100x100?text=No+Image";
 
 const router = useRouter();
 const userStore = useUserStore();

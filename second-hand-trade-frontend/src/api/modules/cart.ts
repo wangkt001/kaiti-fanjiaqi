@@ -1,5 +1,4 @@
 import request from '@/api'
-import type { ApiResponse } from '@/types'
 
 export interface CartItem {
   id: number
@@ -28,7 +27,7 @@ export interface CartCheckoutInfo {
  * 获取购物车列表
  */
 export function getCartItems() {
-  return request<ApiResponse<CartItem[]>>({
+  return request<CartItem[]>({
     url: '/cart',
     method: 'get',
   })
@@ -38,7 +37,7 @@ export function getCartItems() {
  * 获取购物车商品数量
  */
 export function getCartCount() {
-  return request<ApiResponse<number>>({
+  return request<number>({
     url: '/cart/count',
     method: 'get',
   })
@@ -48,7 +47,7 @@ export function getCartCount() {
  * 添加到购物车
  */
 export function addToCart(productId: number, quantity: number) {
-  return request<ApiResponse<CartItem>>({
+  return request<CartItem>({
     url: '/cart/add',
     method: 'post',
     params: {
@@ -62,7 +61,7 @@ export function addToCart(productId: number, quantity: number) {
  * 更新购物车商品数量
  */
 export function updateQuantity(productId: number, quantity: number) {
-  return request<ApiResponse<void>>({
+  return request<void>({
     url: '/cart/update',
     method: 'put',
     params: {
@@ -76,7 +75,7 @@ export function updateQuantity(productId: number, quantity: number) {
  * 选中/取消选中购物车商品
  */
 export function selectItem(productId: number, selected: boolean) {
-  return request<ApiResponse<void>>({
+  return request<void>({
     url: '/cart/select',
     method: 'put',
     params: {
@@ -90,7 +89,7 @@ export function selectItem(productId: number, selected: boolean) {
  * 全选/取消全选
  */
 export function selectAll(selected: boolean) {
-  return request<ApiResponse<void>>({
+  return request<void>({
     url: '/cart/select-all',
     method: 'put',
     params: {
@@ -103,7 +102,7 @@ export function selectAll(selected: boolean) {
  * 删除购物车商品
  */
 export function deleteItem(productId: number) {
-  return request<ApiResponse<void>>({
+  return request<void>({
     url: '/cart/delete',
     method: 'delete',
     params: {
@@ -116,7 +115,7 @@ export function deleteItem(productId: number) {
  * 清空购物车
  */
 export function clearCart() {
-  return request<ApiResponse<void>>({
+  return request<void>({
     url: '/cart/clear',
     method: 'delete',
   })
@@ -126,7 +125,7 @@ export function clearCart() {
  * 获取结算信息
  */
 export function checkout(cartItemIds: number[]) {
-  return request<ApiResponse<CartCheckoutInfo>>({
+  return request<CartCheckoutInfo>({
     url: '/cart/checkout',
     method: 'post',
     params: {
