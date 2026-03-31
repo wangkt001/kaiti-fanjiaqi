@@ -166,4 +166,12 @@ public class UserController {
         userService.auditSeller(id, status, remark);
         return Result.success();
     }
+
+    @DeleteMapping("/admin/{id}")
+    @Operation(summary = "删除用户（管理员）")
+    public Result<Void> deleteUser(@PathVariable Long id, HttpServletRequest request) {
+        Long adminId = (Long) request.getAttribute("userId");
+        userService.deleteUser(adminId, id);
+        return Result.success();
+    }
 }

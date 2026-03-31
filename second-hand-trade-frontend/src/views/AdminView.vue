@@ -64,7 +64,7 @@
                   </el-tag>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="120" fixed="right">
+              <el-table-column label="操作" width="180" fixed="right">
                 <template #default="{ row }">
                   <el-button
                     size="small"
@@ -72,6 +72,14 @@
                     @click="handleToggleStatus(row)"
                   >
                     {{ row.status === 1 ? "禁用" : "启用" }}
+                  </el-button>
+                  <el-button
+                    size="small"
+                    type="danger"
+                    :disabled="row.role === 'admin'"
+                    @click="handleDeleteUser(row)"
+                  >
+                    删除
                   </el-button>
                 </template>
               </el-table-column>
@@ -154,7 +162,7 @@ import { ref, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import NavBar from "@/components/NavBar.vue";
 import { getPendingProducts, auditProduct } from "@/api/modules/goods";
-import { listUsers, updateUserStatus, listPendingSellers, auditSeller } from "@/api/modules/user";
+import { listUsers, updateUserStatus, deleteUser, listPendingSellers, auditSeller } from "@/api/modules/user";
 import { getAdminOrderList } from "@/api/modules/order";
 
 const activeTab = ref("products");
@@ -362,6 +370,23 @@ const handleToggleStatus = (row: any) => {
     } catch (error) {
       console.error("操作失败:", error);
       ElMessage.error("操作失败，请重试");
+    }
+  });
+};
+
+const handleDeleteUser = (row: any) => {
+  ElMessageBox.confirm("确定要删除该用户吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(async () => {
+    try {
+      await deleteUser(row.id);
+      ElMessage.success("删除成功");
+      await loadUserList();
+    } catch (error) {
+      console.error("删除失败:", error);
+      ElMessage.error("删除失败，请重试");
     }
   });
 };

@@ -205,7 +205,7 @@ public class CartServiceImpl implements CartService {
             productInfo.setName(product.getName());
             productInfo.setDescription(product.getDescription());
             productInfo.setPrice(product.getPrice());
-            productInfo.setMainImage(null); // 简化：暂不处理商品图片
+            productInfo.setMainImage(product.getImageUrl());
             productInfo.setStock(product.getStock());
             productInfo.setStatus(product.getStatus());
             productInfo.setSellerId(product.getSellerId());

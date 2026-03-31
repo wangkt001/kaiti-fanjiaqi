@@ -406,7 +406,7 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   `order_id` BIGINT NOT NULL COMMENT '订单 ID',
   `product_id` BIGINT NOT NULL COMMENT '商品 ID',
   `product_name` VARCHAR(255) NOT NULL COMMENT '商品名称',
-  `product_image` VARCHAR(255) DEFAULT NULL COMMENT '商品图片',
+  `product_image` LONGTEXT DEFAULT NULL COMMENT '商品图片',
   `price` DECIMAL(10,2) NOT NULL COMMENT '商品单价',
   `quantity` INT NOT NULL COMMENT '商品数量',
   `total_price` DECIMAL(10,2) NOT NULL COMMENT '商品总价',

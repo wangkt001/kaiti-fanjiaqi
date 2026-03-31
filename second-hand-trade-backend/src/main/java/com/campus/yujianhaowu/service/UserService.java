@@ -156,4 +156,12 @@ public interface UserService {
      * @param remark 审核意见
      */
     void auditSeller(Long userId, String status, String remark);
+
+    /**
+     * 删除用户（管理员）
+     *
+     * @param adminId 管理员 ID
+     * @param userId  用户 ID
+     */
+    void deleteUser(Long adminId, Long userId);
 }

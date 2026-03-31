@@ -250,7 +250,12 @@ import ReviewList from "@/components/ReviewList.vue";
 import ReviewForm from "@/components/ReviewForm.vue";
 import FavoriteButton from "@/components/FavoriteButton.vue";
 import { getGoodsDetail, getRecommendGoods } from "@/api/modules/goods";
-import { addToCart } from "@/api/modules/cart";
+import {
+  addToCart,
+  selectAll,
+  selectItem,
+  updateQuantity,
+} from "@/api/modules/cart";
 import { useUserStore } from "@/store/user";
 import type { Goods, ProductImage } from "@/types";
 
@@ -366,9 +371,28 @@ const handleAddCart = async () => {
 };
 
 // 立即购买
-const handleBuyNow = () => {
-  // TODO: 跳转到订单确认页
-  ElMessage.info("功能开发中...");
+const handleBuyNow = async () => {
+  if (!userStore.isLoggedIn) {
+    ElMessage.warning("请先登录");
+    router.push("/login");
+    return;
+  }
+
+  if (isOutOfStock.value) {
+    ElMessage.warning("该商品库存不足");
+    return;
+  }
+
+  try {
+    await addToCart(goods.value.id, quantity.value);
+    await updateQuantity(goods.value.id, quantity.value);
+    await selectAll(false);
+    await selectItem(goods.value.id, true);
+    router.push("/order/confirm");
+  } catch (error) {
+    console.error("立即购买失败:", error);
+    ElMessage.error("立即购买失败");
+  }
 };
 
 // 收藏商品

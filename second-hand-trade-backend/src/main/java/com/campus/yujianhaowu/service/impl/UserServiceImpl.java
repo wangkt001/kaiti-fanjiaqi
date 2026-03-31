@@ -337,6 +337,33 @@ public class UserServiceImpl implements UserService {
         userMapper.updateById(user);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteUser(Long adminId, Long userId) {
+        User admin = userMapper.selectById(adminId);
+        if (admin == null) {
+            throw new BusinessException(ResultCode.UNAUTHORIZED);
+        }
+        if (!"admin".equals(admin.getRole())) {
+            throw new BusinessException(ResultCode.FORBIDDEN);
+        }
+
+        if (adminId.equals(userId)) {
+            throw new BusinessException("不能删除当前登录账号");
+        }
+
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+        if ("admin".equals(user.getRole())) {
+            throw new BusinessException("不能删除管理员账号");
+        }
+
+        userMapper.deleteById(userId);
+        log.info("用户已删除 - adminId: {}, userId: {}", adminId, userId);
+    }
+
     /**
      * 转换为 VO
      */

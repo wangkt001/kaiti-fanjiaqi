@@ -92,6 +92,13 @@ export const updateUserStatus = (id: number, status: number) => {
 }
 
 /**
+ * 后台管理：删除用户
+ */
+export const deleteUser = (id: number) => {
+  return http.delete<ApiResponse>(`/users/admin/${id}`)
+}
+
+/**
  * 获取购物车数量
  */
 export const getCartCount = () => {
