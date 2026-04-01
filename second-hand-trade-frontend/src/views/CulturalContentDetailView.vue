@@ -73,6 +73,7 @@
               :targetId="content.id"
               :initialCount="content.likeCount"
               show-count
+              @change="handleLikeChange"
             >
               点赞
             </LikeButton>
@@ -81,20 +82,20 @@
               :targetId="content.id"
               :initialCount="content.favoriteCount"
               show-count
+              @change="handleFavoriteChange"
             >
               收藏
             </FavoriteButton>
-            <el-button @click="handleShare">
-              <el-icon><Share /></el-icon>
-              分享
-            </el-button>
           </div>
         </div>
 
         <!-- 评论区域 -->
         <div class="comment-section">
           <h2 class="section-title">评论 ({{ content.commentCount }})</h2>
-          <ContentCommentList :contentId="content.id" />
+          <ContentCommentList
+            :contentId="content.id"
+            @count-change="handleCommentCountChange"
+          />
         </div>
 
         <!-- 推荐阅读 -->
@@ -172,10 +173,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-import { View, ChatDotRound, Star, Share } from "@element-plus/icons-vue";
+import { View, ChatDotRound, Star } from "@element-plus/icons-vue";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
 import LikeButton from "@/components/LikeButton.vue";
@@ -249,12 +250,6 @@ const loadHotContents = async () => {
   }
 };
 
-// 分享
-const handleShare = () => {
-  // TODO: 分享功能
-  ElMessage.info("分享功能开发中...");
-};
-
 // 跳转详情
 const goToDetail = (id: number) => {
   router.push(`/cultural-content/${id}`);
@@ -264,9 +259,22 @@ const goToDetail = (id: number) => {
 // 分类选择
 const handleCategorySelect = (index: string) => {
   router.push({
-    path: "/cultural-contents",
+    path: "/cultural",
     query: { category: index },
   });
+};
+
+const handleLikeChange = (_liked: boolean, count: number) => {
+  content.value.likeCount = count;
+};
+
+const handleFavoriteChange = (_favorited: boolean, count: number) => {
+  content.value.favoriteCount = count;
+};
+
+const handleCommentCountChange = (delta: number) => {
+  const commentCount = Number(content.value.commentCount ?? 0);
+  content.value.commentCount = Math.max(0, commentCount + delta);
 };
 
 // 格式化时间
@@ -275,11 +283,15 @@ const formatTime = (timeStr: string) => {
   return date.toLocaleDateString("zh-CN");
 };
 
-onMounted(() => {
-  loadContentDetail();
-  loadRecommendContents();
-  loadHotContents();
-});
+watch(
+  () => route.params.id,
+  () => {
+    loadContentDetail();
+    loadRecommendContents();
+    loadHotContents();
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>

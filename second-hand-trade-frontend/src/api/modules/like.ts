@@ -13,7 +13,7 @@ export interface LikeStatus {
  */
 export function like(targetType: string, targetId: number) {
   return request<ApiResponse<void>>({
-    url: `/api/likes/${targetType}/${targetId}`,
+    url: `/likes/${targetType}/${targetId}`,
     method: 'post',
   })
 }
@@ -23,7 +23,7 @@ export function like(targetType: string, targetId: number) {
  */
 export function unlike(targetType: string, targetId: number) {
   return request<ApiResponse<void>>({
-    url: `/api/likes/${targetType}/${targetId}`,
+    url: `/likes/${targetType}/${targetId}`,
     method: 'delete',
   })
 }
@@ -33,7 +33,7 @@ export function unlike(targetType: string, targetId: number) {
  */
 export function getLikeStatus(targetType: string, targetId: number) {
   return request<ApiResponse<LikeStatus>>({
-    url: `/api/likes/${targetType}/${targetId}/status`,
+    url: `/likes/${targetType}/${targetId}/status`,
     method: 'get',
   })
 }
@@ -43,7 +43,7 @@ export function getLikeStatus(targetType: string, targetId: number) {
  */
 export function getLikeCount(targetType: string, targetId: number) {
   return request<ApiResponse<number>>({
-    url: `/api/likes/${targetType}/${targetId}/count`,
+    url: `/likes/${targetType}/${targetId}/count`,
     method: 'get',
   })
 }

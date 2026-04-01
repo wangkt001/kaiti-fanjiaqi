@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, watch } from "vue";
 import { Star, StarFilled } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { like, unlike, getLikeStatus } from "@/api/modules/like";
@@ -60,7 +60,11 @@ watch(
 
 // 加载点赞状态
 const loadStatus = async () => {
-  if (!userStore.isLoggedIn) return;
+  if (!Number.isFinite(props.targetId) || props.targetId <= 0) return;
+  if (!userStore.isLoggedIn) {
+    liked.value = false;
+    return;
+  }
 
   try {
     const res = await getLikeStatus(props.targetType, props.targetId);
@@ -72,6 +76,19 @@ const loadStatus = async () => {
     console.error("加载点赞状态失败:", error);
   }
 };
+
+watch(
+  [() => userStore.isLoggedIn, () => props.targetType, () => props.targetId],
+  ([isLoggedIn, _targetType, targetId]) => {
+    if (!Number.isFinite(targetId) || targetId <= 0) return;
+    if (!isLoggedIn) {
+      liked.value = false;
+      return;
+    }
+    loadStatus();
+  },
+  { immediate: true },
+);
 
 const handleClick = async () => {
   if (!userStore.isLoggedIn) {

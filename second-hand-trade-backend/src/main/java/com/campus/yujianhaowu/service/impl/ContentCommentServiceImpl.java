@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campus.yujianhaowu.exception.BusinessException;
 import com.campus.yujianhaowu.mapper.ContentCommentMapper;
+import com.campus.yujianhaowu.mapper.CulturalContentMapper;
 import com.campus.yujianhaowu.mapper.UserMapper;
 import com.campus.yujianhaowu.model.dto.ContentCommentCreateRequest;
 import com.campus.yujianhaowu.model.entity.ContentComment;
+import com.campus.yujianhaowu.model.entity.CulturalContent;
 import com.campus.yujianhaowu.model.entity.User;
 import com.campus.yujianhaowu.model.vo.ContentCommentVO;
 import com.campus.yujianhaowu.service.ContentCommentService;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class ContentCommentServiceImpl implements ContentCommentService {
 
     private final ContentCommentMapper contentCommentMapper;
+    private final CulturalContentMapper culturalContentMapper;
     private final UserMapper userMapper;
 
     @Override
@@ -39,6 +42,7 @@ public class ContentCommentServiceImpl implements ContentCommentService {
         List<ContentCommentVO> voList = commentPage.getRecords().stream()
                 .map(this::convertToVO)
                 .collect(Collectors.toList());
+        voList.forEach(comment -> comment.setReplies(getCommentReplies(comment.getId())));
         voPage.setRecords(voList);
 
         return voPage;
@@ -47,6 +51,11 @@ public class ContentCommentServiceImpl implements ContentCommentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ContentCommentVO createComment(ContentCommentCreateRequest request, Long userId) {
+        CulturalContent culturalContent = culturalContentMapper.selectById(request.getContentId());
+        if (culturalContent == null) {
+            throw new BusinessException("资讯不存在");
+        }
+
         ContentComment comment = new ContentComment();
         comment.setContentId(request.getContentId());
         comment.setUserId(userId);
@@ -65,6 +74,10 @@ public class ContentCommentServiceImpl implements ContentCommentService {
                 contentCommentMapper.updateById(parentComment);
             }
         }
+
+        int commentCount = culturalContent.getCommentCount() != null ? culturalContent.getCommentCount() : 0;
+        culturalContent.setCommentCount(commentCount + 1);
+        culturalContentMapper.updateById(culturalContent);
 
         return convertToVO(comment);
     }
@@ -92,8 +105,33 @@ public class ContentCommentServiceImpl implements ContentCommentService {
         if (!comment.getUserId().equals(userId)) {
             throw new BusinessException("只能删除自己的评论");
         }
+
+        if (comment.getStatus() != null && comment.getStatus() == -1) {
+            return;
+        }
+
         comment.setStatus(-1);
         contentCommentMapper.updateById(comment);
+
+        CulturalContent culturalContent = culturalContentMapper.selectById(comment.getContentId());
+        if (culturalContent != null) {
+            int commentCount = culturalContent.getCommentCount() != null ? culturalContent.getCommentCount() : 0;
+            if (commentCount > 0) {
+                culturalContent.setCommentCount(commentCount - 1);
+                culturalContentMapper.updateById(culturalContent);
+            }
+        }
+
+        if (comment.getParentCommentId() != null) {
+            ContentComment parentComment = contentCommentMapper.selectById(comment.getParentCommentId());
+            if (parentComment != null) {
+                int replyCount = parentComment.getReplyCount() != null ? parentComment.getReplyCount() : 0;
+                if (replyCount > 0) {
+                    parentComment.setReplyCount(replyCount - 1);
+                    contentCommentMapper.updateById(parentComment);
+                }
+            }
+        }
     }
 
     @Override

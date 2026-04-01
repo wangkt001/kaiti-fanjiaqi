@@ -3,6 +3,8 @@ package com.campus.yujianhaowu.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campus.yujianhaowu.common.PageResult;
 import com.campus.yujianhaowu.common.Result;
+import com.campus.yujianhaowu.common.ResultCode;
+import com.campus.yujianhaowu.exception.BusinessException;
 import com.campus.yujianhaowu.model.dto.ContentCommentCreateRequest;
 import com.campus.yujianhaowu.model.vo.ContentCommentVO;
 import com.campus.yujianhaowu.service.ContentCommentService;
@@ -44,7 +46,7 @@ public class ContentCommentController {
     public Result<ContentCommentVO> createComment(
             @RequestBody @Validated ContentCommentCreateRequest request,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = getCurrentUserId(httpRequest);
         ContentCommentVO comment = contentCommentService.createComment(request, userId);
         return Result.success(comment);
     }
@@ -62,7 +64,7 @@ public class ContentCommentController {
     public Result<Void> deleteComment(
             @Parameter(description = "评论 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = getCurrentUserId(httpRequest);
         contentCommentService.deleteComment(id, userId);
         return Result.success(null);
     }
@@ -72,7 +74,7 @@ public class ContentCommentController {
     public Result<Void> likeComment(
             @Parameter(description = "评论 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = getCurrentUserId(httpRequest);
         contentCommentService.likeComment(id, userId);
         return Result.success(null);
     }
@@ -82,8 +84,22 @@ public class ContentCommentController {
     public Result<Void> unlikeComment(
             @Parameter(description = "评论 ID") @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
+        Long userId = getCurrentUserId(httpRequest);
         contentCommentService.unlikeComment(id, userId);
         return Result.success(null);
+    }
+
+    private Long getCurrentUserId(HttpServletRequest httpRequest) {
+        Object userId = httpRequest.getAttribute("userId");
+        if (userId instanceof Long value) {
+            return value;
+        }
+
+        String userIdStr = httpRequest.getHeader("X-User-Id");
+        if (userIdStr == null || userIdStr.isEmpty()) {
+            throw new BusinessException(ResultCode.UNAUTHORIZED);
+        }
+
+        return Long.parseLong(userIdStr);
     }
 }

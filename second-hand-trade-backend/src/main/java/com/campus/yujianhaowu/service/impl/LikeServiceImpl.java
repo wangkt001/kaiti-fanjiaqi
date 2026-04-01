@@ -2,7 +2,11 @@ package com.campus.yujianhaowu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.campus.yujianhaowu.exception.BusinessException;
+import com.campus.yujianhaowu.mapper.ContentCommentMapper;
+import com.campus.yujianhaowu.mapper.CulturalContentMapper;
 import com.campus.yujianhaowu.mapper.LikeMapper;
+import com.campus.yujianhaowu.model.entity.ContentComment;
+import com.campus.yujianhaowu.model.entity.CulturalContent;
 import com.campus.yujianhaowu.model.entity.Like;
 import com.campus.yujianhaowu.service.LikeService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +22,8 @@ import java.util.Map;
 public class LikeServiceImpl implements LikeService {
 
     private final LikeMapper likeMapper;
+    private final CulturalContentMapper culturalContentMapper;
+    private final ContentCommentMapper contentCommentMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -39,6 +45,7 @@ public class LikeServiceImpl implements LikeService {
         like.setCreatedAt(LocalDateTime.now());
 
         likeMapper.insert(like);
+        increaseTargetLikeCount(targetType, targetId);
     }
 
     @Override
@@ -52,6 +59,7 @@ public class LikeServiceImpl implements LikeService {
         Like like = likeMapper.selectOne(wrapper);
         if (like != null) {
             likeMapper.delete(wrapper);
+            decreaseTargetLikeCount(targetType, targetId);
         }
     }
 
@@ -81,5 +89,51 @@ public class LikeServiceImpl implements LikeService {
         result.put("count", getLikeCount(targetType, targetId));
         result.put("liked", userId != null && isLiked(targetType, targetId, userId));
         return result;
+    }
+
+    private void increaseTargetLikeCount(String targetType, Long targetId) {
+        if ("content".equals(targetType)) {
+            CulturalContent content = culturalContentMapper.selectById(targetId);
+            if (content != null) {
+                int likeCount = content.getLikeCount() != null ? content.getLikeCount() : 0;
+                content.setLikeCount(likeCount + 1);
+                culturalContentMapper.updateById(content);
+            }
+            return;
+        }
+
+        if ("comment".equals(targetType)) {
+            ContentComment comment = contentCommentMapper.selectById(targetId);
+            if (comment != null) {
+                int likeCount = comment.getLikeCount() != null ? comment.getLikeCount() : 0;
+                comment.setLikeCount(likeCount + 1);
+                contentCommentMapper.updateById(comment);
+            }
+        }
+    }
+
+    private void decreaseTargetLikeCount(String targetType, Long targetId) {
+        if ("content".equals(targetType)) {
+            CulturalContent content = culturalContentMapper.selectById(targetId);
+            if (content != null) {
+                int likeCount = content.getLikeCount() != null ? content.getLikeCount() : 0;
+                if (likeCount > 0) {
+                    content.setLikeCount(likeCount - 1);
+                    culturalContentMapper.updateById(content);
+                }
+            }
+            return;
+        }
+
+        if ("comment".equals(targetType)) {
+            ContentComment comment = contentCommentMapper.selectById(targetId);
+            if (comment != null) {
+                int likeCount = comment.getLikeCount() != null ? comment.getLikeCount() : 0;
+                if (likeCount > 0) {
+                    comment.setLikeCount(likeCount - 1);
+                    contentCommentMapper.updateById(comment);
+                }
+            }
+        }
     }
 }

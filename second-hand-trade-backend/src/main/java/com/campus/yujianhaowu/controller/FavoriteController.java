@@ -21,7 +21,7 @@ import java.util.List;
  * 收藏控制器
  */
 @RestController
-@RequestMapping("/api/favorite")
+@RequestMapping("/favorite")
 @Tag(name = "收藏管理", description = "收藏相关接口")
 public class FavoriteController {
 

@@ -80,7 +80,7 @@ export function deleteComment(id: number) {
  */
 export function likeComment(id: number) {
   return request<ApiResponse<void>>({
-    url: `/api/content-comments/${id}/like`,
+    url: `/content-comments/${id}/like`,
     method: 'post',
   })
 }
@@ -90,7 +90,7 @@ export function likeComment(id: number) {
  */
 export function unlikeComment(id: number) {
   return request<ApiResponse<void>>({
-    url: `/api/content-comments/${id}/like`,
+    url: `/content-comments/${id}/like`,
     method: 'delete',
   })
 }

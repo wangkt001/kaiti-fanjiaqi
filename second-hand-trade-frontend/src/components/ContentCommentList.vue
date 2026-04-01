@@ -48,8 +48,60 @@
               :targetId="comment.id"
               :initialCount="comment.likeCount"
               show-count
+              @change="(_, count) => handleLikeChange(comment, count)"
             />
             <el-button text @click="toggleReply(comment)"> 回复 </el-button>
+            <el-button
+              v-if="comment.userId === userStore.userId"
+              text
+              type="danger"
+              @click="handleDelete(comment)"
+            >
+              删除
+            </el-button>
+          </div>
+
+          <div v-if="comment.replies?.length" class="reply-list">
+            <div
+              v-for="reply in comment.replies"
+              :key="reply.id"
+              class="reply-item"
+            >
+              <div class="comment-user">
+                <el-avatar
+                  :size="32"
+                  :src="reply.userInfo?.avatar || defaultAvatar"
+                />
+                <div class="user-info">
+                  <div class="nickname">
+                    {{ reply.userInfo?.nickname || "未知用户" }}
+                  </div>
+                  <div class="comment-time">
+                    {{ formatTime(reply.createdAt) }}
+                  </div>
+                </div>
+              </div>
+              <div class="comment-content">
+                <p>{{ reply.content }}</p>
+              </div>
+              <div class="comment-actions">
+                <LikeButton
+                  targetType="comment"
+                  :targetId="reply.id"
+                  :initialCount="reply.likeCount"
+                  show-count
+                  @change="(_, count) => handleLikeChange(reply, count)"
+                />
+                <el-button
+                  v-if="reply.userId === userStore.userId"
+                  text
+                  type="danger"
+                  @click="handleDelete(reply)"
+                >
+                  删除
+                </el-button>
+              </div>
+            </div>
           </div>
 
           <!-- 回复区域 -->
@@ -98,12 +150,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
-import { ElMessage } from "element-plus";
+import { ref, watch } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
 import LikeButton from "@/components/LikeButton.vue";
+import { useUserStore } from "@/store/user";
 import {
   getContentComments,
   createComment,
+  deleteComment,
   type ContentComment,
 } from "@/api/modules/contentComment";
 
@@ -112,6 +166,12 @@ const defaultAvatar = "https://placehold.co/100x100?text=Avatar";
 const props = defineProps<{
   contentId: number;
 }>();
+
+const emit = defineEmits<{
+  (e: "count-change", delta: number): void;
+}>();
+
+const userStore = useUserStore();
 
 const loading = ref(false);
 const submitting = ref(false);
@@ -136,6 +196,7 @@ const loadComments = async () => {
       comments.value = res.records.map((comment) => ({
         ...comment,
         showReply: false,
+        replies: comment.replies || [],
       }));
       total.value = res.total;
     }
@@ -149,6 +210,11 @@ const loadComments = async () => {
 
 // 发表评论
 const handleSubmit = async () => {
+  if (!userStore.isLoggedIn) {
+    ElMessage.warning("请先登录");
+    return;
+  }
+
   if (!commentContent.value.trim()) {
     ElMessage.warning("请输入评论内容");
     return;
@@ -163,7 +229,8 @@ const handleSubmit = async () => {
 
     ElMessage.success("评论成功");
     commentContent.value = "";
-    loadComments();
+    emit("count-change", 1);
+    await loadComments();
   } catch (error) {
     console.error("评论失败:", error);
     ElMessage.error("评论失败");
@@ -179,6 +246,11 @@ const toggleReply = (comment: ContentComment) => {
 
 // 提交回复
 const submitReply = async (comment: ContentComment) => {
+  if (!userStore.isLoggedIn) {
+    ElMessage.warning("请先登录");
+    return;
+  }
+
   const content = replyContents.value[comment.id];
   if (!content || !content.trim()) {
     ElMessage.warning("请输入回复内容");
@@ -196,13 +268,38 @@ const submitReply = async (comment: ContentComment) => {
     ElMessage.success("回复成功");
     replyContents.value[comment.id] = "";
     comment.showReply = false;
-    loadComments();
+    emit("count-change", 1);
+    await loadComments();
   } catch (error) {
     console.error("回复失败:", error);
     ElMessage.error("回复失败");
   } finally {
     submitting.value = false;
   }
+};
+
+const handleDelete = (comment: ContentComment) => {
+  ElMessageBox.confirm("确定要删除这条评论吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(async () => {
+      try {
+        await deleteComment(comment.id);
+        ElMessage.success("删除成功");
+        emit("count-change", -1);
+        await loadComments();
+      } catch (error) {
+        console.error("删除评论失败:", error);
+        ElMessage.error("删除评论失败");
+      }
+    })
+    .catch(() => {});
+};
+
+const handleLikeChange = (comment: ContentComment, count: number) => {
+  comment.likeCount = count;
 };
 
 // 分页处理
@@ -238,9 +335,15 @@ const formatTime = (timeStr: string) => {
   }
 };
 
-onMounted(() => {
-  loadComments();
-});
+watch(
+  () => props.contentId,
+  () => {
+    if (!props.contentId) return;
+    currentPage.value = 1;
+    loadComments();
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>
@@ -324,6 +427,16 @@ onMounted(() => {
                 margin-left: 10px;
               }
             }
+          }
+        }
+
+        .reply-list {
+          margin-top: 15px;
+          padding: 0 0 0 20px;
+          border-left: 2px solid #f0f0f0;
+
+          .reply-item {
+            padding: 15px 0 0;
           }
         }
       }
