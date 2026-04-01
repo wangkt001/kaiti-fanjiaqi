@@ -223,7 +223,7 @@ import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
-import { applySeller, getSellerApplyInfo } from "@/api/modules/user";
+import { applySeller, getSellerApplyInfo, uploadImageFile } from "@/api/modules/user";
 import { getCurrentUser } from "@/api/modules/user";
 
 const router = useRouter();
@@ -298,27 +298,29 @@ const rules = {
 
 // 上传 Logo
 const uploadLogo = async (file: any) => {
-  // TODO: 实现文件上传到服务器
-  // 这里使用本地预览
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    applyForm.shopLogo = e.target?.result as string;
-  };
-  reader.readAsDataURL(file.file);
+  try {
+    const res = await uploadImageFile(file.file);
+    applyForm.shopLogo = res.url;
+  } catch (error) {
+    console.error("上传店铺 Logo 失败:", error);
+    ElMessage.error("上传店铺 Logo 失败");
+  }
 };
 
 // 上传资质证明
 const uploadCertificate = async (file: any) => {
-  // TODO: 实现文件上传到服务器
-  const reader = new FileReader();
-  reader.onload = (e) => {
+  try {
+    const res = await uploadImageFile(file.file);
     certificateList.value.push({
       name: file.file.name,
-      url: e.target?.result as string,
+      url: res.url,
+      uid: file.file.uid,
     });
-    applyForm.certificates.push(e.target?.result as string);
-  };
-  reader.readAsDataURL(file.file);
+    applyForm.certificates.push(res.url);
+  } catch (error) {
+    console.error("上传资质证明失败:", error);
+    ElMessage.error("上传资质证明失败");
+  }
 };
 
 // 移除证书

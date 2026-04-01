@@ -45,6 +45,12 @@ export const uploadAvatar = (file: File) => {
   return http.upload<ApiResponse<{ url: string }>>('/users/avatar', formData)
 }
 
+export const uploadImageFile = (file: File) => {
+  const formData = new FormData()
+  formData.append('file', file)
+  return http.upload<{ url: string; filename: string }>('/files/upload', formData)
+}
+
 /**
  * 修改密码
  */
