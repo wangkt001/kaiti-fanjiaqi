@@ -45,13 +45,13 @@
           </el-badge>
 
           <!-- 消息通知 -->
-          <el-badge
+          <!-- <el-badge
             :value="messageCount"
             :hidden="messageCount === 0"
             class="action-item"
           >
             <el-icon><Bell /></el-icon>
-          </el-badge>
+          </el-badge> -->
 
           <!-- 用户下拉菜单 -->
           <el-dropdown class="user-dropdown">
