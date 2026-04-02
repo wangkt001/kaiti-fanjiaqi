@@ -137,7 +137,7 @@
                 size="small"
                 type="primary"
                 @click="submitReply(review)"
-                :loading="submitting"
+                :loading="replySubmitting[review.id]"
               >
                 提交回复
               </el-button>
@@ -189,7 +189,6 @@ const props = defineProps<{
 const userStore = useUserStore();
 
 const loading = ref(false);
-const submitting = ref(false);
 const reviews = ref<Review[]>([]);
 const total = ref(0);
 const currentPage = ref(1);
@@ -204,6 +203,7 @@ const ratingFilters = [
 ];
 
 const replyContents = ref<Record<number, string>>({});
+const replySubmitting = ref<Record<number, boolean>>({});
 
 // 加载评价列表
 const loadReviews = async () => {
@@ -301,27 +301,34 @@ const loadReplies = async (review: Review) => {
 
 // 提交回复
 const submitReply = async (review: Review) => {
+  if (!userStore.isLoggedIn) {
+    ElMessage.warning("请先登录");
+    return;
+  }
+
   const content = replyContents.value[review.id];
   if (!content || !content.trim()) {
     ElMessage.warning("请输入回复内容");
     return;
   }
 
-  submitting.value = true;
+  replySubmitting.value[review.id] = true;
   try {
-    await replyReview({
+    const reply = await replyReview({
       reviewId: review.id,
       content: content.trim(),
     });
 
     ElMessage.success("回复成功");
     replyContents.value[review.id] = "";
-    loadReviews();
+    review.showReply = true;
+    review.replies = review.replies || [];
+    review.replies.push(reply);
+    review.replyCount += 1;
   } catch (error) {
     console.error("回复失败:", error);
-    ElMessage.error("回复失败");
   } finally {
-    submitting.value = false;
+    replySubmitting.value[review.id] = false;
   }
 };
 

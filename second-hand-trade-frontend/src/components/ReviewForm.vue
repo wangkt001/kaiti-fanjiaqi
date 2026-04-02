@@ -87,7 +87,7 @@ const emit = defineEmits<{
 const userStore = useUserStore();
 
 const formRef = ref<FormInstance>();
-const dialogVisible = ref(false);
+const dialogVisible = ref(props.modelValue);
 const submitting = ref(false);
 const fileList = ref<UploadUserFile[]>([]);
 const imageUrls = ref<string[]>([]);
@@ -119,6 +119,7 @@ watch(
   (val) => {
     dialogVisible.value = val;
   },
+  { immediate: true },
 );
 
 watch(dialogVisible, (val) => {
@@ -127,6 +128,15 @@ watch(dialogVisible, (val) => {
     resetForm();
   }
 });
+
+watch(
+  [() => props.productId, () => props.orderId],
+  ([productId, orderId]) => {
+    form.productId = productId;
+    form.orderId = orderId;
+  },
+  { immediate: true },
+);
 
 const handleFileChange = (file: UploadUserFile) => {
   if (!file.raw) return;
