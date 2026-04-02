@@ -46,12 +46,9 @@
         </div>
 
         <!-- 标签 -->
-        <div
-          v-if="content.tags && content.tags.length > 0"
-          class="tags-section"
-        >
+        <div v-if="displayTags.length > 0" class="tags-section">
           <el-tag
-            v-for="tag in content.tags"
+            v-for="tag in displayTags"
             :key="tag"
             effect="plain"
             style="margin-right: 10px"
@@ -173,7 +170,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { View, ChatDotRound, Star } from "@element-plus/icons-vue";
@@ -199,6 +196,31 @@ const recommendContents = ref<CulturalContent[]>([]);
 const hotContents = ref<CulturalContent[]>([]);
 
 const defaultCover = "https://placehold.co/300x200?text=Culture";
+
+const displayTags = computed(() => {
+  const tags = content.value?.tags;
+  if (!tags) return [];
+
+  if (Array.isArray(tags)) {
+    return tags.filter(Boolean);
+  }
+
+  if (typeof tags === "string") {
+    try {
+      const parsed = JSON.parse(tags);
+      if (Array.isArray(parsed)) {
+        return parsed.map((item) => String(item).trim()).filter(Boolean);
+      }
+    } catch (_error) {
+      return tags
+        .split(/[，,]/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+  }
+
+  return [];
+});
 
 // 加载资讯详情
 const loadContentDetail = async () => {
