@@ -186,7 +186,7 @@
         <div class="terms-content">
           <h3>一、总则</h3>
           <p>
-            1.1 本协议是您与豫见好物平台之间关于您使用本平台服务所订立的协议。
+            1.1 本协议是您与豫见好物系统之间关于您使用本平台服务所订立的协议。
           </p>
           <p>
             1.2
@@ -223,7 +223,11 @@ import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
-import { applySeller, getSellerApplyInfo, uploadImageFile } from "@/api/modules/user";
+import {
+  applySeller,
+  getSellerApplyInfo,
+  uploadImageFile,
+} from "@/api/modules/user";
 import { getCurrentUser } from "@/api/modules/user";
 
 const router = useRouter();

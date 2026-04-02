@@ -30,5 +30,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app.mount('#app')
 
-console.log('豫见好物平台启动成功！')
+console.log('豫见好物系统启动成功！')
 console.log('版本：1.0.0')

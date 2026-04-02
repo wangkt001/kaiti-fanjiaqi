@@ -21,7 +21,7 @@ public class YujianhaowuBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(YujianhaowuBackendApplication.class, args);
         System.out.println("========================================");
-        System.out.println("豫见好物平台启动成功！");
+        System.out.println("豫见好物系统启动成功！");
         System.out.println("API 文档地址：http://localhost:8080/api/doc.html");
         System.out.println("========================================");
     }
