@@ -27,7 +27,7 @@
             <el-icon><ChatDotRound /></el-icon>
             <span>我的评价</span>
           </el-menu-item>
-          <el-menu-item index="orders" v-if="isBuyer">
+          <el-menu-item index="orders" v-if="canViewOrders">
             <el-icon><ShoppingBag /></el-icon>
             <span>我的订单</span>
           </el-menu-item>
@@ -323,6 +323,9 @@ const isSeller = computed(() => userStore.userInfo?.role === "seller");
 
 // 计算属性：是否为买家
 const isBuyer = computed(() => userStore.userInfo?.role === "buyer");
+const canViewOrders = computed(
+  () => userStore.userInfo?.role === "buyer" || userStore.userInfo?.role === "seller",
+);
 
 const activeTab = ref("profile");
 const loading = ref(false);
@@ -353,6 +356,7 @@ const loadUserInfo = () => {
     console.log("用户中心加载的用户信息:", userStore.userInfo);
     console.log("用户角色:", userStore.userInfo.role);
     console.log("是否为买家:", isBuyer.value);
+    console.log("是否可查看订单:", canViewOrders.value);
     console.log("是否为卖家:", isSeller.value);
   }
 };

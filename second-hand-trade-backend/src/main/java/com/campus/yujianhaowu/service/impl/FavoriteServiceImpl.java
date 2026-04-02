@@ -17,6 +17,7 @@ import com.campus.yujianhaowu.model.vo.ProductVO;
 import com.campus.yujianhaowu.service.FavoriteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +54,9 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
 
         Favorite existing = this.getOne(wrapper);
         if (existing != null) {
-            throw new BusinessException("已经收藏过了");
+            log.info("收藏记录已存在，直接返回 - userId: {}, targetType: {}, targetId: {}", userId, request.getTargetType(),
+                    request.getTargetId());
+            return;
         }
 
         // 创建收藏记录
@@ -61,7 +64,13 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
         favorite.setUserId(userId);
         favorite.setTargetType(request.getTargetType());
         favorite.setTargetId(request.getTargetId());
-        this.save(favorite);
+        try {
+            this.save(favorite);
+        } catch (DuplicateKeyException e) {
+            log.warn("收藏记录重复插入，按已收藏处理 - userId: {}, targetType: {}, targetId: {}", userId,
+                    request.getTargetType(), request.getTargetId());
+            return;
+        }
 
         // 更新收藏数量
         if ("product".equals(request.getTargetType())) {

@@ -1,6 +1,7 @@
 package com.campus.yujianhaowu.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.campus.yujianhaowu.model.dto.ForgotPasswordRequest;
 import com.campus.yujianhaowu.model.dto.LoginRequest;
 import com.campus.yujianhaowu.model.dto.RegisterRequest;
 import com.campus.yujianhaowu.model.entity.User;
@@ -31,6 +32,13 @@ public interface UserService {
      * @return 用户 ID
      */
     Long register(RegisterRequest request);
+
+    /**
+     * 忘记密码重置
+     *
+     * @param request 重置请求
+     */
+    void forgotPassword(ForgotPasswordRequest request);
 
     /**
      * 用户登出

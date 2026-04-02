@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` VARCHAR(100) DEFAULT NULL COMMENT '邮箱',
   `avatar` VARCHAR(255) DEFAULT NULL COMMENT '头像 URL',
   `gender` TINYINT DEFAULT 0 COMMENT '性别（0-未知 1-男 2-女）',
-  `seller_status` VARCHAR(20) DEFAULT 'pending' COMMENT '卖家状态（pending/approved/rejected）',
+  `seller_status` VARCHAR(20) DEFAULT NULL COMMENT '卖家状态（pending/approved/rejected）',
   `seller_info` JSON DEFAULT NULL COMMENT '卖家资质信息',
   `shop_name` VARCHAR(100) DEFAULT NULL COMMENT '店铺名称',
   `shop_logo` VARCHAR(255) DEFAULT NULL COMMENT '店铺 Logo URL',

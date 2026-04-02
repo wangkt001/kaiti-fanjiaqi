@@ -23,6 +23,12 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '注册' },
   },
   {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import('@/views/ForgotPasswordView.vue'),
+    meta: { title: '忘记密码' },
+  },
+  {
     path: '/goods',
     name: 'GoodsList',
     component: () => import('@/views/GoodsListView.vue'),

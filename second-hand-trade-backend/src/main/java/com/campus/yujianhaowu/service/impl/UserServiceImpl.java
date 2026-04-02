@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campus.yujianhaowu.common.ResultCode;
 import com.campus.yujianhaowu.exception.BusinessException;
+import com.campus.yujianhaowu.model.dto.ForgotPasswordRequest;
 import com.campus.yujianhaowu.mapper.UserMapper;
 import com.campus.yujianhaowu.model.dto.LoginRequest;
 import com.campus.yujianhaowu.model.dto.RegisterRequest;
@@ -84,11 +85,28 @@ public class UserServiceImpl implements UserService {
         user.setPhone(request.getPhone());
         user.setEmail(request.getEmail());
         user.setStatus(1);
+        user.setSellerStatus(null);
+        user.setSellerInfo(null);
 
         userMapper.insert(user);
         log.info("用户注册成功，userId: {}", user.getId());
 
         return user.getId();
+    }
+
+    @Override
+    public void forgotPassword(ForgotPasswordRequest request) {
+        User user = getByUsername(request.getAccount());
+        if (user == null) {
+            throw new BusinessException("账号不存在");
+        }
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new BusinessException("旧密码错误");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userMapper.updateById(user);
+        log.info("用户重置密码成功，userId: {}", user.getId());
     }
 
     @Override
@@ -297,6 +315,7 @@ public class UserServiceImpl implements UserService {
         Page<User> page = new Page<>(current, size);
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getSellerStatus, "pending")
+                .isNotNull(User::getSellerInfo)
                 .orderByDesc(User::getId); // 使用 ID 排序，避免使用 created_at
 
         Page<User> userPage = userMapper.selectPage(page, wrapper);

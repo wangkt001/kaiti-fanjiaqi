@@ -10,6 +10,8 @@ import com.campus.yujianhaowu.model.entity.CulturalContent;
 import com.campus.yujianhaowu.model.entity.Like;
 import com.campus.yujianhaowu.service.LikeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService {
 
@@ -35,7 +38,8 @@ public class LikeServiceImpl implements LikeService {
 
         Like existingLike = likeMapper.selectOne(wrapper);
         if (existingLike != null) {
-            throw new BusinessException("已经点赞过了");
+            log.info("点赞记录已存在，直接返回 - userId: {}, targetType: {}, targetId: {}", userId, targetType, targetId);
+            return;
         }
 
         Like like = new Like();
@@ -44,7 +48,12 @@ public class LikeServiceImpl implements LikeService {
         like.setTargetId(targetId);
         like.setCreatedAt(LocalDateTime.now());
 
-        likeMapper.insert(like);
+        try {
+            likeMapper.insert(like);
+        } catch (DuplicateKeyException e) {
+            log.warn("点赞记录重复插入，按已点赞处理 - userId: {}, targetType: {}, targetId: {}", userId, targetType, targetId);
+            return;
+        }
         increaseTargetLikeCount(targetType, targetId);
     }
 

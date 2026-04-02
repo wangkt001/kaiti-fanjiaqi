@@ -1,6 +1,7 @@
 package com.campus.yujianhaowu.controller;
 
 import com.campus.yujianhaowu.common.Result;
+import com.campus.yujianhaowu.model.dto.ForgotPasswordRequest;
 import com.campus.yujianhaowu.model.dto.LoginRequest;
 import com.campus.yujianhaowu.model.dto.RegisterRequest;
 import com.campus.yujianhaowu.model.entity.User;
@@ -39,6 +40,13 @@ public class AuthController {
     @Operation(summary = "用户注册")
     public Result<Long> register(@Valid @RequestBody RegisterRequest request) {
         return Result.success(userService.register(request));
+    }
+
+    @PostMapping("/forgot-password")
+    @Operation(summary = "忘记密码重置")
+    public Result<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        userService.forgotPassword(request);
+        return Result.success();
     }
 
     @PostMapping("/logout")
