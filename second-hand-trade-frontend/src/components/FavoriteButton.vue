@@ -70,17 +70,13 @@ watch(
 
 // 加载收藏状态
 const loadStatus = async () => {
-  if (!userStore.isLoggedIn) return;
   if (!Number.isFinite(props.targetId) || props.targetId <= 0) return;
 
   try {
     const res = await getFavoriteStatus(props.targetType, props.targetId);
-    // 响应拦截器已经返回了 data，所以直接使用 res
     if (res) {
       favorited.value = res.favorited;
-      if (res.count > 0) {
-        count.value = res.count;
-      }
+      count.value = res.count ?? 0;
     }
   } catch (error) {
     console.error("加载收藏状态失败:", error);
@@ -89,8 +85,7 @@ const loadStatus = async () => {
 
 watch(
   [() => userStore.isLoggedIn, () => props.targetType, () => props.targetId],
-  ([isLoggedIn, _targetType, targetId]) => {
-    if (!isLoggedIn) return;
+  ([_isLoggedIn, _targetType, targetId]) => {
     if (!Number.isFinite(targetId) || targetId <= 0) return;
     loadStatus();
   },
@@ -119,7 +114,6 @@ const handleClick = async () => {
     emit("change", favorited.value, count.value);
   } catch (error) {
     console.error("收藏操作失败:", error);
-    ElMessage.error("操作失败");
   } finally {
     loading.value = false;
   }

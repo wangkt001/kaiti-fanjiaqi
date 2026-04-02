@@ -79,19 +79,96 @@
         <div v-else-if="activeTab === 'favorites'" class="favorites-section">
           <h2 class="section-title">我的收藏</h2>
           <div v-loading="loading" class="content">
-            <div v-if="favorites.length === 0" class="empty-state">
-              <el-empty description="暂无收藏商品">
-                <el-button type="primary" @click="$router.push('/goods')"
-                  >去逛逛</el-button
+            <div class="favorites-toolbar">
+              <el-tabs
+                v-model="favoriteTab"
+                @tab-change="handleFavoriteTabChange"
+              >
+                <el-tab-pane label="收藏商品" name="product" />
+                <el-tab-pane label="收藏资讯" name="content" />
+              </el-tabs>
+              <el-button link type="primary" @click="router.push('/favorites')">
+                查看全部收藏
+              </el-button>
+            </div>
+
+            <div
+              v-if="
+                favoriteTab === 'product'
+                  ? favorites.length === 0
+                  : favoriteContents.length === 0
+              "
+              class="empty-state"
+            >
+              <el-empty
+                :description="
+                  favoriteTab === 'product' ? '暂无收藏商品' : '暂无收藏资讯'
+                "
+              >
+                <el-button
+                  type="primary"
+                  @click="
+                    $router.push(
+                      favoriteTab === 'product' ? '/goods' : '/cultural',
+                    )
+                  "
                 >
+                  去逛逛
+                </el-button>
               </el-empty>
             </div>
-            <div v-else class="goods-grid">
-              <GoodsCard
+            <div v-else-if="favoriteTab === 'product'" class="goods-grid">
+              <div
                 v-for="goods in favorites"
                 :key="goods.id"
-                :goods="goods"
-              />
+                class="favorite-goods-item"
+              >
+                <el-button
+                  class="delete-btn"
+                  circle
+                  size="small"
+                  type="danger"
+                  @click="handleRemoveFavorite('product', goods.id)"
+                >
+                  ×
+                </el-button>
+                <GoodsCard
+                  :goods="goods"
+                  @click="router.push(`/goods/${goods.id}`)"
+                />
+              </div>
+            </div>
+            <div v-else class="favorite-content-list">
+              <div
+                v-for="item in favoriteContents"
+                :key="item.id"
+                class="favorite-content-item"
+                @click="router.push(`/cultural-content/${item.id}`)"
+              >
+                <el-image
+                  :src="item.coverImage || defaultOrderImage"
+                  fit="cover"
+                  class="content-cover"
+                />
+                <div class="content-info">
+                  <h3>{{ item.title }}</h3>
+                  <p>{{ item.summary || "暂无摘要" }}</p>
+                  <div class="meta">
+                    <span>{{ item.category || "未分类" }}</span>
+                    <span>{{
+                      formatTime(item.publishedAt || item.createdAt)
+                    }}</span>
+                  </div>
+                </div>
+                <el-button
+                  type="danger"
+                  plain
+                  size="small"
+                  @click.stop="handleRemoveFavorite('content', item.id)"
+                >
+                  取消收藏
+                </el-button>
+              </div>
             </div>
           </div>
         </div>
@@ -305,7 +382,11 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import GoodsCard from "@/components/GoodsCard.vue";
 import NavBar from "@/components/NavBar.vue";
 import { useUserStore } from "@/store/user";
-import { getUserFavoriteProducts } from "@/api/modules/favorite";
+import {
+  getUserFavoriteProducts,
+  getUserFavoriteContents,
+  unfavorite,
+} from "@/api/modules/favorite";
 import {
   getOrderList,
   cancelOrder,
@@ -313,7 +394,7 @@ import {
   deleteOrder,
   type Order,
 } from "@/api/modules/order";
-import type { Product } from "@/types";
+import type { Product, CulturalContent } from "@/types";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -324,7 +405,9 @@ const isSeller = computed(() => userStore.userInfo?.role === "seller");
 // 计算属性：是否为买家
 const isBuyer = computed(() => userStore.userInfo?.role === "buyer");
 const canViewOrders = computed(
-  () => userStore.userInfo?.role === "buyer" || userStore.userInfo?.role === "seller",
+  () =>
+    userStore.userInfo?.role === "buyer" ||
+    userStore.userInfo?.role === "seller",
 );
 
 const activeTab = ref("profile");
@@ -341,6 +424,8 @@ const userInfo = reactive({
 });
 
 const favorites = ref<Product[]>([]);
+const favoriteContents = ref<CulturalContent[]>([]);
+const favoriteTab = ref<"product" | "content">("product");
 const userReviews = ref<any[]>([]);
 const orders = ref<Order[]>([]);
 const orderTotal = ref(0);
@@ -367,19 +452,55 @@ const loadFavorites = async () => {
 
   loading.value = true;
   try {
-    const res = await getUserFavoriteProducts({
-      current: 1,
-      size: 12,
-    });
+    if (favoriteTab.value === "product") {
+      const res = await getUserFavoriteProducts({
+        current: 1,
+        size: 12,
+      });
 
-    console.log("收藏列表响应:", res);
-    if (res && res.records) {
-      favorites.value = res.records;
+      if (res && res.records) {
+        favorites.value = res.records;
+      }
+    } else {
+      const res = await getUserFavoriteContents({
+        current: 1,
+        size: 12,
+      });
+
+      if (res && res.records) {
+        favoriteContents.value = res.records;
+      }
     }
   } catch (error) {
     console.error("加载收藏失败:", error);
+    ElMessage.error("加载收藏失败");
   } finally {
     loading.value = false;
+  }
+};
+
+const handleFavoriteTabChange = () => {
+  loadFavorites();
+};
+
+const handleRemoveFavorite = async (
+  targetType: "product" | "content",
+  targetId: number,
+) => {
+  try {
+    await ElMessageBox.confirm("确定要取消收藏吗？", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    });
+    await unfavorite(targetType, targetId);
+    ElMessage.success("已取消收藏");
+    loadFavorites();
+  } catch (error) {
+    if (error !== "cancel") {
+      console.error("取消收藏失败:", error);
+      ElMessage.error("取消收藏失败");
+    }
   }
 };
 
@@ -661,6 +782,77 @@ onMounted(() => {
       }
 
       .content {
+        .favorites-toolbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+        }
+
+        .favorite-goods-item {
+          position: relative;
+
+          .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+          }
+        }
+
+        .favorite-content-list {
+          display: grid;
+          gap: 14px;
+        }
+
+        .favorite-content-item {
+          display: grid;
+          grid-template-columns: 120px 1fr auto;
+          gap: 14px;
+          align-items: center;
+          padding: 12px;
+          border: 1px solid #eee;
+          border-radius: 8px;
+          cursor: pointer;
+
+          .content-cover {
+            width: 120px;
+            height: 80px;
+            border-radius: 6px;
+          }
+
+          .content-info {
+            min-width: 0;
+
+            h3 {
+              margin: 0 0 6px;
+              font-size: 16px;
+              color: #333;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            p {
+              margin: 0 0 8px;
+              color: #666;
+              font-size: 13px;
+              line-height: 1.6;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+            }
+
+            .meta {
+              display: flex;
+              gap: 12px;
+              color: #999;
+              font-size: 12px;
+            }
+          }
+        }
+
         .empty-state {
           text-align: center;
           padding: 60px 0;

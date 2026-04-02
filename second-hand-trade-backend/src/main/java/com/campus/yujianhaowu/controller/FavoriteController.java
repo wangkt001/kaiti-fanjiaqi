@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campus.yujianhaowu.common.PageResult;
 import com.campus.yujianhaowu.common.Result;
 import com.campus.yujianhaowu.model.dto.favorite.FavoriteRequest;
+import com.campus.yujianhaowu.model.vo.CulturalContentVO;
 import com.campus.yujianhaowu.model.vo.FavoriteProductVO;
 import com.campus.yujianhaowu.model.vo.FavoriteStatusVO;
 import com.campus.yujianhaowu.model.vo.ProductVO;
@@ -99,6 +100,26 @@ public class FavoriteController {
         return Result.success(result);
     }
 
+    @GetMapping("/contents")
+    @Operation(summary = "分页获取收藏资讯")
+    public Result<PageResult<CulturalContentVO>> getUserFavoriteContents(
+            @RequestParam(defaultValue = "1") Long current,
+            @RequestParam(defaultValue = "10") Long size,
+            HttpServletRequest httpRequest) {
+        String userIdStr = httpRequest.getHeader("X-User-Id");
+        if (userIdStr == null || userIdStr.isEmpty()) {
+            return Result.error(401, "未登录");
+        }
+        Long userId = Long.parseLong(userIdStr);
+        Page<CulturalContentVO> page = favoriteService.getUserFavoriteContents(userId, current, size);
+        PageResult<CulturalContentVO> result = PageResult.of(
+                page.getRecords(),
+                page.getTotal(),
+                page.getCurrent(),
+                page.getSize());
+        return Result.success(result);
+    }
+
     /**
      * 获取收藏状态
      */
@@ -109,13 +130,7 @@ public class FavoriteController {
             @RequestParam Long targetId,
             HttpServletRequest httpRequest) {
         String userIdStr = httpRequest.getHeader("X-User-Id");
-        if (userIdStr == null || userIdStr.isEmpty()) {
-            FavoriteStatusVO vo = new FavoriteStatusVO();
-            vo.setFavorited(false);
-            vo.setCount(0);
-            return Result.success(vo);
-        }
-        Long userId = Long.parseLong(userIdStr);
+        Long userId = (userIdStr == null || userIdStr.isEmpty()) ? null : Long.parseLong(userIdStr);
         FavoriteStatusVO vo = favoriteService.getFavoriteStatus(userId, targetType, targetId);
         return Result.success(vo);
     }

@@ -1,4 +1,5 @@
 import { http } from '@/api';
+import type { CulturalContent } from '@/types'
 
 /**
  * 收藏 API
@@ -19,6 +20,8 @@ export interface FavoriteStatus {
   favorited: boolean
   count: number
 }
+
+export interface FavoriteContent extends CulturalContent {}
 
 /**
  * 添加收藏
@@ -73,4 +76,13 @@ export function getUserFavoriteProducts(params: {
   return http.get<any>('/favorite/products', {
     params,
   });
+}
+
+export function getUserFavoriteContents(params: {
+  current: number
+  size: number
+}) {
+  return http.get<any>('/favorite/contents', {
+    params,
+  })
 }

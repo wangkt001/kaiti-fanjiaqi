@@ -11,6 +11,7 @@ import com.campus.yujianhaowu.model.entity.CulturalContent;
 import com.campus.yujianhaowu.model.dto.favorite.FavoriteRequest;
 import com.campus.yujianhaowu.model.entity.Favorite;
 import com.campus.yujianhaowu.model.entity.Product;
+import com.campus.yujianhaowu.model.vo.CulturalContentVO;
 import com.campus.yujianhaowu.model.vo.FavoriteProductVO;
 import com.campus.yujianhaowu.model.vo.FavoriteStatusVO;
 import com.campus.yujianhaowu.model.vo.ProductVO;
@@ -209,7 +210,61 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
     }
 
     @Override
+    public Page<CulturalContentVO> getUserFavoriteContents(Long userId, Long current, Long size) {
+        log.info("获取用户收藏资讯分页 - userId: {}, current: {}, size: {}", userId, current, size);
+
+        LambdaQueryWrapper<Favorite> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Favorite::getUserId, userId)
+                .eq(Favorite::getTargetType, "content")
+                .orderByDesc(Favorite::getCreatedAt);
+        List<Favorite> favorites = this.list(wrapper);
+
+        Page<CulturalContentVO> resultPage = new Page<>(current, size);
+        if (favorites.isEmpty()) {
+            resultPage.setRecords(new ArrayList<>());
+            resultPage.setTotal(0);
+            return resultPage;
+        }
+
+        Set<Long> contentIds = favorites.stream()
+                .map(Favorite::getTargetId)
+                .collect(Collectors.toSet());
+        List<CulturalContent> contents = culturalContentMapper.selectBatchIds(contentIds);
+
+        List<CulturalContentVO> voList = contents.stream()
+                .map(this::convertToContentVO)
+                .sorted((vo1, vo2) -> {
+                    Favorite f1 = favorites.stream()
+                            .filter(f -> f.getTargetId().equals(vo1.getId()))
+                            .findFirst()
+                            .orElse(null);
+                    Favorite f2 = favorites.stream()
+                            .filter(f -> f.getTargetId().equals(vo2.getId()))
+                            .findFirst()
+                            .orElse(null);
+                    if (f1 == null || f2 == null) {
+                        return 0;
+                    }
+                    return f2.getCreatedAt().compareTo(f1.getCreatedAt());
+                })
+                .toList();
+
+        int total = voList.size();
+        int fromIndex = (int) ((current - 1) * size);
+        int toIndex = Math.min(fromIndex + (int) (long) size, total);
+        List<CulturalContentVO> pageRecords = fromIndex < total ? voList.subList(fromIndex, toIndex)
+                : new ArrayList<>();
+
+        resultPage.setRecords(pageRecords);
+        resultPage.setTotal(total);
+        return resultPage;
+    }
+
+    @Override
     public boolean isFavorite(Long userId, String targetType, Long targetId) {
+        if (userId == null || targetId == null) {
+            return false;
+        }
         LambdaQueryWrapper<Favorite> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Favorite::getUserId, userId)
                 .eq(Favorite::getTargetType, targetType)
@@ -250,6 +305,12 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
     private ProductVO convertToProductVO(Product product) {
         ProductVO vo = new ProductVO();
         BeanUtils.copyProperties(product, vo);
+        return vo;
+    }
+
+    private CulturalContentVO convertToContentVO(CulturalContent content) {
+        CulturalContentVO vo = new CulturalContentVO();
+        BeanUtils.copyProperties(content, vo);
         return vo;
     }
 }
