@@ -11,6 +11,7 @@ export interface UserInfo {
   sellerStatus?: 'pending' | 'approved' | 'rejected'
   shopName?: string
   shopLogo?: string
+  shopDescription?: string
   fansCount?: number
   followCount?: number
 }

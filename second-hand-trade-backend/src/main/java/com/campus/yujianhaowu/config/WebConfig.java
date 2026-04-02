@@ -55,6 +55,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/files/**",
                         "/categories/**",
                         "/tags/**",
+                        "/users/public/**",
                         // 以下接口不需要认证
                         "/cultural-contents/**",
                         "/content-comments/**");

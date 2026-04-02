@@ -6,6 +6,31 @@
     <!-- 主要内容区 -->
     <main class="main-content">
       <div class="container">
+        <section v-if="shopInfo" class="shop-banner">
+          <div class="shop-banner__main">
+            <el-avatar :size="72" :src="shopInfo.shopLogo">
+              {{ (shopInfo.shopName || shopInfo.nickname || "店").charAt(0) }}
+            </el-avatar>
+            <div class="shop-banner__info">
+              <h2 class="shop-banner__title">
+                {{ shopInfo.shopName || `${shopInfo.nickname}的店铺` }}
+              </h2>
+              <p class="shop-banner__subtitle">
+                店主：{{ shopInfo.nickname || shopInfo.username }}
+              </p>
+              <p class="shop-banner__desc">
+                {{ shopInfo.shopDescription || "该店铺暂未填写店铺简介" }}
+              </p>
+            </div>
+          </div>
+          <div class="shop-banner__extra">
+            <div class="shop-banner__stat">
+              <span class="value">{{ pagination.total }}</span>
+              <span class="label">在售商品</span>
+            </div>
+          </div>
+        </section>
+
         <div class="page-layout">
           <!-- 左侧筛选栏 -->
           <aside class="filter-sidebar">
@@ -148,7 +173,8 @@ import GoodsCard from "@/components/GoodsCard.vue";
 import { getGoodsList } from "@/api/modules/goods";
 import { getCategoryTree } from "@/api/modules/category";
 import { getHotTags } from "@/api/modules/tag";
-import type { Goods, Category, CulturalTag } from "@/types";
+import { getSellerPublicProfile } from "@/api/modules/user";
+import type { Goods, Category, CulturalTag, UserInfo } from "@/types";
 
 const route = useRoute();
 const router = useRouter();
@@ -157,10 +183,12 @@ const loading = ref(false);
 const goodsList = ref<Goods[]>([]);
 const categories = ref<Category[]>([]);
 const hotTags = ref<CulturalTag[]>([]);
+const shopInfo = ref<UserInfo | null>(null);
 
 const filters = reactive({
   categoryId: undefined as number | undefined,
   tagId: undefined as number | undefined,
+  sellerId: undefined as number | undefined,
   minPrice: undefined as number | undefined,
   maxPrice: undefined as number | undefined,
   sortBy: "",
@@ -183,6 +211,8 @@ const loadGoodsList = async () => {
     };
 
     if (filters.categoryId) params.categoryId = filters.categoryId;
+    if (filters.tagId) params.tagId = filters.tagId;
+    if (filters.sellerId) params.sellerId = filters.sellerId;
     if (filters.minPrice) params.minPrice = filters.minPrice;
     if (filters.maxPrice) params.maxPrice = filters.maxPrice;
     if (filters.sortBy) params.sortBy = filters.sortBy;
@@ -195,6 +225,21 @@ const loadGoodsList = async () => {
     console.error("加载商品列表失败", error);
   } finally {
     loading.value = false;
+  }
+};
+
+const loadShopInfo = async () => {
+  if (!filters.sellerId) {
+    shopInfo.value = null;
+    return;
+  }
+
+  try {
+    const res = await getSellerPublicProfile(filters.sellerId);
+    shopInfo.value = res || null;
+  } catch (error) {
+    console.error("加载店铺信息失败", error);
+    shopInfo.value = null;
   }
 };
 
@@ -266,6 +311,8 @@ const handleCurrentChange = () => {
 const updateURL = () => {
   const query: any = {};
   if (filters.categoryId) query.categoryId = filters.categoryId;
+  if (filters.tagId) query.tagId = filters.tagId;
+  if (filters.sellerId) query.sellerId = filters.sellerId;
   if (filters.minPrice) query.minPrice = filters.minPrice;
   if (filters.maxPrice) query.maxPrice = filters.maxPrice;
   if (filters.sortBy) query.sortBy = filters.sortBy;
@@ -279,12 +326,17 @@ watch(
   () => route.query,
   () => {
     const query = route.query;
-    if (query.categoryId) filters.categoryId = Number(query.categoryId);
-    if (query.minPrice) filters.minPrice = Number(query.minPrice);
-    if (query.maxPrice) filters.maxPrice = Number(query.maxPrice);
-    if (query.sortBy) filters.sortBy = query.sortBy as string;
-    if (query.keyword) filters.keyword = query.keyword as string;
+    filters.categoryId = query.categoryId
+      ? Number(query.categoryId)
+      : undefined;
+    filters.tagId = query.tagId ? Number(query.tagId) : undefined;
+    filters.sellerId = query.sellerId ? Number(query.sellerId) : undefined;
+    filters.minPrice = query.minPrice ? Number(query.minPrice) : undefined;
+    filters.maxPrice = query.maxPrice ? Number(query.maxPrice) : undefined;
+    filters.sortBy = query.sortBy ? (query.sortBy as string) : "";
+    filters.keyword = query.keyword ? (query.keyword as string) : undefined;
 
+    loadShopInfo();
     loadGoodsList();
   },
   { immediate: true },
@@ -304,6 +356,78 @@ onMounted(() => {
 
 .main-content {
   padding: $spacing-extra-large 0;
+}
+
+.shop-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $spacing-large;
+  padding: $spacing-large;
+  margin-bottom: $spacing-extra-large;
+  background: linear-gradient(
+    135deg,
+    rgba($primary-color, 0.08),
+    rgba($primary-color, 0.02)
+  );
+  border-radius: $border-radius-large;
+  box-shadow: $box-shadow-light;
+
+  &__main {
+    display: flex;
+    align-items: center;
+    gap: $spacing-large;
+    min-width: 0;
+  }
+
+  &__info {
+    min-width: 0;
+  }
+
+  &__title {
+    margin: 0 0 $spacing-small;
+    font-size: 28px;
+    color: $text-primary;
+  }
+
+  &__subtitle {
+    margin: 0 0 $spacing-small;
+    color: $text-secondary;
+    font-size: $font-size-base;
+  }
+
+  &__desc {
+    margin: 0;
+    color: $text-regular;
+    line-height: 1.7;
+  }
+
+  &__extra {
+    display: flex;
+    align-items: center;
+  }
+
+  &__stat {
+    min-width: 100px;
+    text-align: center;
+    padding: $spacing-base $spacing-large;
+    background-color: rgba(#fff, 0.8);
+    border-radius: $border-radius-base;
+
+    .value {
+      display: block;
+      font-size: 24px;
+      font-weight: 700;
+      color: $primary-color;
+    }
+
+    .label {
+      display: block;
+      margin-top: 4px;
+      color: $text-secondary;
+      font-size: $font-size-small;
+    }
+  }
 }
 
 .page-layout {
@@ -458,6 +582,15 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
+  .shop-banner {
+    flex-direction: column;
+    align-items: flex-start;
+
+    &__main {
+      align-items: flex-start;
+    }
+  }
+
   .page-layout {
     grid-template-columns: 1fr;
   }

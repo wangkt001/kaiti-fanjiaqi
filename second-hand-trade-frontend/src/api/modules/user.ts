@@ -80,6 +80,13 @@ export const getSellerApplyInfo = () => {
 }
 
 /**
+ * 获取店铺公开信息
+ */
+export const getSellerPublicProfile = (id: number) => {
+  return http.get<ApiResponse<UserInfo>>(`/users/public/${id}`)
+}
+
+/**
  * 后台管理：获取用户列表
  */
 export const listUsers = (current: number, size: number) => {

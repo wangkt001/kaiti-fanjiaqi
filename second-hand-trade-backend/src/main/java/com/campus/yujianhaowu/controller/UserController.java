@@ -117,6 +117,12 @@ public class UserController {
         return Result.success(userService.getSellerApplyInfo(userId));
     }
 
+    @GetMapping("/public/{id}")
+    @Operation(summary = "获取店铺公开信息")
+    public Result<UserVO> getSellerPublicProfile(@PathVariable Long id) {
+        return Result.success(userService.getSellerPublicProfile(id));
+    }
+
     // ==================== 后台管理接口 ====================
 
     @GetMapping("/admin/list")

@@ -97,6 +97,14 @@ public interface UserService {
     Map<String, Object> getSellerApplyInfo(Long userId);
 
     /**
+     * 获取店铺公开信息
+     *
+     * @param userId 卖家 ID
+     * @return 店铺公开信息
+     */
+    UserVO getSellerPublicProfile(Long userId);
+
+    /**
      * 根据 ID 获取用户
      *
      * @param userId 用户 ID

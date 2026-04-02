@@ -221,6 +221,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserVO getSellerPublicProfile(Long userId) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+        if (!"seller".equals(user.getRole())) {
+            throw new BusinessException("店铺不存在");
+        }
+        if (user.getStatus() == null || user.getStatus() == 0) {
+            throw new BusinessException("店铺已关闭");
+        }
+
+        return convertToVO(user);
+    }
+
+    @Override
     public User getById(Long userId) {
         return userMapper.selectById(userId);
     }
