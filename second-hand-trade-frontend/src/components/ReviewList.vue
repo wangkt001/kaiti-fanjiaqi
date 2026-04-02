@@ -174,6 +174,7 @@ import {
   likeReview,
   unlikeReview,
   replyReview,
+  getReviewReplies,
   type Review,
 } from "@/api/modules/review";
 import { getLikeStatus } from "@/api/modules/like";
@@ -291,16 +292,8 @@ const toggleReply = (review: Review) => {
 // 加载回复列表
 const loadReplies = async (review: Review) => {
   try {
-    const res = await getProductReviews({
-      productId: props.productId,
-      current: 1,
-      size: 50,
-    });
-
-    if (res) {
-      // 这里简化处理，实际应该调用专门的回复接口
-      review.replies = [];
-    }
+    const res = await getReviewReplies(review.id);
+    review.replies = res || [];
   } catch (error) {
     console.error("加载回复失败:", error);
   }

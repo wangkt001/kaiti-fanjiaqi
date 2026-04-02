@@ -186,31 +186,37 @@
         </div>
 
         <!-- 用户评价 -->
-        <!-- <div class="review-section">
+        <div class="review-section">
           <div class="review-header">
             <h2 class="section-title">用户评价</h2>
             <div class="review-summary">
               <el-button
-                v-if="isLoggedIn"
+                v-if="isLoggedIn && reviewPermission.canReview"
                 type="primary"
                 size="small"
                 @click="showReviewForm = true"
               >
                 发表评价
               </el-button>
+              <span
+                v-else-if="isLoggedIn && reviewPermission.reason"
+                class="review-tip"
+              >
+                {{ reviewPermission.reason }}
+              </span>
             </div>
           </div>
           <ReviewList v-if="currentProductId" :productId="currentProductId" />
-        </div> -->
+        </div>
 
         <!-- 评价表单 -->
-        <!-- <ReviewForm
-          v-if="currentProductId"
+        <ReviewForm
+          v-if="currentProductId && reviewPermission.orderId"
           v-model="showReviewForm"
           :productId="currentProductId"
-          :orderId="0"
-          @success="loadGoodsDetail"
-        /> -->
+          :orderId="reviewPermission.orderId"
+          @success="handleReviewSuccess"
+        />
 
         <!-- 相关推荐 -->
         <!-- <div class="recommend-section">
@@ -232,7 +238,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from "vue";
+import { ref, reactive, computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import {
@@ -250,6 +256,7 @@ import ReviewList from "@/components/ReviewList.vue";
 import ReviewForm from "@/components/ReviewForm.vue";
 import FavoriteButton from "@/components/FavoriteButton.vue";
 import { getGoodsDetail, getRecommendGoods } from "@/api/modules/goods";
+import { getReviewPermission } from "@/api/modules/review";
 import {
   addToCart,
   selectAll,
@@ -271,6 +278,17 @@ const selectedSku = ref<any>(null);
 const quantity = ref(1);
 const currentImage = ref("");
 const showReviewForm = ref(false);
+const reviewPermission = ref<{
+  canReview: boolean;
+  hasPurchased: boolean;
+  hasReviewed: boolean;
+  orderId?: number;
+  reason?: string;
+}>({
+  canReview: false,
+  hasPurchased: false,
+  hasReviewed: false,
+});
 
 const isLoggedIn = computed(() => userStore.isLoggedIn);
 const isSeller = computed(() => userStore.userInfo?.role === "seller");
@@ -302,6 +320,38 @@ const maxPurchaseQuantity = computed(() => {
 });
 
 const isOutOfStock = computed(() => Number(goods.value.stock ?? 0) <= 0);
+
+const loadReviewPermission = async () => {
+  if (!isLoggedIn.value || !currentProductId.value) {
+    reviewPermission.value = {
+      canReview: false,
+      hasPurchased: false,
+      hasReviewed: false,
+    };
+    return;
+  }
+
+  try {
+    const orderId = route.query.orderId
+      ? Number(route.query.orderId)
+      : undefined;
+    const res = await getReviewPermission(currentProductId.value, orderId);
+    reviewPermission.value = res || {
+      canReview: false,
+      hasPurchased: false,
+      hasReviewed: false,
+    };
+    if (route.query.review === "1") {
+      if (reviewPermission.value.canReview && reviewPermission.value.orderId) {
+        showReviewForm.value = true;
+      } else if (reviewPermission.value.reason) {
+        ElMessage.warning(reviewPermission.value.reason);
+      }
+    }
+  } catch (error) {
+    console.error("加载评价权限失败:", error);
+  }
+};
 
 // 加载商品详情
 const loadGoodsDetail = async () => {
@@ -400,6 +450,15 @@ const handleFavoriteChange = (favorited: boolean, count: number) => {
   console.log("收藏状态变化:", favorited, count);
 };
 
+const handleReviewSuccess = async () => {
+  showReviewForm.value = false;
+  await loadReviewPermission();
+  router.replace({
+    path: route.path,
+    query: {},
+  });
+};
+
 // 分享商品
 const handleShare = () => {
   // TODO: 分享功能
@@ -417,7 +476,15 @@ const visitShop = () => {
 onMounted(() => {
   loadGoodsDetail();
   loadRecommendGoods();
+  loadReviewPermission();
 });
+
+watch(
+  () => route.params.id,
+  () => {
+    loadReviewPermission();
+  },
+);
 </script>
 
 <style lang="scss" scoped>

@@ -6,6 +6,8 @@ export interface Review {
   productId: number
   orderId: number
   userId: number
+  productName?: string
+  productImage?: string
   userInfo?: {
     nickname: string
     avatar: string
@@ -20,6 +22,8 @@ export interface Review {
   status: number
   createdAt: string
   replies?: ReviewReply[]
+  showReply?: boolean
+  isLiked?: boolean
 }
 
 export interface ReviewReply {
@@ -79,4 +83,32 @@ export const replyReview = (data: { reviewId: number; content: string; parentRep
  */
 export const createReview = (data: ReviewCreateParams) => {
   return http.post<ApiResponse>('/reviews', data)
+}
+
+export const getReviewReplies = (id: number) => {
+  return http.get<ApiResponse<ReviewReply[]>>(`/reviews/${id}/replies`)
+}
+
+export const getUserReviews = (params: PageParams) => {
+  return http.get<ApiResponse<PageResult<Review>>>('/reviews/user', { params })
+}
+
+export const deleteReview = (id: number) => {
+  return http.delete<ApiResponse>(`/reviews/${id}`)
+}
+
+export const getReviewPermission = (productId: number, orderId?: number) => {
+  return http.get<
+    ApiResponse<{
+      canReview: boolean
+      hasPurchased: boolean
+      hasReviewed: boolean
+      orderId?: number
+      reason?: string
+    }>
+  >(`/reviews/product/${productId}/permission`, {
+    params: {
+      orderId,
+    },
+  })
 }

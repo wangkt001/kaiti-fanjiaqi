@@ -5,9 +5,13 @@ import com.campus.yujianhaowu.exception.BusinessException;
 import com.campus.yujianhaowu.mapper.ContentCommentMapper;
 import com.campus.yujianhaowu.mapper.CulturalContentMapper;
 import com.campus.yujianhaowu.mapper.LikeMapper;
+import com.campus.yujianhaowu.mapper.ReviewMapper;
+import com.campus.yujianhaowu.mapper.ReviewReplyMapper;
 import com.campus.yujianhaowu.model.entity.ContentComment;
 import com.campus.yujianhaowu.model.entity.CulturalContent;
 import com.campus.yujianhaowu.model.entity.Like;
+import com.campus.yujianhaowu.model.entity.Review;
+import com.campus.yujianhaowu.model.entity.ReviewReply;
 import com.campus.yujianhaowu.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +31,8 @@ public class LikeServiceImpl implements LikeService {
     private final LikeMapper likeMapper;
     private final CulturalContentMapper culturalContentMapper;
     private final ContentCommentMapper contentCommentMapper;
+    private final ReviewMapper reviewMapper;
+    private final ReviewReplyMapper reviewReplyMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -118,6 +124,26 @@ public class LikeServiceImpl implements LikeService {
                 comment.setLikeCount(likeCount + 1);
                 contentCommentMapper.updateById(comment);
             }
+            return;
+        }
+
+        if ("review".equals(targetType)) {
+            Review review = reviewMapper.selectById(targetId);
+            if (review != null) {
+                int likeCount = review.getLikeCount() != null ? review.getLikeCount() : 0;
+                review.setLikeCount(likeCount + 1);
+                reviewMapper.updateById(review);
+            }
+            return;
+        }
+
+        if ("reply".equals(targetType)) {
+            ReviewReply reply = reviewReplyMapper.selectById(targetId);
+            if (reply != null) {
+                int likeCount = reply.getLikeCount() != null ? reply.getLikeCount() : 0;
+                reply.setLikeCount(likeCount + 1);
+                reviewReplyMapper.updateById(reply);
+            }
         }
     }
 
@@ -141,6 +167,30 @@ public class LikeServiceImpl implements LikeService {
                 if (likeCount > 0) {
                     comment.setLikeCount(likeCount - 1);
                     contentCommentMapper.updateById(comment);
+                }
+            }
+            return;
+        }
+
+        if ("review".equals(targetType)) {
+            Review review = reviewMapper.selectById(targetId);
+            if (review != null) {
+                int likeCount = review.getLikeCount() != null ? review.getLikeCount() : 0;
+                if (likeCount > 0) {
+                    review.setLikeCount(likeCount - 1);
+                    reviewMapper.updateById(review);
+                }
+            }
+            return;
+        }
+
+        if ("reply".equals(targetType)) {
+            ReviewReply reply = reviewReplyMapper.selectById(targetId);
+            if (reply != null) {
+                int likeCount = reply.getLikeCount() != null ? reply.getLikeCount() : 0;
+                if (likeCount > 0) {
+                    reply.setLikeCount(likeCount - 1);
+                    reviewReplyMapper.updateById(reply);
                 }
             }
         }

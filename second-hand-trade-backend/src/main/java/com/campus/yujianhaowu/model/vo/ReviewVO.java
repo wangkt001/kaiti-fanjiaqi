@@ -25,7 +25,7 @@ public class ReviewVO {
 
     private String content;
 
-    private String images;
+    private List<String> images;
 
     private Boolean isAnonymous;
 
@@ -38,6 +38,10 @@ public class ReviewVO {
     private LocalDateTime createdAt;
 
     private UserInfo userInfo;
+
+    private String productName;
+
+    private String productImage;
 
     private List<ReviewReplyVO> replies;
 

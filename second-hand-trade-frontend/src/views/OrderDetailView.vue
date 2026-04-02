@@ -89,6 +89,16 @@
                 <div class="goods-info">
                   <div class="goods-name">{{ item.productName }}</div>
                   <div class="goods-spec">数量：{{ item.quantity }}</div>
+                  <el-button
+                    v-if="order.status === 3"
+                    type="success"
+                    plain
+                    size="small"
+                    class="review-btn"
+                    @click="handleGoReview(item.productId)"
+                  >
+                    去评价
+                  </el-button>
                 </div>
                 <div class="goods-price">¥{{ item.price.toFixed(2) }}</div>
                 <div class="goods-total">¥{{ item.totalPrice.toFixed(2) }}</div>
@@ -303,6 +313,17 @@ const handlePayOrder = () => {
   });
 };
 
+const handleGoReview = (productId: number) => {
+  if (!order.value) return;
+  router.push({
+    path: `/goods/${productId}`,
+    query: {
+      orderId: order.value.id,
+      review: "1",
+    },
+  });
+};
+
 // 格式化时间
 const formatTime = (timeStr: string) => {
   const date = new Date(timeStr);
@@ -432,6 +453,10 @@ onMounted(() => {
               .goods-spec {
                 font-size: 13px;
                 color: #999;
+              }
+
+              .review-btn {
+                margin-top: 10px;
               }
             }
 

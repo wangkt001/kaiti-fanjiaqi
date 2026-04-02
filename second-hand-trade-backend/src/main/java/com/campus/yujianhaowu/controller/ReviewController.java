@@ -5,6 +5,7 @@ import com.campus.yujianhaowu.common.PageResult;
 import com.campus.yujianhaowu.common.Result;
 import com.campus.yujianhaowu.model.dto.ReviewCreateRequest;
 import com.campus.yujianhaowu.model.dto.ReviewReplyRequest;
+import com.campus.yujianhaowu.model.vo.ReviewPermissionVO;
 import com.campus.yujianhaowu.model.vo.ReviewVO;
 import com.campus.yujianhaowu.model.vo.ReviewReplyVO;
 import com.campus.yujianhaowu.service.ReviewService;
@@ -48,6 +49,33 @@ public class ReviewController {
             @Parameter(description = "评价 ID") @PathVariable Long id) {
         ReviewVO review = reviewService.getReviewById(id);
         return Result.success(review);
+    }
+
+    @GetMapping("/user")
+    @Operation(summary = "获取当前用户评价列表")
+    public Result<PageResult<ReviewVO>> getUserReviews(
+            @RequestParam(defaultValue = "1") Integer current,
+            @RequestParam(defaultValue = "10") Integer size,
+            HttpServletRequest httpRequest) {
+        Long userId = (Long) httpRequest.getAttribute("userId");
+        Page<ReviewVO> page = reviewService.getUserReviews(userId, current, size);
+        PageResult<ReviewVO> result = new PageResult<>(
+                page.getRecords(),
+                page.getTotal(),
+                page.getCurrent(),
+                page.getSize());
+        return Result.success(result);
+    }
+
+    @GetMapping("/product/{productId}/permission")
+    @Operation(summary = "获取商品评价权限")
+    public Result<ReviewPermissionVO> getReviewPermission(
+            @PathVariable Long productId,
+            @RequestParam(required = false) Long orderId,
+            HttpServletRequest httpRequest) {
+        Long userId = (Long) httpRequest.getAttribute("userId");
+        ReviewPermissionVO result = reviewService.getReviewPermission(productId, userId, orderId);
+        return Result.success(result);
     }
 
     @GetMapping("/{id}/replies")

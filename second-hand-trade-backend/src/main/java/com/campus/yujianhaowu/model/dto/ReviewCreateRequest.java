@@ -5,6 +5,7 @@ import lombok.Data;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 public class ReviewCreateRequest {
@@ -22,7 +23,7 @@ public class ReviewCreateRequest {
 
     private String content;
 
-    private String images;
+    private List<String> images;
 
     private Boolean isAnonymous;
 }

@@ -231,6 +231,14 @@
                   </div>
                 </div>
                 <div class="review-actions">
+                  <el-button
+                    size="small"
+                    type="primary"
+                    plain
+                    @click="router.push(`/goods/${review.productId}`)"
+                  >
+                    查看商品
+                  </el-button>
                   <el-button size="small" @click="handleDeleteReview(review.id)"
                     >删除</el-button
                   >
@@ -300,6 +308,15 @@
                       <div class="goods-price">
                         ¥{{ item.totalPrice.toFixed(2) }}
                       </div>
+                      <el-button
+                        v-if="order.status === 3"
+                        size="small"
+                        type="success"
+                        plain
+                        @click="handleGoReviewItem(order.id, item.productId)"
+                      >
+                        去评价
+                      </el-button>
                     </div>
                   </div>
 
@@ -394,6 +411,7 @@ import {
   deleteOrder,
   type Order,
 } from "@/api/modules/order";
+import { getUserReviews, deleteReview } from "@/api/modules/review";
 import type { Product, CulturalContent } from "@/types";
 
 const userStore = useUserStore();
@@ -510,10 +528,14 @@ const loadUserReviews = async () => {
 
   loading.value = true;
   try {
-    // TODO: 调用获取用户评价的 API
-    userReviews.value = [];
+    const res = await getUserReviews({
+      current: 1,
+      size: 20,
+    });
+    userReviews.value = res.records || [];
   } catch (error) {
     console.error("加载评价失败:", error);
+    ElMessage.error("加载评价失败");
   } finally {
     loading.value = false;
   }
@@ -562,8 +584,7 @@ const handleDeleteReview = async (reviewId: number) => {
       cancelButtonText: "取消",
       type: "warning",
     });
-
-    // TODO: 调用删除评价 API
+    await deleteReview(reviewId);
     ElMessage.success("删除成功");
     loadUserReviews();
   } catch (error) {
@@ -610,6 +631,13 @@ const handlePayOrder = (order: Order) => {
       orderNo: order.orderNo,
       amount: order.paymentAmount.toString(),
     },
+  });
+};
+
+const handleGoReviewItem = (orderId: number, productId: number) => {
+  router.push({
+    path: `/goods/${productId}`,
+    query: { orderId, review: "1" },
   });
 };
 

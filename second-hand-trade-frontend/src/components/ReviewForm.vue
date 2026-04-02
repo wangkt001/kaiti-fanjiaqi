@@ -70,6 +70,7 @@ import {
   type UploadUserFile,
 } from "element-plus";
 import { createReview, type ReviewCreateParams } from "@/api/modules/review";
+import { uploadImageFile } from "@/api/modules/user";
 import { useUserStore } from "@/store/user";
 
 const props = defineProps<{
@@ -128,18 +129,24 @@ watch(dialogVisible, (val) => {
 });
 
 const handleFileChange = (file: UploadUserFile) => {
-  // 这里模拟上传，实际应该调用上传接口
-  // 假设上传后返回 URL
-  const url = URL.createObjectURL(file.raw!);
-  imageUrls.value.push(url);
+  if (!file.raw) return;
+  uploadImage(file.raw);
 };
 
 const handleRemove = (file: UploadUserFile) => {
-  const index = imageUrls.value.findIndex((url) =>
-    url.includes(file.name || ""),
-  );
+  const index = fileList.value.findIndex((item) => item.uid === file.uid);
   if (index > -1) {
     imageUrls.value.splice(index, 1);
+  }
+};
+
+const uploadImage = async (rawFile: File) => {
+  try {
+    const res = await uploadImageFile(rawFile);
+    imageUrls.value.push(res.url);
+  } catch (error) {
+    console.error("上传评价图片失败:", error);
+    ElMessage.error("上传评价图片失败");
   }
 };
 
@@ -166,7 +173,6 @@ const handleSubmit = async () => {
       emit("success");
     } catch (error) {
       console.error("评价失败:", error);
-      ElMessage.error("评价失败");
     } finally {
       submitting.value = false;
     }
