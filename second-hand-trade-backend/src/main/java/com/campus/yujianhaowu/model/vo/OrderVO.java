@@ -17,6 +17,8 @@ public class OrderVO {
 
     private Long sellerId;
 
+    private String userName;
+
     private BigDecimal totalAmount;
 
     private BigDecimal paymentAmount;

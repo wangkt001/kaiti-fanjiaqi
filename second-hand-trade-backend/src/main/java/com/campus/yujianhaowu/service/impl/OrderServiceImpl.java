@@ -8,11 +8,13 @@ import com.campus.yujianhaowu.mapper.CartItemMapper;
 import com.campus.yujianhaowu.mapper.OrderItemMapper;
 import com.campus.yujianhaowu.mapper.OrderMapper;
 import com.campus.yujianhaowu.mapper.ProductMapper;
+import com.campus.yujianhaowu.mapper.UserMapper;
 import com.campus.yujianhaowu.model.dto.OrderCreateRequest;
 import com.campus.yujianhaowu.model.entity.CartItem;
 import com.campus.yujianhaowu.model.entity.Order;
 import com.campus.yujianhaowu.model.entity.OrderItem;
 import com.campus.yujianhaowu.model.entity.Product;
+import com.campus.yujianhaowu.model.entity.User;
 import com.campus.yujianhaowu.model.vo.CartItemVO;
 import com.campus.yujianhaowu.model.vo.OrderVO;
 import com.campus.yujianhaowu.service.CartService;
@@ -36,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
     private final CartItemMapper cartItemMapper;
     private final ProductMapper productMapper;
     private final CartService cartService;
+    private final UserMapper userMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -303,6 +306,13 @@ public class OrderServiceImpl implements OrderService {
         vo.setOrderNo(order.getOrderNo());
         vo.setUserId(order.getUserId());
         vo.setSellerId(order.getSellerId());
+
+        // 查询用户信息
+        User user = userMapper.selectById(order.getUserId());
+        if (user != null) {
+            vo.setUserName(user.getUsername());
+        }
+
         vo.setTotalAmount(order.getTotalAmount());
         vo.setPaymentAmount(order.getPaymentAmount());
         vo.setFreightAmount(order.getFreightAmount());
