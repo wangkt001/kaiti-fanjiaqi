@@ -6,7 +6,7 @@
       <h2 class="page-title">后台管理</h2>
 
       <el-tabs v-model="activeTab" class="admin-tabs">
-        <!-- 商品审核 -->
+        <!-- 商品审核已隐藏
         <el-tab-pane label="商品审核" name="products">
           <div class="tab-content">
             <el-table :data="auditList" v-loading="loading" style="width: 100%">
@@ -42,6 +42,7 @@
             </el-table>
           </div>
         </el-tab-pane>
+        -->
 
         <!-- 用户管理 -->
         <el-tab-pane label="用户管理" name="users">
@@ -120,7 +121,11 @@
         <!-- 卖家审核 -->
         <el-tab-pane label="卖家审核" name="sellers">
           <div class="tab-content">
-            <el-table :data="sellerAuditList" v-loading="loading" style="width: 100%">
+            <el-table
+              :data="sellerAuditList"
+              v-loading="loading"
+              style="width: 100%"
+            >
               <el-table-column prop="id" label="ID" width="80" />
               <el-table-column prop="username" label="用户名" width="150" />
               <el-table-column prop="nickname" label="昵称" width="120" />
@@ -162,10 +167,16 @@ import { ref, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import NavBar from "@/components/NavBar.vue";
 import { getPendingProducts, auditProduct } from "@/api/modules/goods";
-import { listUsers, updateUserStatus, deleteUser, listPendingSellers, auditSeller } from "@/api/modules/user";
+import {
+  listUsers,
+  updateUserStatus,
+  deleteUser,
+  listPendingSellers,
+  auditSeller,
+} from "@/api/modules/user";
 import { getAdminOrderList } from "@/api/modules/order";
 
-const activeTab = ref("products");
+const activeTab = ref("users");
 const loading = ref(false);
 
 // 审核列表
@@ -403,8 +414,8 @@ const handleViewOrder = (row: any) => {
 };
 
 onMounted(() => {
-  // 加载待审核商品
-  loadPendingProducts();
+  // 加载待审核商品（已隐藏）
+  // loadPendingProducts();
   // 加载用户列表
   loadUserList();
   // 加载订单列表
