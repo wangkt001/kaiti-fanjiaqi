@@ -5,7 +5,12 @@
       <!-- 侧边栏 -->
       <aside class="sidebar">
         <div class="user-profile">
-          <el-avatar :size="80" :src="userInfo.avatar" />
+          <div class="avatar-wrapper" @click="showAvatarUpload = true">
+            <el-avatar :size="80" :src="userInfo.avatar" />
+            <div class="avatar-mask">
+              <el-icon><Edit /></el-icon>
+            </div>
+          </div>
           <h3 class="nickname">{{ userInfo.nickname || "未设置" }}</h3>
           <p class="username">{{ userInfo.username }}</p>
         </div>
@@ -41,6 +46,42 @@
           </el-menu-item>
         </el-menu>
       </aside>
+
+      <!-- 头像上传对话框 -->
+      <el-dialog
+        v-model="showAvatarUpload"
+        title="上传头像"
+        width="500px"
+        append-to-body
+      >
+        <div class="avatar-upload-content">
+          <div class="current-avatar">
+            <el-avatar :size="120" :src="tempAvatar || userInfo.avatar" />
+          </div>
+          <el-upload
+            class="avatar-uploader"
+            :show-file-list="false"
+            :before-upload="beforeAvatarUpload"
+            accept="image/*"
+          >
+            <el-button type="primary" size="default">
+              <el-icon><Upload /></el-icon>
+              选择图片
+            </el-button>
+          </el-upload>
+          <div class="upload-tip">支持 JPG、PNG 格式，文件小于 2MB</div>
+        </div>
+        <template #footer>
+          <el-button @click="showAvatarUpload = false">取消</el-button>
+          <el-button
+            type="primary"
+            :loading="uploadingAvatar"
+            @click="handleUploadAvatar"
+          >
+            保存
+          </el-button>
+        </template>
+      </el-dialog>
 
       <!-- 主内容区 -->
       <main class="main-content">
@@ -394,6 +435,8 @@ import {
   ChatDotRound,
   ShoppingBag,
   Shop,
+  Edit,
+  Upload,
 } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import GoodsCard from "@/components/GoodsCard.vue";
@@ -412,6 +455,7 @@ import {
   type Order,
 } from "@/api/modules/order";
 import { getUserReviews, deleteReview } from "@/api/modules/review";
+import { uploadAvatar } from "@/api/modules/user";
 import type { Product, CulturalContent } from "@/types";
 
 const userStore = useUserStore();
@@ -430,6 +474,11 @@ const canViewOrders = computed(
 
 const activeTab = ref("profile");
 const loading = ref(false);
+
+// 头像上传相关
+const showAvatarUpload = ref(false);
+const tempAvatar = ref("");
+const uploadingAvatar = ref(false);
 
 const userInfo = reactive({
   id: 0,
@@ -461,6 +510,53 @@ const loadUserInfo = () => {
     console.log("是否为买家:", isBuyer.value);
     console.log("是否可查看订单:", canViewOrders.value);
     console.log("是否为卖家:", isSeller.value);
+  }
+};
+
+// 头像上传相关方法
+const beforeAvatarUpload = (file: File) => {
+  const isImage = file.type.startsWith("image/");
+  const isLt2M = file.size / 1024 / 1024 < 2;
+
+  if (!isImage) {
+    ElMessage.error("只能上传图片文件!");
+    return false;
+  }
+  if (!isLt2M) {
+    ElMessage.error("图片大小不能超过 2MB!");
+    return false;
+  }
+
+  // 将文件转换为 Base64
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    tempAvatar.value = e.target?.result as string;
+  };
+  reader.readAsDataURL(file);
+
+  return false; // 阻止自动上传
+};
+
+const handleUploadAvatar = async () => {
+  if (!tempAvatar.value) {
+    ElMessage.warning("请先选择图片");
+    return;
+  }
+
+  uploadingAvatar.value = true;
+  try {
+    await uploadAvatar(tempAvatar.value);
+    userInfo.avatar = tempAvatar.value;
+    userStore.userInfo!.avatar = tempAvatar.value;
+    localStorage.setItem("userInfo", JSON.stringify(userStore.userInfo));
+    ElMessage.success("头像上传成功");
+    showAvatarUpload.value = false;
+    tempAvatar.value = "";
+  } catch (error) {
+    console.error("头像上传失败:", error);
+    ElMessage.error("头像上传失败");
+  } finally {
+    uploadingAvatar.value = false;
   }
 };
 
@@ -762,6 +858,36 @@ onMounted(() => {
         border-bottom: 1px solid #eee;
         margin-bottom: 20px;
 
+        .avatar-wrapper {
+          display: inline-block;
+          position: relative;
+          cursor: pointer;
+
+          .avatar-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+
+            .el-icon {
+              font-size: 24px;
+              color: #fff;
+            }
+          }
+
+          &:hover .avatar-mask {
+            opacity: 1;
+          }
+        }
+
         .nickname {
           margin: 15px 0 5px;
           font-size: 18px;
@@ -1052,6 +1178,28 @@ onMounted(() => {
 @media (max-width: 768px) {
   .page-container {
     grid-template-columns: 1fr !important;
+  }
+}
+
+.avatar-upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  .current-avatar {
+    margin-bottom: 10px;
+  }
+
+  .avatar-uploader {
+    display: flex;
+    justify-content: center;
+  }
+
+  .upload-tip {
+    font-size: 12px;
+    color: #999;
+    text-align: center;
   }
 }
 </style>

@@ -65,9 +65,10 @@ public class UserController {
     @PostMapping("/avatar")
     @Operation(summary = "上传头像")
     public Result<Void> uploadAvatar(
-            @RequestParam String avatarUrl,
-            HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
+            @RequestBody Map<String, String> request,
+            HttpServletRequest httpRequest) {
+        Long userId = (Long) httpRequest.getAttribute("userId");
+        String avatarUrl = request.get("avatarUrl");
         userService.uploadAvatar(userId, avatarUrl);
         return Result.success();
     }

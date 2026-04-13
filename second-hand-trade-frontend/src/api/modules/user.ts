@@ -50,10 +50,8 @@ export const updateProfile = (data: Partial<UserInfo>) => {
 /**
  * 上传头像
  */
-export const uploadAvatar = (file: File) => {
-  const formData = new FormData()
-  formData.append('file', file)
-  return http.upload<ApiResponse<{ url: string }>>('/users/avatar', formData)
+export const uploadAvatar = (avatarUrl: string) => {
+  return http.post<ApiResponse>('/users/avatar', { avatarUrl })
 }
 
 export const uploadImageFile = (file: File) => {
