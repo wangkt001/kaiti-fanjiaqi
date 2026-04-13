@@ -96,14 +96,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void forgotPassword(ForgotPasswordRequest request) {
-        User user = getByUsername(request.getAccount());
+        // 通过手机号查询用户
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getPhone, request.getPhone());
+        User user = userMapper.selectOne(wrapper);
+
         if (user == null) {
-            throw new BusinessException("账号不存在");
-        }
-        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
-            throw new BusinessException("旧密码错误");
+            throw new BusinessException("该手机号未注册");
         }
 
+        // 验证真实姓名
+        if (!request.getNickname().equals(user.getNickname())) {
+            throw new BusinessException("真实姓名与注册信息不匹配");
+        }
+
+        // 更新密码
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userMapper.updateById(user);
         log.info("用户重置密码成功，userId: {}", user.getId());

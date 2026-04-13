@@ -9,7 +9,7 @@
       <el-card class="forgot-password-card">
         <div class="header">
           <h1 class="title">忘记密码</h1>
-          <p class="subtitle">请输入登录账号并验证旧密码后设置新密码</p>
+          <p class="subtitle">请输入手机号和真实姓名验证身份后设置新密码</p>
         </div>
 
         <el-form
@@ -19,29 +19,28 @@
           class="forgot-password-form"
           @keyup.enter="handleSubmit"
         >
-          <el-form-item prop="account">
+          <el-form-item prop="phone">
             <el-input
-              v-model="form.account"
-              placeholder="请输入登录账号"
+              v-model="form.phone"
+              placeholder="请输入注册时的手机号"
+              size="large"
+              clearable
+            >
+              <template #prefix>
+                <el-icon><Phone /></el-icon>
+              </template>
+            </el-input>
+          </el-form-item>
+
+          <el-form-item prop="nickname">
+            <el-input
+              v-model="form.nickname"
+              placeholder="请输入真实姓名"
               size="large"
               clearable
             >
               <template #prefix>
                 <el-icon><User /></el-icon>
-              </template>
-            </el-input>
-          </el-form-item>
-
-          <el-form-item prop="oldPassword">
-            <el-input
-              v-model="form.oldPassword"
-              type="password"
-              placeholder="请输入旧密码"
-              size="large"
-              show-password
-            >
-              <template #prefix>
-                <el-icon><Lock /></el-icon>
               </template>
             </el-input>
           </el-form-item>
@@ -96,7 +95,7 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
-import { ArrowLeft, Lock, User } from "@element-plus/icons-vue";
+import { ArrowLeft, Lock, User, Phone } from "@element-plus/icons-vue";
 import { forgotPassword } from "@/api/modules/user";
 
 const router = useRouter();
@@ -104,8 +103,8 @@ const formRef = ref<FormInstance>();
 const loading = ref(false);
 
 const form = reactive({
-  account: "",
-  oldPassword: "",
+  phone: "",
+  nickname: "",
   newPassword: "",
   confirmPassword: "",
 });
@@ -123,13 +122,17 @@ const validateConfirmPassword = (
 };
 
 const rules: FormRules = {
-  account: [
-    { required: true, message: "请输入登录账号", trigger: "blur" },
-    { min: 3, max: 50, message: "长度在 3 到 50 个字符", trigger: "blur" },
+  phone: [
+    { required: true, message: "请输入手机号", trigger: "blur" },
+    {
+      pattern: /^1[3-9]\d{9}$/,
+      message: "请输入正确的手机号",
+      trigger: "blur",
+    },
   ],
-  oldPassword: [
-    { required: true, message: "请输入旧密码", trigger: "blur" },
-    { min: 6, max: 20, message: "密码长度在 6 到 20 个字符", trigger: "blur" },
+  nickname: [
+    { required: true, message: "请输入真实姓名", trigger: "blur" },
+    { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" },
   ],
   newPassword: [
     { required: true, message: "请输入新密码", trigger: "blur" },
@@ -150,14 +153,15 @@ const handleSubmit = async () => {
     loading.value = true;
     try {
       await forgotPassword({
-        account: form.account,
-        oldPassword: form.oldPassword,
+        phone: form.phone,
+        nickname: form.nickname,
         newPassword: form.newPassword,
       });
       ElMessage.success("密码重置成功，请重新登录");
       router.push("/login");
-    } catch (error) {
+    } catch (error: any) {
       console.error("重置密码失败", error);
+      ElMessage.error(error.message || "重置密码失败");
     } finally {
       loading.value = false;
     }

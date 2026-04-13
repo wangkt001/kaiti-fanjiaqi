@@ -19,8 +19,8 @@ export const register = (data: RegisterParams) => {
  * 忘记密码
  */
 export const forgotPassword = (data: {
-  account: string
-  oldPassword: string
+  phone: string
+  nickname: string
   newPassword: string
 }) => {
   return http.post<ApiResponse>('/auth/forgot-password', data)
