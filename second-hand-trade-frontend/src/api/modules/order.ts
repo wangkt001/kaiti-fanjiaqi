@@ -176,6 +176,16 @@ export function getSellerOrderList(params: {
 }
 
 /**
+ * 卖家：查看订单详情
+ */
+export function getSellerOrderDetail(id: number) {
+  return request<ApiResponse<Order>>({
+    url: `/orders/seller/${id}`,
+    method: 'get',
+  })
+}
+
+/**
  * 卖家：发货
  */
 export function shipOrder(id: number, deliveryNo: string, deliveryType: string) {

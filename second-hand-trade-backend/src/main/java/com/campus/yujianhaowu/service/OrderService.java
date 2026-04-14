@@ -22,6 +22,8 @@ public interface OrderService {
 
     Page<OrderVO> getSellerOrders(Long sellerId, Integer status, Integer current, Integer size);
 
+    OrderVO getSellerOrderDetail(Long orderId, Long sellerId);
+
     void shipOrder(Long orderId, String deliveryNo, String deliveryType, Long sellerId);
 
     /**

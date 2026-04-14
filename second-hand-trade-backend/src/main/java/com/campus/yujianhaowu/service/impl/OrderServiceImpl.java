@@ -232,6 +232,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderVO getSellerOrderDetail(Long orderId, Long sellerId) {
+        Order order = orderMapper.selectById(orderId);
+        if (order == null) {
+            throw new BusinessException("订单不存在");
+        }
+        if (!order.getSellerId().equals(sellerId)) {
+            throw new BusinessException("无权查看该订单");
+        }
+        return convertToVO(order);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void shipOrder(Long orderId, String deliveryNo, String deliveryType, Long sellerId) {
         Order order = orderMapper.selectById(orderId);

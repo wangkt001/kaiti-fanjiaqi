@@ -402,6 +402,89 @@
         </el-button>
       </template>
     </el-dialog>
+    <!-- 订单详情弹窗 -->
+    <el-dialog v-model="showOrderDetailDialog" title="订单详情" width="700px">
+      <div v-loading="orderDetailLoading">
+        <template v-if="orderDetail">
+          <el-descriptions :column="2" border>
+            <el-descriptions-item label="订单编号">{{
+              orderDetail.orderNo
+            }}</el-descriptions-item>
+            <el-descriptions-item label="订单状态">
+              <el-tag :type="getOrderStatusType(orderDetail.status)">
+                {{ getOrderStatusText(orderDetail.status) }}
+              </el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item label="下单时间">{{
+              orderDetail.createdAt
+            }}</el-descriptions-item>
+            <el-descriptions-item label="支付时间">{{
+              orderDetail.paymentTime || "-"
+            }}</el-descriptions-item>
+            <el-descriptions-item label="发货时间">{{
+              orderDetail.deliveryTime || "-"
+            }}</el-descriptions-item>
+            <el-descriptions-item label="收货时间">{{
+              orderDetail.receiveTime || "-"
+            }}</el-descriptions-item>
+            <el-descriptions-item label="收货人">{{
+              orderDetail.receiverName
+            }}</el-descriptions-item>
+            <el-descriptions-item label="手机号">{{
+              orderDetail.receiverPhone
+            }}</el-descriptions-item>
+            <el-descriptions-item label="收货地址" :span="2">{{
+              orderDetail.receiverAddress
+            }}</el-descriptions-item>
+            <el-descriptions-item
+              label="物流单号"
+              v-if="orderDetail.deliveryNo"
+              >{{ orderDetail.deliveryNo }}</el-descriptions-item
+            >
+            <el-descriptions-item label="订单备注" v-if="orderDetail.remark">{{
+              orderDetail.remark
+            }}</el-descriptions-item>
+          </el-descriptions>
+
+          <h4 style="margin: 20px 0 10px">商品信息</h4>
+          <el-table :data="orderDetail.items" border size="small">
+            <el-table-column label="商品图片" width="80">
+              <template #default="{ row }">
+                <el-image
+                  :src="row.productImage"
+                  fit="cover"
+                  style="width: 50px; height: 50px; border-radius: 4px"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="productName" label="商品名称" />
+            <el-table-column prop="price" label="单价" width="100">
+              <template #default="{ row }"
+                >¥{{ row.price.toFixed(2) }}</template
+              >
+            </el-table-column>
+            <el-table-column prop="quantity" label="数量" width="80" />
+            <el-table-column prop="totalPrice" label="小计" width="100">
+              <template #default="{ row }">
+                <span style="color: #ff4757; font-weight: 600"
+                  >¥{{ row.totalPrice.toFixed(2) }}</span
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+
+          <div style="text-align: right; margin-top: 15px">
+            <span style="color: #666; margin-right: 10px">实付款：</span>
+            <span style="font-size: 20px; color: #ff4757; font-weight: 700"
+              >¥{{ orderDetail.paymentAmount.toFixed(2) }}</span
+            >
+          </div>
+        </template>
+      </div>
+      <template #footer>
+        <el-button @click="showOrderDetailDialog = false">关闭</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -416,7 +499,11 @@ import {
   deleteGoods,
   updateGoods,
 } from "@/api/modules/goods";
-import { getSellerOrderList, shipOrder } from "@/api/modules/order";
+import {
+  getSellerOrderList,
+  shipOrder,
+  getSellerOrderDetail,
+} from "@/api/modules/order";
 import { getCurrentUser } from "@/api/modules/auth";
 import { useUserStore } from "@/store/user";
 import type { Goods } from "@/types";
@@ -477,6 +564,10 @@ const deliverForm = reactive({
   deliveryType: "express",
   deliveryNo: "",
 });
+
+const showOrderDetailDialog = ref(false);
+const orderDetailLoading = ref(false);
+const orderDetail = ref<Order | null>(null);
 
 // 获取卖家订单列表
 const fetchSellerOrders = async () => {
@@ -656,8 +747,18 @@ const handleDelete = (row: any) => {
   });
 };
 
-const handleViewOrder = (row: any) => {
-  ElMessage.info("查看订单功能开发中");
+const handleViewOrder = async (row: any) => {
+  showOrderDetailDialog.value = true;
+  orderDetailLoading.value = true;
+  try {
+    const res = await getSellerOrderDetail(row.id);
+    orderDetail.value = res;
+  } catch (error) {
+    console.error("获取订单详情失败:", error);
+    ElMessage.error("获取订单详情失败");
+  } finally {
+    orderDetailLoading.value = false;
+  }
 };
 
 const handleDeliver = (row: any) => {

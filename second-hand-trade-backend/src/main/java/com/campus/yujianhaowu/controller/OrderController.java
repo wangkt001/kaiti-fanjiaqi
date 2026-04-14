@@ -121,6 +121,16 @@ public class OrderController {
         return Result.success(result);
     }
 
+    @GetMapping("/seller/{id}")
+    @Operation(summary = "卖家查看订单详情")
+    public Result<OrderVO> getSellerOrderDetail(
+            @Parameter(description = "订单 ID") @PathVariable Long id,
+            HttpServletRequest httpRequest) {
+        Long sellerId = (Long) httpRequest.getAttribute("userId");
+        OrderVO order = orderService.getSellerOrderDetail(id, sellerId);
+        return Result.success(order);
+    }
+
     // ==================== 后台管理接口 ====================
 
     @GetMapping("/admin/list")
