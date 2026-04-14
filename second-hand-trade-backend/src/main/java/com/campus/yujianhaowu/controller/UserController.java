@@ -73,6 +73,29 @@ public class UserController {
         return Result.success();
     }
 
+    @PostMapping("/shop-logo")
+    @Operation(summary = "上传店铺Logo")
+    public Result<Void> uploadShopLogo(
+            @RequestBody Map<String, String> request,
+            HttpServletRequest httpRequest) {
+        Long userId = (Long) httpRequest.getAttribute("userId");
+        String shopLogoUrl = request.get("shopLogoUrl");
+        userService.uploadShopLogo(userId, shopLogoUrl);
+        return Result.success();
+    }
+
+    @PutMapping("/shop-info")
+    @Operation(summary = "更新店铺信息")
+    public Result<Void> updateShopInfo(
+            @RequestBody Map<String, String> request,
+            HttpServletRequest httpRequest) {
+        Long userId = (Long) httpRequest.getAttribute("userId");
+        String shopName = request.get("shopName");
+        String shopDescription = request.get("shopDescription");
+        userService.updateShopInfo(userId, shopName, shopDescription);
+        return Result.success();
+    }
+
     @PostMapping("/apply-seller")
     @Operation(summary = "申请成为卖家")
     public Result<Void> applySeller(

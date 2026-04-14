@@ -80,6 +80,10 @@ public interface UserService {
      */
     void uploadAvatar(Long userId, String avatarUrl);
 
+    void uploadShopLogo(Long userId, String shopLogoUrl);
+
+    void updateShopInfo(Long userId, String shopName, String shopDescription);
+
     /**
      * 申请成为卖家
      *

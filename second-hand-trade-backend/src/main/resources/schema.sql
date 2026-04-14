@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `seller_status` VARCHAR(20) DEFAULT NULL COMMENT '卖家状态（pending/approved/rejected）',
   `seller_info` JSON DEFAULT NULL COMMENT '卖家资质信息',
   `shop_name` VARCHAR(100) DEFAULT NULL COMMENT '店铺名称',
-  `shop_logo` VARCHAR(255) DEFAULT NULL COMMENT '店铺 Logo URL',
+  `shop_logo` LONGTEXT DEFAULT NULL COMMENT '店铺 Logo（Base64 编码）',
   `shop_description` TEXT DEFAULT NULL COMMENT '店铺描述',
   `fans_count` INT DEFAULT 0 COMMENT '粉丝数量',
   `follow_count` INT DEFAULT 0 COMMENT '关注数量',

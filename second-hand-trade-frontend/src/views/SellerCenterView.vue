@@ -274,6 +274,29 @@
               label-width="100px"
               style="max-width: 600px"
             >
+              <el-form-item label="店铺Logo">
+                <div class="shop-logo-upload">
+                  <el-upload
+                    action="#"
+                    :auto-upload="false"
+                    :limit="1"
+                    :file-list="shopLogoFileList"
+                    :on-change="handleShopLogoChange"
+                    :on-remove="handleShopLogoRemove"
+                    accept="image/png, image/jpeg, image/jpg"
+                    list-type="picture-card"
+                  >
+                    <el-image
+                      v-if="shopForm.shopLogo && !shopLogoFileList.length"
+                      :src="shopForm.shopLogo"
+                      fit="cover"
+                      style="width: 100%; height: 100%"
+                    />
+                    <el-icon v-else><Plus /></el-icon>
+                  </el-upload>
+                  <div class="form-tip">支持 jpg/png 格式，大小不超过 2MB</div>
+                </div>
+              </el-form-item>
               <el-form-item label="店铺名称">
                 <el-input
                   v-model="shopForm.shopName"
@@ -289,7 +312,11 @@
                 />
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="handleSaveShop">
+                <el-button
+                  type="primary"
+                  :loading="savingShop"
+                  @click="handleSaveShop"
+                >
                   保存设置
                 </el-button>
               </el-form-item>
@@ -505,6 +532,7 @@ import {
   getSellerOrderDetail,
 } from "@/api/modules/order";
 import { getCurrentUser } from "@/api/modules/auth";
+import { uploadShopLogo, updateShopInfo } from "@/api/modules/user";
 import { useUserStore } from "@/store/user";
 import type { Goods } from "@/types";
 import type { Order } from "@/api/modules/order";
@@ -614,7 +642,11 @@ watch(activeTab, (newTab) => {
 const shopForm = reactive({
   shopName: "",
   shopDescription: "",
+  shopLogo: "",
 });
+
+const shopLogoFileList = ref<any[]>([]);
+const savingShop = ref(false);
 
 // 商品表单
 const productForm = reactive({
@@ -794,8 +826,38 @@ const handleSubmitDeliver = async () => {
   }
 };
 
-const handleSaveShop = () => {
-  ElMessage.success("保存成功");
+const handleShopLogoChange = (file: any) => {
+  const maxSize = 2 * 1024 * 1024;
+  if (file.size > maxSize) {
+    ElMessage.error("图片大小不能超过 2MB");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+    shopForm.shopLogo = e.target.result;
+  };
+  reader.readAsDataURL(file.raw);
+};
+
+const handleShopLogoRemove = () => {
+  shopForm.shopLogo = "";
+};
+
+const handleSaveShop = async () => {
+  savingShop.value = true;
+  try {
+    if (shopForm.shopLogo) {
+      await uploadShopLogo(shopForm.shopLogo);
+    }
+    await updateShopInfo(shopForm.shopName, shopForm.shopDescription);
+    ElMessage.success("保存成功");
+    refreshUserInfo();
+  } catch (error) {
+    console.error("保存店铺设置失败:", error);
+    ElMessage.error("保存失败，请重试");
+  } finally {
+    savingShop.value = false;
+  }
 };
 
 const handleSubmit = async () => {
@@ -976,6 +1038,10 @@ const refreshUserInfo = async () => {
       // 回显店铺设置表单
       shopForm.shopName = userData.shopName || "";
       shopForm.shopDescription = userData.shopDescription || "";
+      shopForm.shopLogo = userData.shopLogo || "";
+      shopLogoFileList.value = userData.shopLogo
+        ? [{ name: "shop-logo", url: userData.shopLogo }]
+        : [];
 
       // 检查角色是否为卖家
       if (userData.role !== "seller") {

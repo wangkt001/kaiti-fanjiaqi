@@ -189,6 +189,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void uploadShopLogo(Long userId, String shopLogoUrl) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+        if (!"seller".equals(user.getRole())) {
+            throw new BusinessException("只有卖家才能设置店铺Logo");
+        }
+
+        user.setShopLogo(shopLogoUrl);
+        userMapper.updateById(user);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateShopInfo(Long userId, String shopName, String shopDescription) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+        if (!"seller".equals(user.getRole())) {
+            throw new BusinessException("只有卖家才能修改店铺信息");
+        }
+
+        if (StrUtil.isNotBlank(shopName)) {
+            user.setShopName(shopName);
+        }
+        user.setShopDescription(shopDescription);
+        userMapper.updateById(user);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void applySeller(Long userId, Map<String, Object> sellerInfo) {
         User user = userMapper.selectById(userId);
@@ -422,6 +454,7 @@ public class UserServiceImpl implements UserService {
         vo.setSellerStatus(user.getSellerStatus());
         vo.setShopName(user.getShopName());
         vo.setShopLogo(user.getShopLogo());
+        vo.setShopDescription(user.getShopDescription());
         vo.setFansCount(user.getFansCount());
         vo.setFollowCount(user.getFollowCount());
         vo.setStatus(user.getStatus());

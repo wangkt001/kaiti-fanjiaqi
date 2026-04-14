@@ -54,6 +54,14 @@ export const uploadAvatar = (avatarUrl: string) => {
   return http.post<ApiResponse>('/users/avatar', { avatarUrl })
 }
 
+export const uploadShopLogo = (shopLogoUrl: string) => {
+  return http.post<ApiResponse>('/users/shop-logo', { shopLogoUrl })
+}
+
+export const updateShopInfo = (shopName: string, shopDescription: string) => {
+  return http.put<ApiResponse>('/users/shop-info', { shopName, shopDescription })
+}
+
 export const uploadImageFile = (file: File) => {
   const formData = new FormData()
   formData.append('file', file)
