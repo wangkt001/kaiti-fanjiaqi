@@ -2,6 +2,7 @@ package com.campus.yujianhaowu.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campus.yujianhaowu.common.ResultCode;
 import com.campus.yujianhaowu.exception.BusinessException;
@@ -250,22 +251,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void incrementViewCount(Long id) {
-        Product product = productMapper.selectById(id);
-        if (product != null) {
-            product.setViewCount(product.getViewCount() + 1);
-            productMapper.updateById(product);
-        }
+        LambdaUpdateWrapper<Product> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(Product::getId, id)
+                .setSql("view_count = COALESCE(view_count, 0) + 1");
+        productMapper.update(null, updateWrapper);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void incrementSalesCount(Long id, Integer quantity) {
-        Product product = productMapper.selectById(id);
-        if (product != null) {
-            product.setSalesCount(product.getSalesCount() + quantity);
-            product.setStock(product.getStock() - quantity);
-            productMapper.updateById(product);
-        }
+        LambdaUpdateWrapper<Product> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(Product::getId, id)
+                .setSql("sales_count = COALESCE(sales_count, 0) + " + quantity)
+                .setSql("stock = stock - " + quantity);
+        productMapper.update(null, updateWrapper);
     }
 
     @Override

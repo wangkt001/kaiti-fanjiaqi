@@ -2,6 +2,7 @@ package com.campus.yujianhaowu.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campus.yujianhaowu.exception.BusinessException;
 import com.campus.yujianhaowu.mapper.CartItemMapper;
@@ -43,7 +44,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String createOrder(Long userId, OrderCreateRequest request) {
-        // 1. 获取购物车选中的商品
         List<CartItemVO> cartItems = cartService.getCartItems(userId);
         List<CartItemVO> selectedItems = cartItems.stream()
                 .filter(CartItemVO::getSelected)
@@ -53,18 +53,12 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessException("请选择要购买的商品");
         }
 
-        // 2. 计算订单金额
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (CartItemVO item : selectedItems) {
             totalAmount = totalAmount.add(
                     item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
         }
 
-        // 3. 创建订单
-        // 注意：这里我们假设购物车中选中的商品都属于同一个卖家
-        // 在实际业务中，如果包含多个卖家的商品，应该拆分为多个子订单
-        // 这里为了简化，我们取第一个商品的卖家 ID 作为订单的卖家 ID
-        // 如果需要支持多卖家结算，前端应该限制只能结算同一个卖家的商品，或者后端进行拆单
         Long sellerId = selectedItems.get(0).getProduct().getSellerId();
 
         String orderNo = IdUtil.fastSimpleUUID();
@@ -73,10 +67,10 @@ public class OrderServiceImpl implements OrderService {
         order.setUserId(userId);
         order.setSellerId(sellerId);
         order.setTotalAmount(totalAmount);
-        order.setPaymentAmount(totalAmount); // 简化：无运费和优惠
+        order.setPaymentAmount(totalAmount);
         order.setFreightAmount(BigDecimal.ZERO);
         order.setDiscountAmount(BigDecimal.ZERO);
-        order.setStatus(0); // 待付款
+        order.setStatus(0);
         order.setPaymentType(request.getPaymentType());
         order.setReceiverName(request.getReceiverName());
         order.setReceiverPhone(request.getReceiverPhone());
@@ -85,7 +79,6 @@ public class OrderServiceImpl implements OrderService {
 
         orderMapper.insert(order);
 
-        // 4. 创建订单商品
         for (CartItemVO cartItem : selectedItems) {
             OrderItem item = new OrderItem();
             item.setOrderId(order.getId());
@@ -98,15 +91,15 @@ public class OrderServiceImpl implements OrderService {
                     cartItem.getProduct().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
             orderItemMapper.insert(item);
 
-            // 5. 扣减库存
             Product product = productMapper.selectById(cartItem.getProductId());
             if (product != null && product.getStock() >= cartItem.getQuantity()) {
-                product.setStock(product.getStock() - cartItem.getQuantity());
-                productMapper.updateById(product);
+                LambdaUpdateWrapper<Product> stockWrapper = new LambdaUpdateWrapper<>();
+                stockWrapper.eq(Product::getId, product.getId())
+                        .setSql("stock = stock - " + cartItem.getQuantity());
+                productMapper.update(null, stockWrapper);
             }
         }
 
-        // 6. 删除已购买的购物车项
         for (CartItemVO cartItem : selectedItems) {
             cartService.deleteItem(userId, cartItem.getProductId());
         }
@@ -157,21 +150,20 @@ public class OrderServiceImpl implements OrderService {
         if (!order.getUserId().equals(userId)) {
             throw new BusinessException("无权操作该订单");
         }
-        if (order.getStatus() != 0) {
-            throw new BusinessException("只能取消待付款订单");
+        if (order.getStatus() != 0 && order.getStatus() != 1) {
+            throw new BusinessException("只能取消待付款或待发货订单");
         }
 
-        order.setStatus(4); // 已取消
+        int originalStatus = order.getStatus();
+        order.setStatus(4);
         orderMapper.updateById(order);
 
-        // 恢复库存
         List<OrderItem> items = getOrderItems(orderId);
         for (OrderItem item : items) {
-            Product product = productMapper.selectById(item.getProductId());
-            if (product != null) {
-                product.setStock(product.getStock() + item.getQuantity());
-                productMapper.updateById(product);
-            }
+            LambdaUpdateWrapper<Product> updateWrapper = new LambdaUpdateWrapper<>();
+            updateWrapper.eq(Product::getId, item.getProductId())
+                    .setSql("stock = stock + " + item.getQuantity());
+            productMapper.update(null, updateWrapper);
         }
     }
 
@@ -189,9 +181,17 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessException("只能确认待收货订单");
         }
 
-        order.setStatus(3); // 已完成
+        order.setStatus(3);
         order.setReceiveTime(LocalDateTime.now());
         orderMapper.updateById(order);
+
+        List<OrderItem> items = getOrderItems(orderId);
+        for (OrderItem item : items) {
+            LambdaUpdateWrapper<Product> updateWrapper = new LambdaUpdateWrapper<>();
+            updateWrapper.eq(Product::getId, item.getProductId())
+                    .setSql("sales_count = COALESCE(sales_count, 0) + " + item.getQuantity());
+            productMapper.update(null, updateWrapper);
+        }
     }
 
     @Override
@@ -245,7 +245,7 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessException("只能对待发货订单进行发货操作");
         }
 
-        order.setStatus(2); // 待收货
+        order.setStatus(2);
         order.setDeliveryType(deliveryType);
         order.setDeliveryNo(deliveryNo);
         order.setDeliveryTime(LocalDateTime.now());
@@ -307,7 +307,6 @@ public class OrderServiceImpl implements OrderService {
         vo.setUserId(order.getUserId());
         vo.setSellerId(order.getSellerId());
 
-        // 查询用户信息
         User user = userMapper.selectById(order.getUserId());
         if (user != null) {
             vo.setUserName(user.getUsername());
@@ -330,7 +329,6 @@ public class OrderServiceImpl implements OrderService {
         vo.setReceiverAddress(order.getReceiverAddress());
         vo.setCreatedAt(order.getCreatedAt());
 
-        // 加载订单商品
         List<OrderItem> items = getOrderItems(order.getId());
         List<OrderVO.OrderItemVO> itemVOs = new ArrayList<>();
         for (OrderItem item : items) {
