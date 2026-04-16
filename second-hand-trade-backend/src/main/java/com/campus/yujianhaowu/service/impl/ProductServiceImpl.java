@@ -133,7 +133,7 @@ public class ProductServiceImpl implements ProductService {
         if (product.getCategoryId() != null) {
             existProduct.setCategoryId(product.getCategoryId());
         }
-        
+
         // 处理图片更新 - 支持空字符串清除图片
         if (product.getImageUrl() != null) {
             if (StrUtil.isNotBlank(product.getImageUrl())) {
@@ -376,7 +376,12 @@ public class ProductServiceImpl implements ProductService {
         vo.setPublishedAt(product.getPublishedAt());
         vo.setImageUrl(product.getImageUrl());
 
-        // TODO: 设置卖家信息、标签、文化信息等
+        User seller = userService.getById(product.getSellerId());
+        if (seller != null) {
+            vo.setSellerName(seller.getNickname());
+            vo.setShopName(seller.getShopName());
+            vo.setShopLogo(seller.getShopLogo());
+        }
 
         return vo;
     }
